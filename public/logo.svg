@@ -1,0 +1,16 @@
+<svg width="200" height="50" viewBox="0 0 200 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Building icon -->
+  <g transform="translate(0, 5)">
+    <!-- Building layers -->
+    <path d="M8 35L8 20L20 15L32 20L32 35L8 35Z" fill="#4A6FA5"/>
+    <path d="M20 15L32 20L32 35L20 30L20 15Z" fill="#6B8FBF"/>
+    <path d="M8 20L20 15L20 30L8 35L8 20Z" fill="#3D5A80"/>
+    <!-- Swoosh/genie trail -->
+    <path d="M5 38C5 38 15 32 25 35C35 38 40 28 40 28" stroke="#4A90D9" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <circle cx="42" cy="26" r="3" fill="#4A90D9"/>
+  </g>
+  <!-- Text -->
+  <text x="52" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="600">
+    <tspan fill="#2D4A6F">Strata</tspan><tspan fill="#7A8FA6">Genie</tspan>
+  </text>
+</svg>
