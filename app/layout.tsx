@@ -5,6 +5,9 @@ import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 import { Toaster } from "sonner";
 import "./globals.css";
 
+// Force dynamic rendering for all pages - required for Convex/Clerk
+export const dynamic = "force-dynamic";
+
 const dmSans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-body",

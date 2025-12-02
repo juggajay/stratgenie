@@ -3,7 +3,7 @@
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { ConvexReactClient } from "convex/react";
 import { useAuth } from "@clerk/nextjs";
-import { ReactNode, useMemo, useState, useEffect } from "react";
+import { ReactNode, useState, useEffect } from "react";
 
 // Only create client on the browser to avoid build-time errors
 let convexClient: ConvexReactClient | null = null;
@@ -29,9 +29,14 @@ export function ConvexClientProvider({ children }: { children: ReactNode }) {
     setMounted(true);
   }, []);
 
-  // During SSR/build, render children without Convex provider
+  // During SSR/build, render a loading placeholder
+  // This prevents Convex hooks from being called without a provider
   if (!mounted) {
-    return <>{children}</>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-pulse text-slate-400">Loading...</div>
+      </div>
+    );
   }
 
   const convex = getConvexClient();
