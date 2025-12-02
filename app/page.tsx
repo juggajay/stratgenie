@@ -38,7 +38,7 @@ function Navbar() {
               Login
             </Button>
           </Link>
-          <Link href="/signup">
+          <Link href="/sign-up">
             <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 shadow-sm">
               Start Free Trial
             </Button>
@@ -77,7 +77,7 @@ function HeroSection() {
 
         {/* CTAs */}
         <div className="flex flex-wrap items-center justify-center gap-4 mb-6">
-          <Link href="/signup">
+          <Link href="/sign-up">
             <Button
               size="lg"
               className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-6 rounded-full shadow-lg shadow-blue-600/25 hover:shadow-xl hover:-translate-y-0.5 transition-all"
@@ -472,7 +472,7 @@ function PricingSection() {
           </div>
 
           {/* CTA */}
-          <Link href="/signup">
+          <Link href="/sign-up">
             <Button
               size="lg"
               className="bg-white hover:bg-slate-100 text-slate-900 text-lg px-10 py-6 rounded-full shadow-xl hover:shadow-2xl transition-all"
@@ -626,7 +626,7 @@ function FinalCTASection() {
         <p className="text-slate-600 text-lg md:text-xl mb-10 max-w-2xl mx-auto">
           Join hundreds of NSW committees who&apos;ve automated their compliance with StrataGenie.
         </p>
-        <Link href="/signup">
+        <Link href="/sign-up">
           <Button
             size="lg"
             className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-10 py-6 rounded-full shadow-lg shadow-blue-600/25 hover:shadow-xl hover:-translate-y-0.5 transition-all"
@@ -677,7 +677,7 @@ function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/signup" className="text-slate-400 hover:text-slate-200 transition-colors">
+                <Link href="/sign-up" className="text-slate-400 hover:text-slate-200 transition-colors">
                   Free Trial
                 </Link>
               </li>
