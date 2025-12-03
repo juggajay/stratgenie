@@ -64,6 +64,7 @@ export function InvoiceReviewDialog({
 }: InvoiceReviewDialogProps) {
   const [isApproving, setIsApproving] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isMarkingPaid, setIsMarkingPaid] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Form state
@@ -87,6 +88,7 @@ export function InvoiceReviewDialog({
   const updateTransaction = useMutation(api.finance.updateTransaction);
   const approveTransaction = useMutation(api.finance.approveTransaction);
   const deleteTransaction = useMutation(api.finance.deleteTransaction);
+  const markPaid = useMutation(api.finance.markTransactionPaid);
 
   // Populate form when transaction loads
   useEffect(() => {
@@ -165,8 +167,25 @@ export function InvoiceReviewDialog({
     }
   };
 
+  const handleMarkPaid = async () => {
+    if (!transactionId) return;
+
+    setIsMarkingPaid(true);
+    setError(null);
+
+    try {
+      await markPaid({ transactionId });
+      onOpenChange(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to mark as paid");
+    } finally {
+      setIsMarkingPaid(false);
+    }
+  };
+
   const isLoading = !invoice || !transaction;
   const isDraft = transaction?.status === "draft";
+  const isApproved = transaction?.status === "approved";
   const isPdf = invoice?.fileName?.toLowerCase().endsWith(".pdf");
 
   return (
@@ -455,6 +474,26 @@ export function InvoiceReviewDialog({
                   )}
                 </Button>
               </>
+            )}
+
+            {isApproved && (
+              <Button
+                onClick={handleMarkPaid}
+                disabled={isMarkingPaid}
+                className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg"
+              >
+                {isMarkingPaid ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Marking Paid...
+                  </>
+                ) : (
+                  <>
+                    <Check className="h-4 w-4 mr-2" />
+                    Mark as Paid
+                  </>
+                )}
+              </Button>
             )}
           </div>
         </div>
