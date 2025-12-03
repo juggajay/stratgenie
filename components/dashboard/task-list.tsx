@@ -245,7 +245,17 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
       );
     }
 
-    return <span className="text-xs text-slate-400 min-w-[90px] inline-block text-center">Completed</span>;
+    return (
+      <Button
+        size="sm"
+        variant="ghost"
+        onClick={() => handleStatusChange(task._id, "draft")}
+        className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg min-w-[90px] group"
+      >
+        <span className="group-hover:hidden">Completed</span>
+        <span className="hidden group-hover:inline">Undo</span>
+      </Button>
+    );
   };
 
   return (
