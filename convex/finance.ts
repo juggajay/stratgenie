@@ -1,6 +1,6 @@
 import { v } from "convex/values";
-import { mutation, query, action } from "./_generated/server";
-import { api } from "./_generated/api";
+import { mutation, query, action, internalQuery, internalMutation } from "./_generated/server";
+import { api, internal } from "./_generated/api";
 import { checkAccess, requireRole } from "./lib/permissions";
 
 // ============================================================================
@@ -40,6 +40,28 @@ export const getInvoice = query({
 
     // Verify user has access to this scheme
     await checkAccess(ctx, invoice.schemeId);
+
+    // Get the file URL
+    const fileUrl = await ctx.storage.getUrl(invoice.fileId);
+
+    return {
+      ...invoice,
+      fileUrl,
+    };
+  },
+});
+
+/**
+ * Get a single invoice by ID (internal - no auth check).
+ * Used by scheduled actions that run without user context.
+ */
+export const getInvoiceInternal = internalQuery({
+  args: {
+    invoiceId: v.id("invoices"),
+  },
+  handler: async (ctx, args) => {
+    const invoice = await ctx.db.get(args.invoiceId);
+    if (!invoice) return null;
 
     // Get the file URL
     const fileUrl = await ctx.storage.getUrl(invoice.fileId);
@@ -112,8 +134,8 @@ export const processInvoiceExtraction = action({
     invoiceId: v.id("invoices"),
   },
   handler: async (ctx, args) => {
-    // Get the invoice
-    const invoice = await ctx.runQuery(api.finance.getInvoice, {
+    // Get the invoice using internal query (no auth check needed for scheduled actions)
+    const invoice = await ctx.runQuery(internal.finance.getInvoiceInternal, {
       invoiceId: args.invoiceId,
     });
 
@@ -123,7 +145,7 @@ export const processInvoiceExtraction = action({
 
     if (!invoice.fileUrl) {
       // Mark as failed
-      await ctx.runMutation(api.finance.updateInvoiceStatus, {
+      await ctx.runMutation(internal.finance.updateInvoiceStatusInternal, {
         invoiceId: args.invoiceId,
         status: "failed",
         errorMessage: "Could not get file URL",
@@ -139,7 +161,7 @@ export const processInvoiceExtraction = action({
 
     if (!result.success) {
       // Mark invoice as failed
-      await ctx.runMutation(api.finance.updateInvoiceStatus, {
+      await ctx.runMutation(internal.finance.updateInvoiceStatusInternal, {
         invoiceId: args.invoiceId,
         status: "failed",
         errorMessage: result.error || "Extraction failed",
@@ -160,7 +182,7 @@ export const processInvoiceExtraction = action({
     };
 
     // Update invoice with extracted data
-    await ctx.runMutation(api.finance.updateInvoiceWithExtraction, {
+    await ctx.runMutation(internal.finance.updateInvoiceWithExtractionInternal, {
       invoiceId: args.invoiceId,
       extractedData: {
         vendorName: data.vendorName || undefined,
@@ -175,7 +197,7 @@ export const processInvoiceExtraction = action({
 
     // Create a draft transaction if we have valid data
     if (data.totalAmount) {
-      await ctx.runMutation(api.finance.createTransactionFromInvoice, {
+      await ctx.runMutation(internal.finance.createTransactionFromInvoiceInternal, {
         invoiceId: args.invoiceId,
         schemeId: invoice.schemeId,
         vendorName: data.vendorName || undefined,
@@ -190,9 +212,9 @@ export const processInvoiceExtraction = action({
 });
 
 /**
- * Update invoice status (internal use).
+ * Update invoice status (internal use - for scheduled actions).
  */
-export const updateInvoiceStatus = mutation({
+export const updateInvoiceStatusInternal = internalMutation({
   args: {
     invoiceId: v.id("invoices"),
     status: v.union(
@@ -212,9 +234,9 @@ export const updateInvoiceStatus = mutation({
 });
 
 /**
- * Update invoice with extraction results.
+ * Update invoice with extraction results (internal use - for scheduled actions).
  */
-export const updateInvoiceWithExtraction = mutation({
+export const updateInvoiceWithExtractionInternal = internalMutation({
   args: {
     invoiceId: v.id("invoices"),
     extractedData: v.object({
@@ -348,9 +370,9 @@ export const getTransactionCounts = query({
 // ============================================================================
 
 /**
- * Create a transaction from an extracted invoice.
+ * Create a transaction from an extracted invoice (internal use - for scheduled actions).
  */
-export const createTransactionFromInvoice = mutation({
+export const createTransactionFromInvoiceInternal = internalMutation({
   args: {
     invoiceId: v.id("invoices"),
     schemeId: v.id("schemes"),
