@@ -40,6 +40,7 @@ export function SchemeSettingsForm({
   const [address, setAddress] = useState("");
   const [defaultMeetingLocation, setDefaultMeetingLocation] = useState("");
   const [defaultMeetingTime, setDefaultMeetingTime] = useState("");
+  const [lotCount, setLotCount] = useState("");
 
   // Sync form state when scheme data loads
   useEffect(() => {
@@ -49,6 +50,7 @@ export function SchemeSettingsForm({
       setAddress(scheme.address || "");
       setDefaultMeetingLocation(scheme.defaultMeetingLocation || "");
       setDefaultMeetingTime(scheme.defaultMeetingTime || "");
+      setLotCount(scheme.lotCount ? String(scheme.lotCount) : "");
     }
   }, [scheme]);
 
@@ -66,6 +68,7 @@ export function SchemeSettingsForm({
         address: address || undefined,
         defaultMeetingLocation: defaultMeetingLocation || undefined,
         defaultMeetingTime: defaultMeetingTime || undefined,
+        lotCount: lotCount ? parseInt(lotCount, 10) : undefined,
       });
       setSuccess(true);
       setTimeout(() => {
@@ -169,6 +172,34 @@ export function SchemeSettingsForm({
               />
               <p className="text-xs text-slate-500">
                 Full street address of the strata scheme.
+              </p>
+            </div>
+          </div>
+
+          {/* Scheme Details Section */}
+          <div className="space-y-4">
+            <h3 className="text-sm font-medium text-slate-900">
+              Scheme Details
+            </h3>
+
+            <div className="space-y-1.5">
+              <Label
+                htmlFor="lotCount"
+                className="text-sm font-medium text-slate-700"
+              >
+                Number of Lots
+              </Label>
+              <Input
+                id="lotCount"
+                type="number"
+                min="1"
+                value={lotCount}
+                onChange={(e) => setLotCount(e.target.value)}
+                placeholder="e.g. 12"
+                className="rounded-lg border-slate-300"
+              />
+              <p className="text-xs text-slate-500">
+                Total lots in the strata scheme (for levy calculations).
               </p>
             </div>
           </div>

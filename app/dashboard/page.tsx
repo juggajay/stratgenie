@@ -9,6 +9,7 @@ import { SchemeSelector } from "@/components/dashboard/scheme-selector";
 import { ComplianceCard } from "@/components/dashboard/compliance-card";
 import { TaskList } from "@/components/dashboard/task-list";
 import { SchemeSettingsForm } from "@/components/scheme/scheme-settings-form";
+import { SetupBanner } from "@/components/dashboard/setup-banner";
 import { Button } from "@/components/ui/button";
 import { Receipt, Shield } from "lucide-react";
 
@@ -64,6 +65,9 @@ export default function DashboardPage() {
 
       {/* Main content */}
       <main className="max-w-5xl mx-auto px-6 py-8">
+        {/* Setup incomplete banner */}
+        {selectedSchemeId && <SetupBanner schemeId={selectedSchemeId} />}
+
         <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
           {/* Left column: Scheme selector */}
           <div>

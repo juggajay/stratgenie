@@ -44,6 +44,9 @@ export default defineSchema({
     lastStrataHubReportDate: v.optional(v.number()), // timestamp
     nextStrataHubReportDueDate: v.optional(v.number()), // derived: lastAgmDate + 3 months
 
+    // Scheme details
+    lotCount: v.optional(v.number()), // Number of lots in the scheme
+
     // Trial/subscription tracking (CH-0008)
     trialEndsAt: v.optional(v.number()), // timestamp, null = paid/grandfathered
   })

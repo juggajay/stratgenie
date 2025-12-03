@@ -12,7 +12,6 @@ export default function SignInPage() {
             card: "shadow-lg rounded-xl",
           },
         }}
-        afterSignInUrl="/onboarding"
         signUpUrl="/sign-up"
       />
     </div>

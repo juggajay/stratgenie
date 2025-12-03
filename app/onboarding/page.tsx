@@ -11,9 +11,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Logo } from "@/components/marketing/logo";
-import { ArrowRight, ArrowLeft, Building2, Users, Check, Loader2 } from "lucide-react";
+import { ArrowRight, ArrowLeft, Building2, Users, Loader2, SkipForward } from "lucide-react";
 
-type Step = 1 | 2 | 3;
+type Step = 1 | 2;
 
 interface FormData {
   strataNumber: string;
@@ -73,42 +73,31 @@ export default function OnboardingPage() {
     return true;
   };
 
-  const validateStep2 = () => {
-    const lotCount = parseInt(formData.lotCount);
-    if (!formData.lotCount || isNaN(lotCount) || lotCount < 1) {
-      setError("Please enter a valid number of lots (minimum 1)");
-      return false;
-    }
-    return true;
-  };
-
   const handleNext = () => {
     if (step === 1 && validateStep1()) {
       setStep(2);
-    } else if (step === 2 && validateStep2()) {
-      setStep(3);
     }
   };
 
   const handleBack = () => {
     setError(null);
     if (step === 2) setStep(1);
-    else if (step === 3) setStep(2);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (skipLotCount: boolean = false) => {
     setIsSubmitting(true);
     setError(null);
 
     try {
       // Generate a name from the strata number if no address provided
       const schemeName = formData.address.trim() || `Scheme ${formData.strataNumber}`;
+      const lotCount = skipLotCount ? 0 : parseInt(formData.lotCount) || 0;
 
       await createFirstScheme({
         name: schemeName,
         strataNumber: formData.strataNumber.trim().toUpperCase(),
         address: formData.address.trim() || undefined,
-        lotCount: parseInt(formData.lotCount),
+        lotCount: lotCount,
       });
 
       // Success - redirect to dashboard
@@ -145,7 +134,7 @@ export default function OnboardingPage() {
         <div className="w-full max-w-xl">
           {/* Progress indicator */}
           <div className="flex items-center justify-center gap-2 mb-8">
-            {[1, 2, 3].map((s) => (
+            {[1, 2].map((s) => (
               <div
                 key={s}
                 className={`w-3 h-3 rounded-full transition-colors ${
@@ -176,7 +165,7 @@ export default function OnboardingPage() {
               <CardContent className="pt-4 space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="strataNumber" className="text-sm font-medium text-slate-700">
-                    What is your Strata Plan Number?
+                    What is your Strata Plan Number? <span className="text-red-500">*</span>
                   </Label>
                   <Input
                     id="strataNumber"
@@ -193,7 +182,7 @@ export default function OnboardingPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="address" className="text-sm font-medium text-slate-700">
-                    Scheme Address (optional)
+                    Scheme Address <span className="text-slate-400">(optional)</span>
                   </Label>
                   <Input
                     id="address"
@@ -221,7 +210,7 @@ export default function OnboardingPage() {
             </Card>
           )}
 
-          {/* Step 2: Lot Count */}
+          {/* Step 2: Lot Count (optional) */}
           {step === 2 && (
             <Card className="border-slate-200 shadow-sm">
               <CardHeader className="text-center pb-2">
@@ -232,13 +221,13 @@ export default function OnboardingPage() {
                   About Your Scheme
                 </CardTitle>
                 <CardDescription className="text-slate-600">
-                  This helps us calculate levies correctly
+                  This helps us calculate levies correctly (you can add this later)
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-4 space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="lotCount" className="text-sm font-medium text-slate-700">
-                    How many lots are in your scheme?
+                    How many lots are in your scheme? <span className="text-slate-400">(optional)</span>
                   </Label>
                   <Input
                     id="lotCount"
@@ -253,72 +242,6 @@ export default function OnboardingPage() {
                   <p className="text-xs text-slate-500">
                     Include all lots in the strata plan (apartments, units, townhouses)
                   </p>
-                </div>
-
-                {error && (
-                  <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">
-                    {error}
-                  </p>
-                )}
-
-                <div className="flex gap-3">
-                  <Button
-                    variant="outline"
-                    onClick={handleBack}
-                    className="flex-1 py-5 rounded-lg border-slate-300"
-                  >
-                    <ArrowLeft className="w-4 h-4 mr-2" />
-                    Back
-                  </Button>
-                  <Button
-                    onClick={handleNext}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-lg"
-                  >
-                    Continue
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Step 3: Confirmation */}
-          {step === 3 && (
-            <Card className="border-slate-200 shadow-sm">
-              <CardHeader className="text-center pb-2">
-                <div className="w-14 h-14 rounded-xl bg-blue-600 flex items-center justify-center mx-auto mb-4">
-                  <Check className="w-7 h-7 text-white" />
-                </div>
-                <CardTitle className="text-2xl font-semibold text-slate-900">
-                  Ready to Go!
-                </CardTitle>
-                <CardDescription className="text-slate-600">
-                  Confirm your scheme details
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pt-4 space-y-6">
-                {/* Summary */}
-                <div className="bg-slate-50 rounded-xl p-5 space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-sm text-slate-600">Strata Plan Number</span>
-                    <span className="text-sm font-medium text-slate-900">
-                      {formData.strataNumber.toUpperCase()}
-                    </span>
-                  </div>
-                  {formData.address && (
-                    <div className="flex justify-between">
-                      <span className="text-sm text-slate-600">Address</span>
-                      <span className="text-sm font-medium text-slate-900 text-right max-w-[200px]">
-                        {formData.address}
-                      </span>
-                    </div>
-                  )}
-                  <div className="flex justify-between">
-                    <span className="text-sm text-slate-600">Number of Lots</span>
-                    <span className="text-sm font-medium text-slate-900">
-                      {formData.lotCount}
-                    </span>
-                  </div>
                 </div>
 
                 {/* Trial notice */}
@@ -338,20 +261,11 @@ export default function OnboardingPage() {
                   </p>
                 )}
 
-                <div className="flex gap-3">
+                <div className="space-y-3">
                   <Button
-                    variant="outline"
-                    onClick={handleBack}
-                    disabled={isSubmitting}
-                    className="flex-1 py-5 rounded-lg border-slate-300"
-                  >
-                    <ArrowLeft className="w-4 h-4 mr-2" />
-                    Back
-                  </Button>
-                  <Button
-                    onClick={handleSubmit}
-                    disabled={isSubmitting}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-lg"
+                    onClick={() => handleSubmit(false)}
+                    disabled={isSubmitting || !formData.lotCount}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-lg"
                   >
                     {isSubmitting ? (
                       <>
@@ -365,6 +279,27 @@ export default function OnboardingPage() {
                       </>
                     )}
                   </Button>
+
+                  <div className="flex gap-3">
+                    <Button
+                      variant="outline"
+                      onClick={handleBack}
+                      disabled={isSubmitting}
+                      className="flex-1 py-5 rounded-lg border-slate-300"
+                    >
+                      <ArrowLeft className="w-4 h-4 mr-2" />
+                      Back
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSubmit(true)}
+                      disabled={isSubmitting}
+                      className="flex-1 py-5 rounded-lg text-slate-600 hover:text-slate-900"
+                    >
+                      <SkipForward className="w-4 h-4 mr-2" />
+                      Skip for now
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>

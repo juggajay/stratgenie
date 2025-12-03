@@ -204,6 +204,7 @@ export const updateSchemeMeetingDetails = mutation({
     secretaryName: v.optional(v.string()),
     secretaryEmail: v.optional(v.string()),
     address: v.optional(v.string()),
+    lotCount: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const scheme = await ctx.db.get(args.schemeId);
@@ -211,7 +212,7 @@ export const updateSchemeMeetingDetails = mutation({
       throw new Error("Scheme not found");
     }
 
-    const updates: Record<string, string | undefined> = {};
+    const updates: Record<string, string | number | undefined> = {};
 
     if (args.defaultMeetingLocation !== undefined) {
       updates.defaultMeetingLocation = args.defaultMeetingLocation;
@@ -227,6 +228,9 @@ export const updateSchemeMeetingDetails = mutation({
     }
     if (args.address !== undefined) {
       updates.address = args.address;
+    }
+    if (args.lotCount !== undefined) {
+      updates.lotCount = args.lotCount;
     }
 
     if (Object.keys(updates).length > 0) {

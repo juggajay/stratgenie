@@ -119,7 +119,7 @@ export const createFirstScheme = mutation({
     name: v.string(),
     strataNumber: v.string(),
     address: v.optional(v.string()),
-    lotCount: v.optional(v.number()), // Used for info, not stored yet
+    lotCount: v.optional(v.number()), // Number of lots in the scheme
   },
   handler: async (ctx, args) => {
     // Verify authentication
@@ -155,6 +155,7 @@ export const createFirstScheme = mutation({
       name: args.name,
       strataNumber: args.strataNumber,
       address: args.address,
+      lotCount: args.lotCount,
       trialEndsAt: now + TRIAL_DURATION_MS,
     });
 
