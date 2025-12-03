@@ -8,6 +8,8 @@
  * @module
  */
 
+import type * as actions_documentEmail from "../actions/documentEmail.js";
+import type * as actions_documents from "../actions/documents.js";
 import type * as actions_email from "../actions/email.js";
 import type * as actions_embeddings from "../actions/embeddings.js";
 import type * as actions_guardian from "../actions/guardian.js";
@@ -33,6 +35,8 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  "actions/documentEmail": typeof actions_documentEmail;
+  "actions/documents": typeof actions_documents;
   "actions/email": typeof actions_email;
   "actions/embeddings": typeof actions_embeddings;
   "actions/guardian": typeof actions_guardian;

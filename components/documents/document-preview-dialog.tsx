@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { FileText, Printer, Check, Loader2 } from "lucide-react";
+import { FileText, Printer, Check, Loader2, Send } from "lucide-react";
 
 interface DocumentPreviewDialogProps {
   documentId: Id<"documents"> | null;
@@ -27,15 +27,16 @@ export function DocumentPreviewDialog({
   onOpenChange,
   onFinalized,
 }: DocumentPreviewDialogProps) {
-  const [isFinalizing, setIsFinalizing] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const document = useQuery(
     api.documents.getDocument,
     documentId ? { documentId } : "skip"
   );
-  const finalizeDocument = useMutation(api.documents.finalizeDocument);
+  const finalizeAndSend = useAction(api.actions.documents.finalizeAndSendDocument);
 
   const handlePrint = () => {
     if (iframeRef.current?.contentWindow) {
@@ -43,23 +44,23 @@ export function DocumentPreviewDialog({
     }
   };
 
-  const handleFinalize = async () => {
+  const handleApproveAndSend = async () => {
     if (!documentId) return;
 
-    setIsFinalizing(true);
+    setIsSending(true);
     setError(null);
+    setSuccessMessage(null);
 
     try {
-      await finalizeDocument({ documentId });
+      const result = await finalizeAndSend({ documentId });
+      setSuccessMessage(result.message);
       onFinalized?.();
-      // Trigger download after finalizing
-      handleDownload();
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to finalize document"
+        err instanceof Error ? err.message : "Failed to send document"
       );
     } finally {
-      setIsFinalizing(false);
+      setIsSending(false);
     }
   };
 
@@ -92,14 +93,14 @@ export function DocumentPreviewDialog({
               </DialogTitle>
               <DialogDescription className="text-sm text-slate-500">
                 {isFinalized
-                  ? "This document has been finalized and is ready to send."
-                  : "Review the document below. Once approved, it will be marked as final."}
+                  ? "This document has been sent to all lot owners."
+                  : "Review the document below. Once approved, it will be sent to all lot owners."}
               </DialogDescription>
             </div>
             {isFinalized && (
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
                 <Check className="h-3 w-3" />
-                Finalized
+                Sent
               </span>
             )}
           </div>
@@ -128,6 +129,14 @@ export function DocumentPreviewDialog({
             </div>
           )}
         </div>
+
+        {/* Success Message */}
+        {successMessage && (
+          <div className="text-sm text-green-600 bg-green-50 px-3 py-2 rounded-lg mt-4 flex items-center gap-2">
+            <Check className="h-4 w-4" />
+            {successMessage}
+          </div>
+        )}
 
         {/* Error Message */}
         {error && (
@@ -159,19 +168,19 @@ export function DocumentPreviewDialog({
 
             {!isFinalized && (
               <Button
-                onClick={handleFinalize}
-                disabled={isFinalizing || !document}
-                className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                onClick={handleApproveAndSend}
+                disabled={isSending || !document}
+                className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg"
               >
-                {isFinalizing ? (
+                {isSending ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Finalizing...
+                    Sending...
                   </>
                 ) : (
                   <>
-                    <Check className="h-4 w-4 mr-2" />
-                    Approve & Finalize
+                    <Send className="h-4 w-4 mr-2" />
+                    Approve & Send
                   </>
                 )}
               </Button>
