@@ -4,7 +4,7 @@
 const authConfig = {
   providers: [
     {
-      domain: "https://logical-gecko-21.clerk.accounts.dev",
+      domain: "https://clerk.stratagenie.com.au",
       applicationID: "convex",
     },
   ],
