@@ -167,6 +167,20 @@ export const setSchemeComplianceDates = mutation({
 
         await ctx.db.patch(task._id, { dueDate: newDueDate });
       }
+
+      // Delete any draft AGM notices so they can be regenerated with correct dates
+      const draftNotices = await ctx.db
+        .query("documents")
+        .withIndex("by_scheme_and_type", (q) =>
+          q.eq("schemeId", args.schemeId).eq("type", "agm_notice")
+        )
+        .collect();
+
+      for (const doc of draftNotices) {
+        if (doc.status === "draft") {
+          await ctx.db.delete(doc._id);
+        }
+      }
     }
 
     // If lastStrataHubReportDate is explicitly provided
