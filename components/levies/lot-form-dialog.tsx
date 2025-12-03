@@ -104,7 +104,12 @@ export function LotFormDialog({
       onOpenChange(false);
       onSuccess?.();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+      console.error("Lot form error:", err);
+      const message = err instanceof Error ? err.message : String(err);
+      // Extract the actual error message from Convex errors
+      setError(message.includes("Uncaught Error:")
+        ? message.split("Uncaught Error:")[1]?.trim() || message
+        : message);
     } finally {
       setIsSubmitting(false);
     }
