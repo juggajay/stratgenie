@@ -6,7 +6,7 @@
 export const SEO_CONFIG = {
   // Site Identity
   siteName: "StrataGenie",
-  siteUrl: "https://stratagenie.com.au",
+  siteUrl: "https://www.stratagenie.com.au",
 
   // Default Meta
   defaultTitle: "StrataGenie | AI-Powered Strata Compliance Copilot for NSW",
