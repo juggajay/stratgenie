@@ -15,6 +15,7 @@ import { Receipt, Shield } from "lucide-react";
 
 export default function DashboardPage() {
   const [selectedSchemeId, setSelectedSchemeId] = useState<Id<"schemes"> | null>(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background bg-grain">
@@ -57,7 +58,11 @@ export default function DashboardPage() {
               </Button>
             </Link>
             {selectedSchemeId && (
-              <SchemeSettingsForm schemeId={selectedSchemeId} />
+              <SchemeSettingsForm
+                schemeId={selectedSchemeId}
+                open={settingsOpen}
+                onOpenChange={setSettingsOpen}
+              />
             )}
           </div>
         </div>
@@ -66,7 +71,12 @@ export default function DashboardPage() {
       {/* Main content */}
       <main className="max-w-5xl mx-auto px-6 py-8">
         {/* Setup incomplete banner */}
-        {selectedSchemeId && <SetupBanner schemeId={selectedSchemeId} />}
+        {selectedSchemeId && (
+          <SetupBanner
+            schemeId={selectedSchemeId}
+            onOpenSettings={() => setSettingsOpen(true)}
+          />
+        )}
 
         <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
           {/* Left column: Scheme selector */}
@@ -81,7 +91,10 @@ export default function DashboardPage() {
           <div className="space-y-6">
             {selectedSchemeId ? (
               <>
-                <ComplianceCard schemeId={selectedSchemeId} />
+                <ComplianceCard
+                  schemeId={selectedSchemeId}
+                  onOpenSettings={() => setSettingsOpen(true)}
+                />
                 <TaskList schemeId={selectedSchemeId} />
               </>
             ) : (

@@ -20,19 +20,31 @@ import { Settings } from "lucide-react";
 interface SchemeSettingsFormProps {
   schemeId: Id<"schemes">;
   trigger?: React.ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 export function SchemeSettingsForm({
   schemeId,
   trigger,
+  open: controlledOpen,
+  onOpenChange,
 }: SchemeSettingsFormProps) {
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+
+  // Support both controlled and uncontrolled modes
+  const open = controlledOpen !== undefined ? controlledOpen : internalOpen;
+  const setOpen = (value: boolean) => {
+    setInternalOpen(value);
+    onOpenChange?.(value);
+  };
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
   const scheme = useQuery(api.documents.getScheme, { schemeId });
   const updateScheme = useMutation(api.documents.updateSchemeMeetingDetails);
+  const setComplianceDates = useMutation(api.compliance.setSchemeComplianceDates);
 
   // Form state
   const [secretaryName, setSecretaryName] = useState("");
@@ -41,6 +53,13 @@ export function SchemeSettingsForm({
   const [defaultMeetingLocation, setDefaultMeetingLocation] = useState("");
   const [defaultMeetingTime, setDefaultMeetingTime] = useState("");
   const [lotCount, setLotCount] = useState("");
+  const [lastAgmDate, setLastAgmDate] = useState("");
+
+  // Helper to convert timestamp to date input value
+  const timestampToDateValue = (timestamp: number | undefined): string => {
+    if (!timestamp) return "";
+    return new Date(timestamp).toISOString().split("T")[0];
+  };
 
   // Sync form state when scheme data loads
   useEffect(() => {
@@ -51,6 +70,7 @@ export function SchemeSettingsForm({
       setDefaultMeetingLocation(scheme.defaultMeetingLocation || "");
       setDefaultMeetingTime(scheme.defaultMeetingTime || "");
       setLotCount(scheme.lotCount ? String(scheme.lotCount) : "");
+      setLastAgmDate(timestampToDateValue(scheme.lastAgmDate));
     }
   }, [scheme]);
 
@@ -61,6 +81,7 @@ export function SchemeSettingsForm({
     setSuccess(false);
 
     try {
+      // Update scheme details
       await updateScheme({
         schemeId,
         secretaryName: secretaryName || undefined,
@@ -70,6 +91,16 @@ export function SchemeSettingsForm({
         defaultMeetingTime: defaultMeetingTime || undefined,
         lotCount: lotCount ? parseInt(lotCount, 10) : undefined,
       });
+
+      // Update compliance dates if lastAgmDate is set
+      if (lastAgmDate) {
+        const timestamp = new Date(lastAgmDate).getTime();
+        await setComplianceDates({
+          schemeId,
+          lastAgmDate: timestamp,
+        });
+      }
+
       setSuccess(true);
       setTimeout(() => {
         setSuccess(false);
@@ -200,6 +231,32 @@ export function SchemeSettingsForm({
               />
               <p className="text-xs text-slate-500">
                 Total lots in the strata scheme (for levy calculations).
+              </p>
+            </div>
+          </div>
+
+          {/* Compliance Section */}
+          <div className="space-y-4">
+            <h3 className="text-sm font-medium text-slate-900">
+              Compliance Tracking
+            </h3>
+
+            <div className="space-y-1.5">
+              <Label
+                htmlFor="lastAgmDate"
+                className="text-sm font-medium text-slate-700"
+              >
+                Last AGM Date
+              </Label>
+              <Input
+                id="lastAgmDate"
+                type="date"
+                value={lastAgmDate}
+                onChange={(e) => setLastAgmDate(e.target.value)}
+                className="rounded-lg border-slate-300"
+              />
+              <p className="text-xs text-slate-500">
+                When was your last AGM held? This calculates your next AGM due date.
               </p>
             </div>
           </div>

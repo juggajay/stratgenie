@@ -25,12 +25,20 @@ export function SetupBanner({ schemeId, onOpenSettings }: SetupBannerProps) {
   }
 
   // Check for missing setup items
-  const missingLotCount = !scheme.lotCount || scheme.lotCount === 0;
+  const missingItems: string[] = [];
+  if (!scheme.lotCount || scheme.lotCount === 0) {
+    missingItems.push("lot count");
+  }
+  if (!scheme.lastAgmDate) {
+    missingItems.push("last AGM date");
+  }
 
   // Don't show if setup is complete
-  if (!missingLotCount) {
+  if (missingItems.length === 0) {
     return null;
   }
+
+  const missingText = missingItems.join(" and ");
 
   return (
     <div className="mb-6 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl">
@@ -38,10 +46,10 @@ export function SetupBanner({ schemeId, onOpenSettings }: SetupBannerProps) {
         <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium text-amber-900">
-            Setup Incomplete
+            Complete your scheme setup
           </p>
           <p className="text-sm text-amber-700 mt-0.5">
-            Please add your lot count to enable accurate levy calculations and compliance tracking.
+            Add your {missingText} to enable compliance tracking and accurate calculations.
           </p>
         </div>
         {onOpenSettings && (

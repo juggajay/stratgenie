@@ -11,7 +11,7 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Clock, AlertTriangle, XCircle } from "lucide-react";
+import { CheckCircle2, Clock, AlertTriangle, XCircle, Settings } from "lucide-react";
 
 type ComplianceStatus = "on_track" | "upcoming" | "due_soon" | "overdue" | null;
 
@@ -104,6 +104,7 @@ function ComplianceSection({
   isGenerating,
   hasExistingTasks,
   onViewChecklist,
+  onOpenSettings,
 }: {
   title: string;
   status: ComplianceStatus;
@@ -113,6 +114,7 @@ function ComplianceSection({
   isGenerating?: boolean;
   hasExistingTasks?: boolean;
   onViewChecklist?: () => void;
+  onOpenSettings?: () => void;
 }) {
   const config = status ? statusConfig[status] : null;
 
@@ -133,10 +135,22 @@ function ComplianceSection({
       </CardHeader>
       <CardContent className="pt-2 space-y-3">
         {needsSetup ? (
-          <p className="text-sm text-muted-foreground">
-            To track your compliance status, please configure your last AGM date
-            in scheme settings.
-          </p>
+          <>
+            <p className="text-sm text-muted-foreground">
+              To track your compliance status, please configure your last AGM date
+              in scheme settings.
+            </p>
+            {onOpenSettings && (
+              <Button
+                onClick={onOpenSettings}
+                variant="outline"
+                className="rounded-lg border-border text-foreground hover:bg-accent transition-smooth"
+              >
+                <Settings className="h-4 w-4 mr-2" />
+                Set up AGM tracking
+              </Button>
+            )}
+          </>
         ) : (
           <>
             <p className="text-sm text-muted-foreground">
@@ -176,9 +190,11 @@ function ComplianceSection({
 export function ComplianceCard({
   schemeId,
   onViewChecklist,
+  onOpenSettings,
 }: {
   schemeId: Id<"schemes">;
   onViewChecklist?: () => void;
+  onOpenSettings?: () => void;
 }) {
   const complianceStatus = useQuery(api.compliance.getSchemeComplianceStatus, {
     schemeId,
@@ -239,12 +255,14 @@ export function ComplianceCard({
         }
         hasExistingTasks={hasExistingTasks}
         onViewChecklist={handleViewChecklist}
+        onOpenSettings={onOpenSettings}
       />
       <ComplianceSection
         title="Strata Hub Report"
         status={complianceStatus.strataHub.status}
         nextDueDate={complianceStatus.strataHub.nextDueDate}
         needsSetup={complianceStatus.strataHub.needsSetup}
+        onOpenSettings={onOpenSettings}
       />
     </div>
   );
