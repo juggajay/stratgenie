@@ -144,7 +144,7 @@ export const createLot = mutation({
       .first();
 
     if (existing) {
-      throw new Error(`Lot ${args.lotNumber} already exists in this scheme`);
+      throw new Error(`Lot number "${args.lotNumber.trim()}" is already in use. Please choose a different lot number.`);
     }
 
     // Create the lot
@@ -191,7 +191,7 @@ export const updateLot = mutation({
 
       if (existing) {
         throw new Error(
-          `Lot ${args.lotNumber} already exists in this scheme`
+          `Lot number "${args.lotNumber!.trim()}" is already in use. Please choose a different lot number.`
         );
       }
     }
