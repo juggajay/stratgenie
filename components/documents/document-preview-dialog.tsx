@@ -13,7 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
-import { FileText, Check, Loader2, Send, ArrowLeft, RefreshCw, X } from "lucide-react";
+import { FileText, Check, Loader2, Send, ArrowLeft, RefreshCw, X, Download } from "lucide-react";
 
 interface DocumentPreviewDialogProps {
   documentId: Id<"documents"> | null;
@@ -131,6 +131,20 @@ export function DocumentPreviewDialog({
     }
   };
 
+  const handleDownload = () => {
+    if (!document?.content) return;
+
+    const blob = new Blob([document.content], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    const a = window.document.createElement("a");
+    a.href = url;
+    a.download = `${document.title || "document"}.html`;
+    window.document.body.appendChild(a);
+    a.click();
+    window.document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   // Preview View
   if (viewMode === "preview") {
     return (
@@ -220,6 +234,15 @@ export function DocumentPreviewDialog({
                 className="rounded-lg border-slate-300 text-slate-700"
               >
                 Close
+              </Button>
+
+              <Button
+                onClick={handleDownload}
+                disabled={!document?.content}
+                className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Download
               </Button>
 
               {!isFinalized && (
