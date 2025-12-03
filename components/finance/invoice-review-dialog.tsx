@@ -233,7 +233,7 @@ export function InvoiceReviewDialog({
             <Loader2 className="h-8 w-8 animate-spin text-slate-400" />
           </div>
         ) : (
-          <div className="flex-1 min-h-0 grid grid-cols-[1.5fr_1fr] overflow-hidden">
+          <div className="flex-1 min-h-0 grid grid-cols-[2fr_1fr] overflow-hidden">
             {/* Left: Invoice Preview */}
             <div className="border-r border-slate-200 bg-slate-50 flex flex-col min-h-0">
               <div className="px-4 py-2 bg-white border-b border-slate-200 flex-shrink-0">
