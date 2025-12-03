@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { useSelectedScheme } from "@/hooks/use-selected-scheme";
 import { SchemeSelector } from "@/components/dashboard/scheme-selector";
 import { BylawUpload } from "@/components/guardian/bylaw-upload";
 import { ChatInterface } from "@/components/guardian/chat-interface";
@@ -91,7 +92,7 @@ function BylawStatus({ schemeId }: { schemeId: Id<"schemes"> }) {
 }
 
 export default function GuardianPage() {
-  const [selectedSchemeId, setSelectedSchemeId] = useState<Id<"schemes"> | null>(null);
+  const { selectedSchemeId, setSelectedSchemeId } = useSelectedScheme();
 
   return (
     <div className="min-h-screen bg-background bg-grain">

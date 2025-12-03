@@ -4,7 +4,7 @@ export const dynamic = "force-dynamic";
 
 import { useState } from "react";
 import Link from "next/link";
-import { Id } from "@/convex/_generated/dataModel";
+import { useSelectedScheme } from "@/hooks/use-selected-scheme";
 import { SchemeSelector } from "@/components/dashboard/scheme-selector";
 import { ComplianceCard } from "@/components/dashboard/compliance-card";
 import { TaskList } from "@/components/dashboard/task-list";
@@ -23,7 +23,7 @@ import {
 import { Receipt, Shield, Building } from "lucide-react";
 
 export default function DashboardPage() {
-  const [selectedSchemeId, setSelectedSchemeId] = useState<Id<"schemes"> | null>(null);
+  const { selectedSchemeId, setSelectedSchemeId } = useSelectedScheme();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [strataRollOpen, setStrataRollOpen] = useState(false);
 

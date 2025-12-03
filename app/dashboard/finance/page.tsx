@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { useSelectedScheme } from "@/hooks/use-selected-scheme";
 import { SchemeSelector } from "@/components/dashboard/scheme-selector";
 import { InvoiceUploadZone } from "@/components/finance/invoice-upload-zone";
 import { InvoiceReviewDialog } from "@/components/finance/invoice-review-dialog";
@@ -173,7 +174,7 @@ function IncomeTab({ schemeId }: { schemeId: Id<"schemes"> }) {
 }
 
 export default function FinancePage() {
-  const [selectedSchemeId, setSelectedSchemeId] = useState<Id<"schemes"> | null>(null);
+  const { selectedSchemeId, setSelectedSchemeId } = useSelectedScheme();
   const [activeTab, setActiveTab] = useState("expenses");
 
   // Review dialog state
