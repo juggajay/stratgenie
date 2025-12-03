@@ -25,7 +25,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { LotFormDialog } from "./lot-form-dialog";
-import { Plus, Pencil, Trash2, Users, Building } from "lucide-react";
+import { Plus, Pencil, Trash2, Users, Building, Loader2 } from "lucide-react";
 
 interface StrataRollListProps {
   schemeId: Id<"schemes">;
@@ -58,15 +58,22 @@ export function StrataRollList({ schemeId }: StrataRollListProps) {
     setDeleteDialogOpen(true);
   };
 
-  const handleConfirmDelete = async () => {
-    if (!lotToDelete) return;
+  const [isDeleting, setIsDeleting] = useState(false);
 
+  const handleConfirmDelete = async (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent AlertDialogAction from auto-closing
+    if (!lotToDelete || isDeleting) return;
+
+    setIsDeleting(true);
     try {
       await deleteLot({ lotId: lotToDelete });
       setDeleteDialogOpen(false);
       setLotToDelete(null);
+      setDeleteError(null);
     } catch (err) {
       setDeleteError(err instanceof Error ? err.message : "Failed to delete lot");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -203,12 +210,20 @@ export function StrataRollList({ schemeId }: StrataRollListProps) {
             </div>
           )}
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmDelete}
-              className="bg-red-600 hover:bg-red-700"
+              disabled={isDeleting}
+              className="bg-red-600 hover:bg-red-700 disabled:opacity-50"
             >
-              Delete
+              {isDeleting ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                "Delete"
+              )}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

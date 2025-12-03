@@ -106,10 +106,10 @@ export const metadata: Metadata = {
     },
   },
 
-  // Verification (add codes when available)
-  // verification: {
-  //   google: "GOOGLE_SITE_VERIFICATION_CODE",
-  // },
+  // Verification
+  verification: {
+    google: "G_vZ0dEl1i8DWlbp9sF74evuhLJmIAkNH2jwNu-XiFY",
+  },
 
   // Other
   category: "technology",
