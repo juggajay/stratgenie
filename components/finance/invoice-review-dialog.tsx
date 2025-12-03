@@ -22,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { FileText, Loader2, Check, X, AlertCircle } from "lucide-react";
+import { FileText, Loader2, Check, X, AlertCircle, ExternalLink } from "lucide-react";
 
 interface InvoiceReviewDialogProps {
   invoiceId: Id<"invoices"> | null;
@@ -190,7 +190,7 @@ export function InvoiceReviewDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl max-h-[90vh] flex flex-col p-0 gap-0 overflow-hidden">
+      <DialogContent className="max-w-7xl max-h-[90vh] flex flex-col p-0 gap-0 overflow-hidden">
         {/* Header */}
         <DialogHeader className="px-6 py-4 border-b border-slate-200 flex-shrink-0">
           <div className="flex items-center justify-between">
@@ -233,7 +233,7 @@ export function InvoiceReviewDialog({
             <Loader2 className="h-8 w-8 animate-spin text-slate-400" />
           </div>
         ) : (
-          <div className="flex-1 min-h-0 grid grid-cols-[1.2fr_1fr] overflow-hidden">
+          <div className="flex-1 min-h-0 grid grid-cols-[1.5fr_1fr] overflow-hidden">
             {/* Left: Invoice Preview */}
             <div className="border-r border-slate-200 bg-slate-50 flex flex-col min-h-0">
               <div className="px-4 py-2 bg-white border-b border-slate-200 flex-shrink-0">
@@ -420,7 +420,17 @@ export function InvoiceReviewDialog({
 
         {/* Footer Actions */}
         <div className="px-6 py-4 border-t border-slate-200 flex justify-between items-center bg-slate-50 flex-shrink-0">
-          <div>
+          <div className="flex gap-3">
+            {invoice?.fileUrl && (
+              <Button
+                variant="outline"
+                onClick={() => window.open(invoice.fileUrl!, "_blank")}
+                className="rounded-lg border-slate-300 text-slate-700"
+              >
+                <ExternalLink className="h-4 w-4 mr-2" />
+                View Invoice
+              </Button>
+            )}
             {isDraft && (
               <Button
                 variant="outline"
