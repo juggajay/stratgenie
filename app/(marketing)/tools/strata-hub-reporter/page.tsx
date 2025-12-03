@@ -44,14 +44,15 @@ function getSessionId(): string {
   return sessionId;
 }
 
-// Format cents to dollars
+// Format cents to dollars (with cents precision)
 function formatCurrency(cents: bigint | number | undefined): string {
   if (cents === undefined || cents === null) return "—";
   const dollars = Number(cents) / 100;
   return new Intl.NumberFormat("en-AU", {
     style: "currency",
     currency: "AUD",
-    maximumFractionDigits: 0,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   }).format(dollars);
 }
 
