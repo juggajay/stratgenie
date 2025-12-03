@@ -1,11 +1,13 @@
 import { MetadataRoute } from "next";
 import { SEO_CONFIG } from "@/lib/seo/constants";
+import { getAllPosts } from "@/lib/content";
+import { getAllSuburbs } from "@/lib/suburbs";
 
 /**
  * Generate dynamic sitemap.xml for search engines
  * This helps search engines discover and index all public pages
  */
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SEO_CONFIG.siteUrl;
 
   // Static pages - always included
@@ -56,6 +58,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/tools/strata-hub-reporter`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9, // High value lead gen tool
+    },
   ];
 
   // Guide/Pillar pages
@@ -84,31 +92,55 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.9,
     },
+    {
+      url: `${baseUrl}/guides/2025-nsw-strata-reforms`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 1.0, // High priority - new laws, timely content
+    },
   ];
 
-  // TODO: Add dynamic blog posts when blog is implemented
-  // const blogPosts = await getAllPosts();
-  // const blogUrls = blogPosts.map(post => ({
-  //   url: `${baseUrl}/blog/${post.slug}`,
-  //   lastModified: new Date(post.updatedAt || post.publishedAt),
-  //   changeFrequency: 'monthly' as const,
-  //   priority: 0.6,
-  // }));
+  // Blog posts
+  const blogPosts = await getAllPosts();
+  const blogUrls: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    ...blogPosts.map((post) => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: new Date(post.frontmatter.updatedAt || post.frontmatter.publishedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+  ];
 
-  // TODO: Add suburb pages when implemented
-  // const suburbs = await getAllSuburbs();
-  // const suburbUrls = suburbs.map(suburb => ({
-  //   url: `${baseUrl}/strata-management/${suburb.slug}`,
-  //   lastModified: new Date(),
-  //   changeFrequency: 'monthly' as const,
-  //   priority: 0.7,
-  // }));
+  // Category pages
+  const categories = [...new Set(blogPosts.map((p) => p.frontmatter.category))];
+  const categoryUrls: MetadataRoute.Sitemap = categories.map((category) => ({
+    url: `${baseUrl}/blog/category/${category}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.5,
+  }));
+
+  // Suburb pages
+  const suburbs = getAllSuburbs();
+  const suburbUrls: MetadataRoute.Sitemap = suburbs.map((suburb) => ({
+    url: `${baseUrl}/strata-management/${suburb.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
 
   return [
     ...staticPages,
     ...toolPages,
     ...guidePages,
-    // ...blogUrls,
-    // ...suburbUrls,
+    ...blogUrls,
+    ...categoryUrls,
+    ...suburbUrls,
   ];
 }

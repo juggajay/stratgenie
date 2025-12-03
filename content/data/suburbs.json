@@ -1,0 +1,164 @@
+{
+  "suburbs": [
+    {
+      "slug": "parramatta",
+      "name": "Parramatta",
+      "region": "Greater Western Sydney",
+      "postcode": "2150",
+      "councilArea": "City of Parramatta",
+      "description": "A major commercial hub in Western Sydney with a growing number of high-rise apartment complexes and strata schemes."
+    },
+    {
+      "slug": "bondi",
+      "name": "Bondi",
+      "region": "Eastern Suburbs",
+      "postcode": "2026",
+      "councilArea": "Waverley Council",
+      "description": "Famous beachside suburb with a mix of heritage buildings and modern apartment developments."
+    },
+    {
+      "slug": "mosman",
+      "name": "Mosman",
+      "region": "Lower North Shore",
+      "postcode": "2088",
+      "councilArea": "Mosman Council",
+      "description": "Prestigious harbourside suburb with many boutique strata buildings and luxury apartment complexes."
+    },
+    {
+      "slug": "chatswood",
+      "name": "Chatswood",
+      "region": "Lower North Shore",
+      "postcode": "2067",
+      "councilArea": "Willoughby City Council",
+      "description": "Major commercial centre with a high concentration of strata apartment buildings and mixed-use developments."
+    },
+    {
+      "slug": "strathfield",
+      "name": "Strathfield",
+      "region": "Inner West",
+      "postcode": "2135",
+      "councilArea": "Strathfield Council",
+      "description": "Well-connected suburb with a mix of older walk-up apartments and newer high-rise strata developments."
+    },
+    {
+      "slug": "north-sydney",
+      "name": "North Sydney",
+      "region": "Lower North Shore",
+      "postcode": "2060",
+      "councilArea": "North Sydney Council",
+      "description": "Major business district with numerous strata office buildings and residential apartment towers."
+    },
+    {
+      "slug": "cronulla",
+      "name": "Cronulla",
+      "region": "Sutherland Shire",
+      "postcode": "2230",
+      "councilArea": "Sutherland Shire Council",
+      "description": "Popular beachside suburb in the Sutherland Shire with many coastal apartment buildings."
+    },
+    {
+      "slug": "manly",
+      "name": "Manly",
+      "region": "Northern Beaches",
+      "postcode": "2095",
+      "councilArea": "Northern Beaches Council",
+      "description": "Iconic beach suburb with a diverse range of strata properties from historic buildings to modern complexes."
+    },
+    {
+      "slug": "surry-hills",
+      "name": "Surry Hills",
+      "region": "Inner Sydney",
+      "postcode": "2010",
+      "councilArea": "City of Sydney",
+      "description": "Vibrant inner-city suburb with converted warehouses, terrace homes, and modern apartment buildings."
+    },
+    {
+      "slug": "pyrmont",
+      "name": "Pyrmont",
+      "region": "Inner Sydney",
+      "postcode": "2009",
+      "councilArea": "City of Sydney",
+      "description": "Harbourside suburb transformed from industrial to residential with many large strata developments."
+    },
+    {
+      "slug": "ryde",
+      "name": "Ryde",
+      "region": "Northern Suburbs",
+      "postcode": "2112",
+      "councilArea": "City of Ryde",
+      "description": "Growing suburb with a mix of established homes and new high-density apartment developments."
+    },
+    {
+      "slug": "burwood",
+      "name": "Burwood",
+      "region": "Inner West",
+      "postcode": "2134",
+      "councilArea": "Burwood Council",
+      "description": "Busy commercial centre with significant apartment development in recent years."
+    },
+    {
+      "slug": "hurstville",
+      "name": "Hurstville",
+      "region": "St George",
+      "postcode": "2220",
+      "councilArea": "Georges River Council",
+      "description": "Major centre in the St George area with a high concentration of strata apartment buildings."
+    },
+    {
+      "slug": "bankstown",
+      "name": "Bankstown",
+      "region": "South Western Sydney",
+      "postcode": "2200",
+      "councilArea": "Canterbury-Bankstown Council",
+      "description": "Diverse suburb with growing apartment development and numerous strata schemes."
+    },
+    {
+      "slug": "liverpool",
+      "name": "Liverpool",
+      "region": "South Western Sydney",
+      "postcode": "2170",
+      "councilArea": "Liverpool City Council",
+      "description": "Major regional centre in Western Sydney with increasing high-density residential development."
+    },
+    {
+      "slug": "penrith",
+      "name": "Penrith",
+      "region": "Greater Western Sydney",
+      "postcode": "2750",
+      "councilArea": "Penrith City Council",
+      "description": "Growing regional city at the foot of the Blue Mountains with expanding apartment developments."
+    },
+    {
+      "slug": "blacktown",
+      "name": "Blacktown",
+      "region": "Greater Western Sydney",
+      "postcode": "2148",
+      "councilArea": "Blacktown City Council",
+      "description": "One of Sydney's largest suburbs with a growing number of strata developments."
+    },
+    {
+      "slug": "hornsby",
+      "name": "Hornsby",
+      "region": "Upper North Shore",
+      "postcode": "2077",
+      "councilArea": "Hornsby Shire Council",
+      "description": "Major commercial centre in the Upper North Shore with diverse strata properties."
+    },
+    {
+      "slug": "dee-why",
+      "name": "Dee Why",
+      "region": "Northern Beaches",
+      "postcode": "2099",
+      "councilArea": "Northern Beaches Council",
+      "description": "Beach suburb on the Northern Beaches with a mix of older and newer apartment buildings."
+    },
+    {
+      "slug": "coogee",
+      "name": "Coogee",
+      "region": "Eastern Suburbs",
+      "postcode": "2034",
+      "councilArea": "Randwick City Council",
+      "description": "Popular beachside suburb with a variety of strata properties from Art Deco to contemporary."
+    }
+  ]
+}

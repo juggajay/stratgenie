@@ -239,4 +239,62 @@ export default defineSchema({
     .index("by_scheme", ["schemeId"])
     .index("by_levy_run", ["levyRunId"])
     .index("by_lot", ["lotId"]),
+
+  // Strata Hub Reporter - AI document analysis for public users (CH-0009)
+  strataHubReports: defineTable({
+    sessionId: v.string(), // Browser session ID for anonymous access
+    status: v.union(
+      v.literal("processing"),
+      v.literal("completed"),
+      v.literal("failed")
+    ),
+    fileId: v.id("_storage"), // Reference to uploaded PDF
+    fileName: v.optional(v.string()), // Original file name
+    extractedData: v.optional(
+      v.object({
+        strataPlanNumber: v.optional(v.string()),
+        lastAfssDate: v.optional(v.string()), // ISO format YYYY-MM-DD
+        capitalWorksFundBalance: v.optional(v.int64()), // Cents (AUD)
+        adminFundBalance: v.optional(v.int64()), // Cents (AUD)
+        insuranceReplacementValue: v.optional(v.int64()), // Cents (AUD)
+        lastAgmDate: v.optional(v.string()), // ISO format YYYY-MM-DD
+        totalLots: v.optional(v.number()),
+      })
+    ),
+    unlocked: v.boolean(), // Whether user has provided email
+    errorMessage: v.optional(v.string()),
+    createdAt: v.number(),
+    completedAt: v.optional(v.number()),
+  })
+    .index("by_session", ["sessionId"])
+    .index("by_status", ["status"]),
+
+  // Marketing leads from free tools (SEO)
+  leads: defineTable({
+    email: v.string(),
+    name: v.optional(v.string()),
+    source: v.union(
+      v.literal("strata_roll_template"),
+      v.literal("compliance_health_check"),
+      v.literal("newsletter"),
+      v.literal("levy_calculator"),
+      v.literal("strata_hub_reporter")
+    ),
+    metadata: v.optional(
+      v.object({
+        score: v.optional(v.number()), // Health check score
+        answers: v.optional(v.array(v.string())), // Quiz answers
+        calculatorInputs: v.optional(
+          v.object({
+            totalBudget: v.optional(v.number()),
+            unitEntitlement: v.optional(v.number()),
+            totalEntitlements: v.optional(v.number()),
+          })
+        ),
+      })
+    ),
+    createdAt: v.number(),
+  })
+    .index("by_email", ["email"])
+    .index("by_source", ["source"]),
 });
