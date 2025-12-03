@@ -27,7 +27,7 @@ const statusConfig: Record<
 > = {
   on_track: {
     label: "On track",
-    pillClass: "bg-green-100 text-green-700",
+    pillClass: "bg-teal-50 text-teal-700",
     icon: CheckCircle2,
     message: "You are compliant. No immediate action required.",
     tone: "reassuring",

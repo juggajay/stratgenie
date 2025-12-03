@@ -195,7 +195,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
             variant="ghost"
             size="sm"
             onClick={() => handleViewDocument(latestAgmNotice._id)}
-            className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+            className="text-teal-700 hover:text-teal-800 hover:bg-teal-50"
           >
             <FileText className="h-4 w-4 mr-1" />
             {latestAgmNotice.status === "draft" ? "View Draft" : "View Notice"}
@@ -209,7 +209,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
           size="sm"
           onClick={() => handleGenerateNotice(task._id)}
           disabled={isGenerating}
-          className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+          className="text-teal-700 hover:text-teal-800 hover:bg-teal-50"
         >
           {isGenerating ? (
             <>
@@ -233,7 +233,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
           variant="ghost"
           size="sm"
           onClick={() => handleStatusChange(task._id, "in_progress")}
-          className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+          className="text-teal-700 hover:text-teal-800 hover:bg-teal-50"
         >
           Start
         </Button>
@@ -283,10 +283,10 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
               <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">
                 Task
               </span>
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+              <span className="text-xs font-medium text-slate-500 uppercase tracking-wide text-right">
                 Due
               </span>
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wide w-32">
+              <span className="text-xs font-medium text-slate-500 uppercase tracking-wide w-28 text-right">
                 Action
               </span>
             </div>
@@ -337,7 +337,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
                     </div>
 
                     {/* Actions */}
-                    <div className="w-32 flex justify-end">
+                    <div className="w-28 text-right">
                       {renderTaskAction(task)}
                     </div>
                   </div>
