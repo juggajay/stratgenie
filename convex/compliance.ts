@@ -136,6 +136,37 @@ export const setSchemeComplianceDates = mutation({
       updates.nextStrataHubReportDueDate = calculateStrataHubDueDate(
         updates.nextAgmDueDate
       );
+
+      // Update existing compliance tasks with new due dates
+      const existingTasks = await ctx.db
+        .query("complianceTasks")
+        .withIndex("by_scheme", (q) => q.eq("schemeId", args.schemeId))
+        .collect();
+
+      const agmDate = updates.nextAgmDueDate;
+
+      for (const task of existingTasks) {
+        let newDueDate: number;
+
+        switch (task.type) {
+          case "send_agm_notice":
+            // AGM Date - 8 days (ensures 7-day statutory notice)
+            newDueDate = agmDate - 8 * DAYS_MS;
+            break;
+          case "hold_agm":
+            // AGM Date
+            newDueDate = agmDate;
+            break;
+          case "file_strata_hub_report":
+            // AGM Date + 3 months
+            newDueDate = calculateStrataHubDueDate(agmDate);
+            break;
+          default:
+            continue;
+        }
+
+        await ctx.db.patch(task._id, { dueDate: newDueDate });
+      }
     }
 
     // If lastStrataHubReportDate is explicitly provided
