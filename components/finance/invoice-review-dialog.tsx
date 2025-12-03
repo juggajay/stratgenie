@@ -171,15 +171,16 @@ export function InvoiceReviewDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-6xl h-[90vh] flex flex-col">
-        <DialogHeader className="flex-shrink-0">
-          <div className="flex items-start justify-between gap-4">
+      <DialogContent className="max-w-5xl max-h-[90vh] flex flex-col p-0 gap-0 overflow-hidden">
+        {/* Header */}
+        <DialogHeader className="px-6 py-4 border-b border-slate-200 flex-shrink-0">
+          <div className="flex items-center justify-between">
             <div>
-              <DialogTitle className="text-xl font-semibold flex items-center gap-2">
+              <DialogTitle className="text-lg font-semibold flex items-center gap-2">
                 <FileText className="h-5 w-5 text-slate-600" />
                 Review Invoice
               </DialogTitle>
-              <DialogDescription className="text-sm text-slate-500">
+              <DialogDescription className="text-sm text-slate-500 mt-0.5">
                 {isDraft
                   ? "Verify the extracted data and approve or make corrections"
                   : "Viewing approved transaction"}
@@ -187,7 +188,7 @@ export function InvoiceReviewDialog({
             </div>
             {transaction && (
               <span
-                className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+                className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${
                   transaction.status === "draft"
                     ? "bg-amber-100 text-amber-700"
                     : transaction.status === "approved"
@@ -209,28 +210,28 @@ export function InvoiceReviewDialog({
         </DialogHeader>
 
         {isLoading ? (
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex-1 flex items-center justify-center py-20">
             <Loader2 className="h-8 w-8 animate-spin text-slate-400" />
           </div>
         ) : (
-          <div className="flex-1 min-h-0 mt-4 grid grid-cols-2 gap-6">
+          <div className="flex-1 min-h-0 grid grid-cols-[1.2fr_1fr] overflow-hidden">
             {/* Left: Invoice Preview */}
-            <div className="border border-slate-200 rounded-lg overflow-hidden bg-slate-100 flex flex-col">
-              <div className="px-3 py-2 bg-slate-50 border-b border-slate-200">
+            <div className="border-r border-slate-200 bg-slate-50 flex flex-col min-h-0">
+              <div className="px-4 py-2 bg-white border-b border-slate-200 flex-shrink-0">
                 <p className="text-sm font-medium text-slate-700 truncate">
                   {invoice?.fileName}
                 </p>
               </div>
-              <div className="flex-1 min-h-0">
+              <div className="flex-1 min-h-0 overflow-auto">
                 {invoice?.fileUrl ? (
                   isPdf ? (
                     <iframe
                       src={invoice.fileUrl}
-                      className="w-full h-full bg-white"
+                      className="w-full h-full min-h-[500px] bg-white"
                       title="Invoice Preview"
                     />
                   ) : (
-                    <div className="relative w-full h-full bg-white">
+                    <div className="relative w-full min-h-[500px] bg-white">
                       <Image
                         src={invoice.fileUrl}
                         alt="Invoice"
@@ -241,148 +242,150 @@ export function InvoiceReviewDialog({
                     </div>
                   )
                 ) : (
-                  <div className="flex items-center justify-center h-full text-slate-500">
+                  <div className="flex items-center justify-center h-full min-h-[500px] text-slate-500">
                     Unable to load preview
                   </div>
                 )}
               </div>
             </div>
 
-            {/* Right: Editable Form */}
-            <div className="flex flex-col">
-              <div className="flex-1 overflow-y-auto space-y-4 pr-2">
-                {/* Vendor Name */}
-                <div className="space-y-1.5">
-                  <Label htmlFor="vendorName" className="text-sm font-medium text-slate-700">
-                    Vendor Name
-                  </Label>
-                  <Input
-                    id="vendorName"
-                    value={vendorName}
-                    onChange={(e) => setVendorName(e.target.value)}
-                    placeholder="e.g. ABC Plumbing"
-                    className="rounded-lg border-slate-300"
-                    disabled={!isDraft}
-                  />
-                </div>
-
-                {/* Invoice Date */}
-                <div className="space-y-1.5">
-                  <Label htmlFor="invoiceDate" className="text-sm font-medium text-slate-700">
-                    Invoice Date
-                  </Label>
-                  <Input
-                    id="invoiceDate"
-                    type="date"
-                    value={invoiceDate}
-                    onChange={(e) => setInvoiceDate(e.target.value)}
-                    className="rounded-lg border-slate-300"
-                    disabled={!isDraft}
-                  />
-                </div>
-
-                {/* Amount (with GST) */}
-                <div className="grid grid-cols-2 gap-4">
+            {/* Right: Form */}
+            <div className="flex flex-col min-h-0 bg-white">
+              <div className="flex-1 overflow-y-auto p-6">
+                <div className="space-y-5">
+                  {/* Vendor Name */}
                   <div className="space-y-1.5">
-                    <Label htmlFor="amount" className="text-sm font-medium text-slate-700">
-                      Total Amount (inc GST)
+                    <Label htmlFor="vendorName" className="text-sm font-medium text-slate-700">
+                      Vendor Name
                     </Label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
-                        $
-                      </span>
-                      <Input
-                        id="amount"
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                        placeholder="0.00"
-                        className="rounded-lg border-slate-300 pl-7"
-                        disabled={!isDraft}
-                      />
+                    <Input
+                      id="vendorName"
+                      value={vendorName}
+                      onChange={(e) => setVendorName(e.target.value)}
+                      placeholder="e.g. ABC Plumbing"
+                      className="rounded-lg border-slate-300"
+                      disabled={!isDraft}
+                    />
+                  </div>
+
+                  {/* Invoice Date */}
+                  <div className="space-y-1.5">
+                    <Label htmlFor="invoiceDate" className="text-sm font-medium text-slate-700">
+                      Invoice Date
+                    </Label>
+                    <Input
+                      id="invoiceDate"
+                      type="date"
+                      value={invoiceDate}
+                      onChange={(e) => setInvoiceDate(e.target.value)}
+                      className="rounded-lg border-slate-300"
+                      disabled={!isDraft}
+                    />
+                  </div>
+
+                  {/* Amount & GST */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="amount" className="text-sm font-medium text-slate-700">
+                        Total Amount (inc GST)
+                      </Label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
+                          $
+                        </span>
+                        <Input
+                          id="amount"
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          value={amount}
+                          onChange={(e) => setAmount(e.target.value)}
+                          placeholder="0.00"
+                          className="rounded-lg border-slate-300 pl-7"
+                          disabled={!isDraft}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <Label htmlFor="gst" className="text-sm font-medium text-slate-700">
+                        GST Amount
+                      </Label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
+                          $
+                        </span>
+                        <Input
+                          id="gst"
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          value={gst}
+                          onChange={(e) => setGst(e.target.value)}
+                          placeholder="0.00"
+                          className="rounded-lg border-slate-300 pl-7"
+                          disabled={!isDraft}
+                        />
+                      </div>
                     </div>
                   </div>
 
+                  {/* Category */}
                   <div className="space-y-1.5">
-                    <Label htmlFor="gst" className="text-sm font-medium text-slate-700">
-                      GST Amount
+                    <Label htmlFor="category" className="text-sm font-medium text-slate-700">
+                      Category
                     </Label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
-                        $
-                      </span>
-                      <Input
-                        id="gst"
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        value={gst}
-                        onChange={(e) => setGst(e.target.value)}
-                        placeholder="0.00"
-                        className="rounded-lg border-slate-300 pl-7"
-                        disabled={!isDraft}
-                      />
-                    </div>
+                    <Select
+                      value={category}
+                      onValueChange={setCategory}
+                      disabled={!isDraft}
+                    >
+                      <SelectTrigger className="rounded-lg border-slate-300">
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CATEGORIES.map((cat) => (
+                          <SelectItem key={cat.value} value={cat.value}>
+                            {cat.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
-                </div>
 
-                {/* Category */}
-                <div className="space-y-1.5">
-                  <Label htmlFor="category" className="text-sm font-medium text-slate-700">
-                    Category
-                  </Label>
-                  <Select
-                    value={category}
-                    onValueChange={setCategory}
-                    disabled={!isDraft}
-                  >
-                    <SelectTrigger className="rounded-lg border-slate-300">
-                      <SelectValue placeholder="Select a category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {CATEGORIES.map((cat) => (
-                        <SelectItem key={cat.value} value={cat.value}>
-                          {cat.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                  {/* Description */}
+                  <div className="space-y-1.5">
+                    <Label htmlFor="description" className="text-sm font-medium text-slate-700">
+                      Description
+                    </Label>
+                    <Input
+                      id="description"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      placeholder="Brief description of the expense"
+                      className="rounded-lg border-slate-300"
+                      disabled={!isDraft}
+                    />
+                  </div>
 
-                {/* Description */}
-                <div className="space-y-1.5">
-                  <Label htmlFor="description" className="text-sm font-medium text-slate-700">
-                    Description
-                  </Label>
-                  <Input
-                    id="description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Brief description of the expense"
-                    className="rounded-lg border-slate-300"
-                    disabled={!isDraft}
-                  />
-                </div>
-
-                {/* Original AI Extraction (for reference) */}
-                {transaction?.originalExtraction && (
-                  <div className="mt-6 p-3 bg-slate-50 rounded-lg border border-slate-200">
-                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-2">
-                      Original AI Extraction
-                    </p>
-                    <div className="text-sm text-slate-600 space-y-1">
-                      <p>
-                        Amount: ${centsToDollars(transaction.originalExtraction.totalAmount)}
+                  {/* Original AI Extraction */}
+                  {transaction?.originalExtraction && (
+                    <div className="mt-2 p-4 bg-slate-50 rounded-lg border border-slate-200">
+                      <p className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-2">
+                        Original AI Extraction
                       </p>
-                      <p>GST: ${centsToDollars(transaction.originalExtraction.taxAmount)}</p>
-                      {transaction.originalExtraction.vendorName && (
-                        <p>Vendor: {transaction.originalExtraction.vendorName}</p>
-                      )}
+                      <div className="text-sm text-slate-600 space-y-1">
+                        <p>
+                          Amount: ${centsToDollars(transaction.originalExtraction.totalAmount)}
+                        </p>
+                        <p>GST: ${centsToDollars(transaction.originalExtraction.taxAmount)}</p>
+                        {transaction.originalExtraction.vendorName && (
+                          <p>Vendor: {transaction.originalExtraction.vendorName}</p>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -390,14 +393,14 @@ export function InvoiceReviewDialog({
 
         {/* Error Message */}
         {error && (
-          <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg mt-4">
+          <div className="mx-6 mb-4 flex items-center gap-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">
             <AlertCircle className="h-4 w-4" />
             {error}
           </div>
         )}
 
-        {/* Actions */}
-        <div className="flex justify-between items-center gap-3 pt-4 border-t border-slate-200 mt-4 flex-shrink-0">
+        {/* Footer Actions */}
+        <div className="px-6 py-4 border-t border-slate-200 flex justify-between items-center bg-slate-50 flex-shrink-0">
           <div>
             {isDraft && (
               <Button
@@ -437,7 +440,7 @@ export function InvoiceReviewDialog({
                 <Button
                   onClick={handleApprove}
                   disabled={isApproving || !amount}
-                  className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                  className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg"
                 >
                   {isApproving ? (
                     <>
