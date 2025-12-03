@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 import { Toaster } from "sonner";
 import { SEO_CONFIG } from "@/lib/seo/constants";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import "./globals.css";
 
 // Force dynamic rendering for all pages - required for Convex/Clerk
@@ -124,6 +125,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className={`${dmSans.variable} ${fraunces.variable}`}>
         <body className="antialiased">
+          <GoogleAnalytics />
           <ConvexClientProvider>{children}</ConvexClientProvider>
           <Toaster
             position="top-right"
