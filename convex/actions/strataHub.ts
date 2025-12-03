@@ -81,8 +81,11 @@ export const analyzeDocument = action({
 
       let extractedText: string;
       try {
-        const { text } = await extractText(new Uint8Array(arrayBuffer));
-        extractedText = text;
+        const result = await extractText(new Uint8Array(arrayBuffer));
+        // unpdf returns text as an array of strings (one per page), join them
+        extractedText = Array.isArray(result.text)
+          ? result.text.join('\n')
+          : String(result.text || '');
         console.log("[analyzeDocument] Extracted", extractedText.length, "characters from PDF");
       } catch (pdfError) {
         console.error("[analyzeDocument] PDF parsing failed:", pdfError);
