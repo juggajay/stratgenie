@@ -190,7 +190,7 @@ export function InvoiceReviewDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-7xl max-h-[90vh] flex flex-col p-0 gap-0 overflow-hidden">
+      <DialogContent className="w-[95vw] max-w-[1400px] h-[90vh] flex flex-col p-0 gap-0 overflow-hidden">
         {/* Header */}
         <DialogHeader className="px-6 py-4 border-b border-slate-200 flex-shrink-0">
           <div className="flex items-center justify-between">
