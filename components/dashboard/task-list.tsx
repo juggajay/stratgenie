@@ -192,12 +192,10 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
       if (latestAgmNotice) {
         return (
           <Button
-            variant="ghost"
             size="sm"
             onClick={() => handleViewDocument(latestAgmNotice._id)}
-            className="text-teal-700 hover:text-teal-800 hover:bg-teal-50"
+            className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg min-w-[90px]"
           >
-            <FileText className="h-4 w-4 mr-1" />
             {latestAgmNotice.status === "draft" ? "View Draft" : "View Notice"}
           </Button>
         );
@@ -205,22 +203,18 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
 
       return (
         <Button
-          variant="ghost"
           size="sm"
           onClick={() => handleGenerateNotice(task._id)}
           disabled={isGenerating}
-          className="text-teal-700 hover:text-teal-800 hover:bg-teal-50"
+          className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg min-w-[90px]"
         >
           {isGenerating ? (
             <>
               <Loader2 className="h-4 w-4 mr-1 animate-spin" />
-              Generating...
+              Generating
             </>
           ) : (
-            <>
-              <FileText className="h-4 w-4 mr-1" />
-              Generate Notice
-            </>
+            "Generate"
           )}
         </Button>
       );
@@ -230,10 +224,9 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
     if (task.status === "draft") {
       return (
         <Button
-          variant="ghost"
           size="sm"
           onClick={() => handleStatusChange(task._id, "in_progress")}
-          className="text-teal-700 hover:text-teal-800 hover:bg-teal-50"
+          className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg min-w-[90px]"
         >
           Start
         </Button>
@@ -243,17 +236,16 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
     if (task.status === "in_progress") {
       return (
         <Button
-          variant="ghost"
           size="sm"
           onClick={() => handleStatusChange(task._id, "done")}
-          className="text-green-600 hover:text-green-700 hover:bg-green-50"
+          className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg min-w-[90px]"
         >
           Complete
         </Button>
       );
     }
 
-    return <span className="text-xs text-slate-400">Completed</span>;
+    return <span className="text-xs text-slate-400 min-w-[90px] inline-block text-center">Completed</span>;
   };
 
   return (
