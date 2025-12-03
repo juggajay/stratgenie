@@ -5,7 +5,6 @@ import Link from "next/link";
 import {
   FileText,
   ArrowLeft,
-  Upload,
   Loader2,
   CheckCircle2,
   AlertCircle,
@@ -17,6 +16,7 @@ import {
   Shield,
   Users,
   Flame,
+  Sparkles,
 } from "lucide-react";
 import { useMutation, useAction, useQuery } from "convex/react";
 
@@ -30,6 +30,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { MagicDropzone } from "@/components/ui/magic-dropzone";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 
@@ -132,35 +133,11 @@ export default function StrataHubReporterPage() {
         });
       } catch (error) {
         console.error("Upload failed:", error);
-        alert("Upload failed. Please try again.");
-      } finally {
+        setStep("upload");
         setIsUploading(false);
       }
     },
     [sessionId, generateUploadUrl, createReport, analyzeDocument]
-  );
-
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      const file = e.dataTransfer.files[0];
-      if (file && file.type === "application/pdf") {
-        handleFileUpload(file);
-      } else {
-        alert("Please upload a PDF file");
-      }
-    },
-    [handleFileUpload]
-  );
-
-  const handleFileSelect = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (file) {
-        handleFileUpload(file);
-      }
-    },
-    [handleFileUpload]
   );
 
   const handleUnlock = async (e: React.FormEvent) => {
@@ -217,7 +194,8 @@ export default function StrataHubReporterPage() {
         {step === "upload" && (
           <Card className="border border-slate-200 rounded-xl bg-white shadow-sm max-w-xl mx-auto">
             <CardHeader className="text-center">
-              <CardTitle className="text-lg font-medium">
+              <CardTitle className="text-lg font-medium flex items-center justify-center gap-2">
+                <Sparkles className="w-5 h-5 text-blue-600" />
                 Upload Your Document
               </CardTitle>
               <CardDescription className="text-sm text-slate-500">
@@ -225,50 +203,41 @@ export default function StrataHubReporterPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div
-                onDrop={handleDrop}
-                onDragOver={(e) => e.preventDefault()}
-                className="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-blue-400 hover:bg-blue-50/50 transition-colors cursor-pointer"
-              >
-                <input
-                  type="file"
-                  accept="application/pdf"
-                  onChange={handleFileSelect}
-                  className="hidden"
-                  id="file-upload"
-                  disabled={isUploading}
-                />
-                <label htmlFor="file-upload" className="cursor-pointer">
-                  {isUploading ? (
-                    <>
-                      <Loader2 className="w-10 h-10 text-blue-600 mx-auto mb-3 animate-spin" />
-                      <p className="text-sm text-slate-600">Uploading {fileName}...</p>
-                    </>
-                  ) : (
-                    <>
-                      <Upload className="w-10 h-10 text-slate-400 mx-auto mb-3" />
-                      <p className="text-sm text-slate-600 mb-1">
-                        Drag and drop your PDF here, or{" "}
-                        <span className="text-blue-600 font-medium">browse</span>
-                      </p>
-                      <p className="text-xs text-slate-500">
-                        Maximum file size: 10MB
-                      </p>
-                    </>
-                  )}
-                </label>
-              </div>
+              <MagicDropzone
+                onFileAccepted={handleFileUpload}
+                isUploading={isUploading}
+                accept="application/pdf"
+                maxSizeMB={10}
+                title="Drag & drop your document"
+                description="or tap to scan with camera"
+              />
 
-              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                <h4 className="text-sm font-medium text-blue-900 mb-2">
-                  What we extract:
+              <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
+                <h4 className="text-sm font-medium text-blue-900 mb-2 flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-600" />
+                  What we extract instantly:
                 </h4>
-                <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• Strata Plan Number</li>
-                  <li>• Last AGM Date</li>
-                  <li>• Admin & Capital Works Fund Balances</li>
-                  <li>• AFSS (Fire Safety) Date</li>
-                  <li>• Insurance Replacement Value</li>
+                <ul className="text-sm text-blue-800 space-y-1.5">
+                  <li className="flex items-center gap-2">
+                    <Building2 className="w-3.5 h-3.5 text-blue-600" />
+                    Strata Plan Number
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Calendar className="w-3.5 h-3.5 text-blue-600" />
+                    Last AGM Date
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <DollarSign className="w-3.5 h-3.5 text-blue-600" />
+                    Admin & Capital Works Fund Balances
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Flame className="w-3.5 h-3.5 text-blue-600" />
+                    AFSS (Fire Safety) Date
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Shield className="w-3.5 h-3.5 text-blue-600" />
+                    Insurance Replacement Value
+                  </li>
                 </ul>
               </div>
             </CardContent>
@@ -455,14 +424,17 @@ export default function StrataHubReporterPage() {
                       </div>
                     </div>
 
-                    {/* Email Gate */}
+                    {/* Email Gate - High-Conversion Copy */}
                     {!isUnlocked && (
-                      <div className="mt-6 p-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl border border-blue-200">
-                        <h4 className="font-medium text-blue-900 mb-2">
-                          Unlock Your Full Report
-                        </h4>
-                        <p className="text-sm text-blue-800 mb-4">
-                          Enter your email to see all the extracted data points.
+                      <div className="mt-6 p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Sparkles className="w-5 h-5 text-green-600" />
+                          <h4 className="font-medium text-green-900">
+                            Your Compliance Cheat Sheet is Ready
+                          </h4>
+                        </div>
+                        <p className="text-sm text-green-800 mb-4">
+                          Enter your email below and we&apos;ll reveal your complete Strata Hub data — ready to copy into the portal.
                         </p>
                         <form onSubmit={handleUnlock} className="space-y-3">
                           <div className="grid sm:grid-cols-2 gap-3">
@@ -474,7 +446,7 @@ export default function StrataHubReporterPage() {
                                 placeholder="Your name (optional)"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                className="rounded-lg border-blue-300 bg-white"
+                                className="rounded-lg border-green-300 bg-white focus:border-green-500 focus:ring-green-500"
                               />
                             </div>
                             <div>
@@ -486,29 +458,29 @@ export default function StrataHubReporterPage() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
-                                className="rounded-lg border-blue-300 bg-white"
+                                className="rounded-lg border-green-300 bg-white focus:border-green-500 focus:ring-green-500"
                               />
                             </div>
                           </div>
                           <Button
                             type="submit"
                             disabled={isUnlocking}
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                            className="w-full bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-sm hover:shadow-md transition-all"
                           >
                             {isUnlocking ? (
                               <>
                                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                Unlocking...
+                                Revealing...
                               </>
                             ) : (
                               <>
-                                <Unlock className="w-4 h-4 mr-2" />
-                                Unlock Results
+                                <Sparkles className="w-4 h-4 mr-2" />
+                                Reveal My Report
                               </>
                             )}
                           </Button>
-                          <p className="text-xs text-blue-700 text-center">
-                            We'll send you helpful strata tips. Unsubscribe anytime.
+                          <p className="text-xs text-green-700 text-center">
+                            We&apos;ll send you occasional compliance tips. Unsubscribe anytime.
                           </p>
                         </form>
                       </div>
