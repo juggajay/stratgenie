@@ -10,12 +10,22 @@ import { ComplianceCard } from "@/components/dashboard/compliance-card";
 import { TaskList } from "@/components/dashboard/task-list";
 import { SchemeSettingsForm } from "@/components/scheme/scheme-settings-form";
 import { SetupBanner } from "@/components/dashboard/setup-banner";
+import { StrataRollList } from "@/components/levies/strata-roll-list";
 import { Button } from "@/components/ui/button";
-import { Receipt, Shield } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Receipt, Shield, Building } from "lucide-react";
 
 export default function DashboardPage() {
   const [selectedSchemeId, setSelectedSchemeId] = useState<Id<"schemes"> | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [strataRollOpen, setStrataRollOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background bg-grain">
@@ -57,6 +67,33 @@ export default function DashboardPage() {
                 Finance
               </Button>
             </Link>
+            {selectedSchemeId && (
+              <Sheet open={strataRollOpen} onOpenChange={setStrataRollOpen}>
+                <SheetTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="rounded-lg border-border text-foreground hover:bg-accent transition-smooth"
+                  >
+                    <Building className="h-4 w-4 mr-2" />
+                    Strata Roll
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-full sm:max-w-2xl overflow-y-auto">
+                  <SheetHeader>
+                    <SheetTitle className="flex items-center gap-2">
+                      <Building className="h-5 w-5" />
+                      Strata Roll
+                    </SheetTitle>
+                    <SheetDescription>
+                      Manage lots, owners, and unit entitlements for levy calculations.
+                    </SheetDescription>
+                  </SheetHeader>
+                  <div className="mt-6">
+                    <StrataRollList schemeId={selectedSchemeId} />
+                  </div>
+                </SheetContent>
+              </Sheet>
+            )}
             {selectedSchemeId && (
               <SchemeSettingsForm
                 schemeId={selectedSchemeId}
