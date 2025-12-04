@@ -2,9 +2,9 @@
    ENHANCED LANDING PAGE STYLES
    ================================================ */
 
-/* Animated gradient background - Sea Blue theme */
+/* Animated gradient background - Sea Blue theme matched to logo */
 .gradient-bg {
-  background: linear-gradient(-45deg, #0f172a, #0c4a6e, #0f172a, #164e63);
+  background: linear-gradient(-45deg, #153d52, #1a4d65, #164e63, #1a4d65);
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
 }
@@ -137,7 +137,7 @@
 }
 
 .landing-page::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #1a4d65;
 }
 
 .landing-page::-webkit-scrollbar-thumb {

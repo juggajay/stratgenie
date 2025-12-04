@@ -77,7 +77,7 @@ export const generateAgmNotice = mutation({
     });
     const title = `AGM Notice - ${monthYear}`;
 
-    // Save draft document
+    // Save draft document with vault tagging (CH-0011)
     const documentId = await ctx.db.insert("documents", {
       schemeId: args.schemeId,
       type: "agm_notice",
@@ -85,6 +85,9 @@ export const generateAgmNotice = mutation({
       content,
       title,
       createdAt: Date.now(),
+      // Auto-file to Compliance Vault
+      vaultCategory: "governance",
+      submissionStatus: "ready",
     });
 
     return documentId;
@@ -185,6 +188,49 @@ export const finalizeDocument = mutation({
     await ctx.db.patch(args.documentId, {
       status: "final",
       finalizedAt: Date.now(),
+    });
+
+    return { success: true };
+  },
+});
+
+/**
+ * Get all vault documents for a scheme (CH-0011).
+ * Returns documents grouped by vault category.
+ */
+export const getVaultDocuments = query({
+  args: {
+    schemeId: v.id("schemes"),
+  },
+  handler: async (ctx, args) => {
+    const documents = await ctx.db
+      .query("documents")
+      .withIndex("by_scheme", (q) => q.eq("schemeId", args.schemeId))
+      .collect();
+
+    // Filter to only vault-categorized documents
+    return documents
+      .filter((doc) => doc.vaultCategory)
+      .sort((a, b) => b.createdAt - a.createdAt);
+  },
+});
+
+/**
+ * Mark a document as submitted to government portal (CH-0011).
+ */
+export const markDocumentSubmitted = mutation({
+  args: {
+    documentId: v.id("documents"),
+  },
+  handler: async (ctx, args) => {
+    const document = await ctx.db.get(args.documentId);
+    if (!document) {
+      throw new Error("Document not found");
+    }
+
+    await ctx.db.patch(args.documentId, {
+      submissionStatus: "submitted",
+      submittedAt: Date.now(),
     });
 
     return { success: true };

@@ -72,22 +72,44 @@ export default defineSchema({
     .index("by_scheme", ["schemeId"])
     .index("by_scheme_and_status", ["schemeId", "status"]),
 
-  // Generated documents (CH-0002)
+  // Generated documents (CH-0002, CH-0011)
   documents: defineTable({
     schemeId: v.id("schemes"),
     type: v.union(
       v.literal("agm_notice"),
       v.literal("agm_minutes"),
-      v.literal("levy_notice")
+      v.literal("levy_notice"),
+      v.literal("fire_safety"),
+      v.literal("insurance"),
+      v.literal("financial_report")
     ),
     status: v.union(v.literal("draft"), v.literal("final")),
     content: v.string(), // HTML content
     title: v.string(), // e.g., "AGM Notice - March 2026"
     createdAt: v.number(), // timestamp
     finalizedAt: v.optional(v.number()), // timestamp when marked final
+    // CH-0011: Compliance Vault fields
+    vaultCategory: v.optional(
+      v.union(
+        v.literal("fire_safety"),
+        v.literal("insurance"),
+        v.literal("financials"),
+        v.literal("governance"),
+        v.literal("revenue")
+      )
+    ),
+    submissionStatus: v.optional(
+      v.union(
+        v.literal("missing"),
+        v.literal("ready"),
+        v.literal("submitted")
+      )
+    ),
+    submittedAt: v.optional(v.number()), // timestamp when submitted to portal
   })
     .index("by_scheme", ["schemeId"])
-    .index("by_scheme_and_type", ["schemeId", "type"]),
+    .index("by_scheme_and_type", ["schemeId", "type"])
+    .index("by_scheme_and_vault", ["schemeId", "vaultCategory"]),
 
   // Uploaded invoices for AI extraction (CH-0003)
   invoices: defineTable({

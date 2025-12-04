@@ -20,7 +20,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Receipt, Shield, Building } from "lucide-react";
+import { Receipt, Shield, Building, Archive } from "lucide-react";
 
 export default function DashboardPage() {
   // All existing state and logic preserved exactly
@@ -64,6 +64,14 @@ export default function DashboardPage() {
               >
                 <Receipt className="h-4 w-4 mr-2" />
                 Finance
+              </Button>
+            </Link>
+            <Link href="/dashboard/vault">
+              <Button
+                variant="outline"
+              >
+                <Archive className="h-4 w-4 mr-2" />
+                Vault
               </Button>
             </Link>
             {selectedSchemeId && (
