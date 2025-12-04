@@ -28,9 +28,8 @@ export function generateOrganizationSchema() {
       contactType: "customer support",
     },
     sameAs: [
-      // Add social media URLs when available
-      // "https://twitter.com/stratagenie",
-      // "https://linkedin.com/company/stratagenie",
+      "https://twitter.com/stratagenie",
+      // "https://linkedin.com/company/stratagenie", // Uncomment when LinkedIn page is active
     ],
   };
 }

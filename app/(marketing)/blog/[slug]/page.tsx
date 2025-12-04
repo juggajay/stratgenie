@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, Calendar, Clock, Tag } from "lucide-react";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
@@ -92,7 +93,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           generateArticleSchema({
             title: post.frontmatter.title,
             description: post.frontmatter.description,
-            path: `/blog/${slug}`,
+            slug: slug,
             publishedAt: post.frontmatter.publishedAt,
             updatedAt: post.frontmatter.updatedAt,
             author: post.frontmatter.author || "StrataGenie Team",
@@ -148,12 +149,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
           {/* Featured Image */}
           {post.frontmatter.image && (
-            <div className="mb-10 rounded-xl overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+            <div className="mb-10 rounded-xl overflow-hidden relative aspect-[16/9]">
+              <Image
                 src={post.frontmatter.image}
                 alt={post.frontmatter.imageAlt || post.frontmatter.title}
-                className="w-full h-auto"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 768px"
+                priority
               />
             </div>
           )}

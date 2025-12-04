@@ -1,6 +1,15 @@
+import { Metadata } from "next";
 import { SignIn } from "@clerk/nextjs";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Sign In | StrataGenie",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function SignInPage() {
   return (
