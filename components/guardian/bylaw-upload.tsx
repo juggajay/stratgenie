@@ -143,27 +143,27 @@ export function BylawUpload({ schemeId, onUploadComplete }: BylawUploadProps) {
     switch (status) {
       case "uploading":
         return (
-          <div className="flex flex-col items-center gap-3 text-slate-600">
-            <Loader2 className="h-12 w-12 animate-spin text-indigo-600" />
+          <div className="flex flex-col items-center gap-3 text-slate-300">
+            <Loader2 className="h-12 w-12 animate-spin text-emerald-400" />
             <div className="text-center">
-              <p className="font-medium">Uploading...</p>
-              <p className="text-sm text-slate-500">{fileName}</p>
+              <p className="font-medium text-white">Uploading...</p>
+              <p className="text-sm text-slate-400">{fileName}</p>
             </div>
           </div>
         );
       case "processing":
         return (
-          <div className="flex flex-col items-center gap-4 text-slate-600">
+          <div className="flex flex-col items-center gap-4 text-slate-300">
             <div className="relative">
-              <BookOpen className="h-12 w-12 text-indigo-600" />
-              <Loader2 className="h-5 w-5 animate-spin text-indigo-600 absolute -bottom-1 -right-1" />
+              <BookOpen className="h-12 w-12 text-emerald-400" />
+              <Loader2 className="h-5 w-5 animate-spin text-emerald-400 absolute -bottom-1 -right-1" />
             </div>
             <div className="text-center">
-              <p className="font-medium text-indigo-600">Ingesting and indexing bylaws...</p>
-              <p className="text-sm text-slate-500 mt-1">
+              <p className="font-medium text-emerald-400">Ingesting and indexing bylaws...</p>
+              <p className="text-sm text-slate-400 mt-1">
                 Extracting text and creating searchable index
               </p>
-              <p className="text-xs text-slate-400 mt-2">
+              <p className="text-xs text-slate-500 mt-2">
                 This may take 10-30 seconds
               </p>
             </div>
@@ -171,28 +171,28 @@ export function BylawUpload({ schemeId, onUploadComplete }: BylawUploadProps) {
         );
       case "success":
         return (
-          <div className="flex flex-col items-center gap-3 text-green-600">
+          <div className="flex flex-col items-center gap-3 text-emerald-400">
             <CheckCircle2 className="h-12 w-12" />
             <div className="text-center">
-              <p className="font-medium">Bylaws indexed successfully!</p>
-              <p className="text-sm text-green-500">Ready to answer your questions</p>
+              <p className="font-medium text-white">Bylaws indexed successfully!</p>
+              <p className="text-sm text-emerald-400/70">Ready to answer your questions</p>
             </div>
           </div>
         );
       case "error":
         return (
-          <div className="flex flex-col items-center gap-3 text-red-600">
+          <div className="flex flex-col items-center gap-3 text-red-400">
             <XCircle className="h-12 w-12" />
             <div className="text-center">
-              <p className="font-medium">Processing failed</p>
-              <p className="text-sm text-red-500 max-w-md">{error}</p>
+              <p className="font-medium text-white">Processing failed</p>
+              <p className="text-sm text-red-400/80 max-w-md">{error}</p>
               <button
                 onClick={() => {
                   setStatus("idle");
                   setError(null);
                   setBylawId(null);
                 }}
-                className="mt-3 text-sm text-indigo-600 hover:underline"
+                className="mt-3 text-sm text-emerald-400 hover:underline"
               >
                 Try again
               </button>
@@ -201,16 +201,16 @@ export function BylawUpload({ schemeId, onUploadComplete }: BylawUploadProps) {
         );
       default:
         return (
-          <div className="flex flex-col items-center gap-4 text-slate-600">
-            <Upload className={`h-12 w-12 ${isDragging ? "text-indigo-600" : "text-slate-400"}`} />
+          <div className="flex flex-col items-center gap-4 text-slate-300">
+            <Upload className={`h-12 w-12 ${isDragging ? "text-emerald-400" : "text-slate-500"}`} />
             <div className="text-center">
-              <p className="font-medium text-lg">
+              <p className="font-medium text-lg text-white">
                 {isDragging ? "Drop your bylaws here" : "Upload your Consolidated Bylaws"}
               </p>
-              <p className="text-sm text-slate-500 mt-1">
+              <p className="text-sm text-slate-400 mt-1">
                 Drag & drop a PDF or click to browse
               </p>
-              <p className="text-xs text-slate-400 mt-2">
+              <p className="text-xs text-slate-500 mt-2">
                 PDF files up to 20MB
               </p>
             </div>
@@ -222,13 +222,13 @@ export function BylawUpload({ schemeId, onUploadComplete }: BylawUploadProps) {
   const isInteractive = status === "idle" || status === "error";
 
   return (
-    <Card className="border border-slate-200 rounded-xl bg-white shadow-sm">
+    <Card className="border border-white/10 rounded-xl bg-slate-900/80 backdrop-blur-xl shadow-lg">
       <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-medium flex items-center gap-2">
-          <BookOpen className="h-5 w-5 text-indigo-600" />
+        <CardTitle className="text-lg font-medium flex items-center gap-2 text-white">
+          <BookOpen className="h-5 w-5 text-emerald-400" />
           Upload Bylaws
         </CardTitle>
-        <CardDescription className="text-sm text-slate-500">
+        <CardDescription className="text-sm text-slate-400">
           Upload your scheme&apos;s consolidated bylaws to enable AI-powered Q&A
         </CardDescription>
       </CardHeader>
@@ -240,8 +240,8 @@ export function BylawUpload({ schemeId, onUploadComplete }: BylawUploadProps) {
           className={`
             relative border-2 border-dashed rounded-lg p-12
             transition-all duration-200
-            ${isDragging ? "border-indigo-500 bg-indigo-50" : "border-slate-300 bg-slate-50"}
-            ${isInteractive ? "cursor-pointer hover:border-indigo-400 hover:bg-slate-100" : "cursor-default"}
+            ${isDragging ? "border-emerald-500 bg-emerald-900/20" : "border-white/20 bg-slate-800/50"}
+            ${isInteractive ? "cursor-pointer hover:border-emerald-400/50 hover:bg-slate-800/80" : "cursor-default"}
           `}
         >
           {renderContent()}

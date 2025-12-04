@@ -17,50 +17,59 @@ Keep this managed block so 'openspec update' can refresh the instructions.
 
 <!-- OPENSPEC:END -->
 
-## UI & Design System (ASM)
+## UI & Design System - "Cyber-Magic" Dark Theme
 
 When generating any UI (pages, components, layouts, forms, dashboards), Claude MUST follow these rules. These are not suggestions.
 
 ### 1. Overall Style
 
-- Look & feel: sleek, modern, calm, professional.
+- Look & feel: dark, premium, magical, professional.
+- Brand identity: "Cyber-Magic" - dark navy backgrounds with glowing cyan accents.
 - Target user: volunteer strata committee member (not technical).
 - Every screen must answer quickly:
   - "Am I compliant?"
   - "What needs my attention?"
   - "What should I do next?"
-- Avoid visual noise. Favour clear hierarchy, white space, and one primary action per area.
+- Use glassmorphism effects for cards and modals.
+- Favour clear hierarchy with glowing accents for primary actions.
 
 ### 2. Layout & Structure
 
-- Use a left sidebar layout on desktop:
-  - Sections: Dashboard, Schemes, Tasks, Agents, Documents, Settings.
+- Use a header-based navigation on desktop with mobile hamburger menu.
 - Page structure:
-  - Page wrapper: `max-w-5xl mx-auto px-6 py-8` (or similar).
-  - Top: page title + optional actions.
-  - Below: cards, tables, forms with `gap-6` between sections.
+  - Page wrapper: `max-w-5xl mx-auto px-6 py-8`.
+  - Top: glassmorphic header with branding and navigation.
+  - Below: glass cards with `gap-6` between sections.
 - On mobile:
-  - Sidebar collapses to a hamburger menu.
+  - Navigation via Sheet component (slide-in from left).
   - Cards stack vertically full-width.
 
 ### 3. Colors
 
-Use Tailwind-style colors consistent with this palette:
+Use the "Cyber-Magic" dark theme palette:
 
-- Primary: `blue-600` (`bg-blue-600 hover:bg-blue-700 text-white` for primary actions).
-- Backgrounds:
-  - App background: `bg-slate-50` or `bg-slate-100`.
-  - Card background: `bg-white`.
-- Borders: `border-slate-200`.
-- Text:
-  - Main text: `text-slate-900`.
-  - Secondary: `text-slate-600`.
-  - Muted: `text-slate-500`.
-- Status colors:
-  - Success: `green-500/600`.
-  - Warning: `amber-500/600`.
-  - Danger: `red-500/600`.
-  - Info: `blue-500/600`.
+- **Primary (Cyan)**: `bg-cyan-600 hover:bg-cyan-500 text-white` with `shadow-lg shadow-cyan-600/20`.
+- **Backgrounds**:
+  - App background: `bg-slate-950` (Dark Navy #0F172A).
+  - Card background: `bg-slate-900/80 backdrop-blur-xl border border-white/10`.
+  - Elevated surfaces: `bg-slate-800/50`.
+- **Borders**: `border-white/10` for subtle, `border-cyan-500/50` for emphasis.
+- **Text**:
+  - Primary text: `text-white`.
+  - Secondary: `text-slate-300`.
+  - Muted: `text-slate-400`.
+- **Status colors** (dark glass style):
+  - Success: `bg-emerald-900/20 text-emerald-400 border border-emerald-500/50`.
+  - Warning: `bg-amber-900/20 text-amber-400 border border-amber-500/50`.
+  - Danger: `bg-red-900/20 text-red-400 border border-red-500/50`.
+  - Info: `bg-cyan-900/20 text-cyan-400 border border-cyan-500/50`.
+- **Agent Identity Colors**:
+  - Secretary (AI Secretary): Cyan `from-cyan-500 to-sky-400`.
+  - Treasurer (Finance): Amber `from-amber-500 to-yellow-400`.
+  - Guardian (Bylaws): Emerald `from-emerald-500 to-green-400`.
+- **Special Colors**:
+  - AI Processing: Violet `text-violet-400 bg-violet-900/20`.
+  - Genie Gold (VIP features): Amber `text-amber-400`.
 
 Never introduce random colors. Reuse this palette.
 
@@ -82,15 +91,15 @@ All headings should be short, action-oriented, and clear.
 
 Claude MUST use shadcn/ui components where possible, with Tailwind classes for layout.
 
-#### 5.1 Cards
+#### 5.1 Cards (Glassmorphic)
 
-- Base card:
+- Use the `GlassCard` component or apply glassmorphic classes:
 
 ```tsx
-<Card className="border border-slate-200 rounded-xl bg-white shadow-sm">
+<Card className="bg-slate-900/80 backdrop-blur-xl border border-white/10 rounded-xl shadow-lg">
   <CardHeader className="pb-3">
-    <CardTitle className="text-lg font-medium">Title</CardTitle>
-    <CardDescription className="text-sm text-slate-500">
+    <CardTitle className="text-lg font-medium text-white">Title</CardTitle>
+    <CardDescription className="text-sm text-slate-400">
       Short explanation.
     </CardDescription>
   </CardHeader>
@@ -100,36 +109,47 @@ Claude MUST use shadcn/ui components where possible, with Tailwind classes for l
 </Card>
 ```
 
+Or use the GlassCard component with glow effects:
+
+```tsx
+import { GlassCard } from "@/components/ui/glass-card";
+
+<GlassCard glow="cyan" className="p-6">
+  {/* content with cyan glow on hover */}
+</GlassCard>
+```
+
 Rules:
 
-- Use rounded-xl, border-slate-200, shadow-sm.
+- Use glassmorphic styling: `bg-slate-900/80 backdrop-blur-xl border border-white/10`.
+- Add glow effects for interactive cards: `hover:shadow-[0_0_30px_rgba(6,182,212,0.2)]`.
 - Keep descriptions short (1–2 lines max).
-- Prefer one main action per card (primary button).
+- Prefer one main action per card (primary button with cyan glow).
 
 #### 5.2 Buttons
 
-Use shadcn <Button> with consistent styling:
+Use shadcn `<Button>` with consistent dark theme styling:
 
-Primary:
+**Primary (with glow):**
 
 ```tsx
-<Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2">
+<Button className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg shadow-lg shadow-cyan-600/20">
   Primary action
 </Button>
 ```
 
-Outline / secondary:
+**Outline / secondary (ghost on dark):**
 
 ```tsx
-<Button variant="outline" className="rounded-lg border-slate-300 text-slate-700">
+<Button variant="outline" className="rounded-lg border-white/10 text-slate-300 hover:bg-white/5 hover:text-white">
   Secondary
 </Button>
 ```
 
-Destructive:
+**Destructive:**
 
 ```tsx
-<Button variant="destructive" className="rounded-lg">
+<Button variant="outline" className="rounded-lg border-red-500/30 text-red-400 hover:bg-red-900/20">
   Delete
 </Button>
 ```
@@ -138,23 +158,30 @@ Never invent your own button component when shadcn Button works.
 
 #### 5.3 Status Pills (for compliance)
 
-Use small rounded pills to show statuses like on_track, upcoming, due_soon, overdue.
-
-Examples:
+Use dark glass style pills with colored borders for status indicators:
 
 ```tsx
-// On track
-<span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+// On track (emerald)
+<span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-900/20 text-emerald-400 border border-emerald-500/50">
+  <CheckCircle2 className="h-3 w-3" />
   On track
 </span>
 
-// Due soon
-<span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
+// Upcoming (cyan)
+<span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-cyan-900/20 text-cyan-400 border border-cyan-500/50">
+  <Clock className="h-3 w-3" />
+  Upcoming
+</span>
+
+// Due soon (amber)
+<span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-900/20 text-amber-400 border border-amber-500/50">
+  <AlertTriangle className="h-3 w-3" />
   Due soon
 </span>
 
-// Overdue
-<span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">
+// Overdue (red)
+<span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-900/20 text-red-400 border border-red-500/50">
+  <XCircle className="h-3 w-3" />
   Overdue
 </span>
 ```
@@ -163,23 +190,24 @@ Claude should use a consistent naming + style for these.
 
 #### 5.4 Tables
 
-Use simple, minimal tables:
+Use simple, minimal tables with dark theme styling:
 
-- Header: slightly bolder, text-xs font-medium text-slate-500 uppercase tracking-wide.
-- Rows: text-sm, hover:bg-slate-50 on hover.
+- Header: `text-xs font-medium text-slate-400 uppercase tracking-wide`.
+- Rows: `text-sm text-slate-300`, hover: `hover:bg-white/5`.
+- Borders: `border-white/10`.
 - Keep actions on the right side with icon buttons or short text buttons.
 
 ### 6. Dashboard & Compliance Card Pattern
 
-For compliance-related views (AGM, Strata Hub, tasks), Claude MUST follow this pattern:
+For compliance-related views (AGM, Strata Hub, tasks), Claude MUST follow this dark glassmorphic pattern:
 
 ```tsx
-<Card>
+<Card className="bg-slate-900/80 backdrop-blur-xl border border-white/10 rounded-xl shadow-lg">
   <CardHeader>
     <div className="flex items-start justify-between gap-4">
       <div>
-        <CardTitle className="text-lg font-medium">AGM Compliance</CardTitle>
-        <CardDescription className="text-sm text-slate-500">
+        <CardTitle className="text-lg font-medium text-white">AGM Compliance</CardTitle>
+        <CardDescription className="text-sm text-slate-400">
           Next AGM due: 10 March 2026
         </CardDescription>
       </div>
@@ -188,12 +216,14 @@ For compliance-related views (AGM, Strata Hub, tasks), Claude MUST follow this p
     </div>
   </CardHeader>
   <CardContent className="pt-2 space-y-3">
-    <p className="text-sm text-slate-600">
-      Your AGM is due in 24 days. Start preparing your agenda and notice now to meet statutory requirements.
+    <p className="text-sm text-slate-400">
+      <span className="font-medium text-white">Due in 24 days.</span> Start preparing your agenda and notice now.
     </p>
     <div className="flex flex-wrap items-center gap-3">
-      <Button>Generate AGM checklist</Button>
-      <Button variant="outline" className="text-slate-700">
+      <Button className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg shadow-lg shadow-cyan-600/20">
+        Generate AGM checklist
+      </Button>
+      <Button variant="outline" className="rounded-lg border-white/10 text-slate-300 hover:bg-white/5">
         View tasks
       </Button>
     </div>
@@ -203,9 +233,10 @@ For compliance-related views (AGM, Strata Hub, tasks), Claude MUST follow this p
 
 Rules:
 
-- Left: title + description.
-- Right: status pill.
-- Body: one short explanatory paragraph + 1–2 key actions (buttons).
+- Use glassmorphic card styling.
+- Left: title (text-white) + description (text-slate-400).
+- Right: dark glass status pill with colored border.
+- Body: one short explanatory paragraph + 1–2 key actions (cyan primary, ghost secondary).
 
 ### 7. Agents UI
 
@@ -237,26 +268,26 @@ Example layout:
 
 ### 8. Forms
 
-Form rules:
+Form rules for dark theme:
 
 - Use shadcn Form, FormField, Label, Input, Select, etc.
 - Prefer single-column forms with clear grouping.
 - Each field:
-  - Label (text-sm font-medium text-slate-700)
-  - Input (rounded-lg, border-slate-300)
-  - Optional help text (text-xs text-slate-500).
+  - Label: `text-sm font-medium text-slate-300`
+  - Input: Dark glass style `bg-slate-800/80 border-white/10 text-white`
+  - Optional help text: `text-xs text-slate-500`
 
 Example:
 
 ```tsx
 <div className="space-y-1.5">
-  <Label htmlFor="schemeName" className="text-sm font-medium text-slate-700">
+  <Label htmlFor="schemeName" className="text-sm font-medium text-slate-300">
     Scheme name
   </Label>
   <Input
     id="schemeName"
     placeholder="e.g. Pinecrest Apartments"
-    className="rounded-lg border-slate-300"
+    className="rounded-lg bg-slate-800/80 border-white/10 text-white placeholder:text-slate-500 focus:ring-cyan-500/50 focus:border-cyan-500/50"
   />
   <p className="text-xs text-slate-500">
     This is how the scheme will appear on dashboards and documents.

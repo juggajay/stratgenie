@@ -239,7 +239,7 @@ export function DocumentPreviewDialog({
               <Button
                 onClick={handleDownload}
                 disabled={!document?.content}
-                className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg"
+                className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg shadow-lg shadow-cyan-600/20"
               >
                 <Download className="h-4 w-4 mr-2" />
                 Download
@@ -249,7 +249,7 @@ export function DocumentPreviewDialog({
                 <Button
                   onClick={handleShowConfirm}
                   disabled={!document || !lots || lots.length === 0}
-                  className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg"
+                  className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg shadow-lg shadow-cyan-600/20"
                 >
                   <Send className="h-4 w-4 mr-2" />
                   Approve & Send
@@ -268,7 +268,7 @@ export function DocumentPreviewDialog({
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold flex items-center gap-2">
-            <Send className="h-5 w-5 text-teal-600" />
+            <Send className="h-5 w-5 text-cyan-500" />
             {isFinalized ? "Resend Document" : "Confirm & Send"}
           </DialogTitle>
           <DialogDescription className="text-sm text-slate-500">
@@ -371,7 +371,7 @@ export function DocumentPreviewDialog({
             <Button
               onClick={handleSend}
               disabled={isSending || selectedLotIds.size === 0}
-              className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg"
+              className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg shadow-lg shadow-cyan-600/20"
             >
               {isSending ? (
                 <>

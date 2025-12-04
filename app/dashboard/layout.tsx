@@ -1,11 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Loader2 } from "lucide-react";
 import { TrialBanner } from "@/components/dashboard/trial-banner";
+import { MobileNav } from "@/components/dashboard/mobile-nav";
+
+// Mobile nav context for sharing state
+const MobileNavContext = createContext<{
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+}>({ isOpen: false, setIsOpen: () => {} });
+
+export const useMobileNav = () => useContext(MobileNavContext);
 
 export default function DashboardLayout({
   children,
@@ -14,6 +23,7 @@ export default function DashboardLayout({
 }) {
   const router = useRouter();
   const [isReady, setIsReady] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   // Sync user and get current user data
   const storeUser = useMutation(api.users.store);
@@ -59,10 +69,10 @@ export default function DashboardLayout({
   // Loading state
   if (!isReady) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-slate-600">Loading your dashboard...</p>
+          <Loader2 className="w-8 h-8 animate-spin text-cyan-500 mx-auto mb-4" />
+          <p className="text-slate-400">Loading your dashboard...</p>
         </div>
       </div>
     );
@@ -72,10 +82,13 @@ export default function DashboardLayout({
   const firstScheme = currentUser?.schemes?.[0];
 
   return (
-    <>
+    <MobileNavContext.Provider value={{ isOpen: mobileNavOpen, setIsOpen: setMobileNavOpen }}>
+      {/* Mobile navigation sheet */}
+      <MobileNav open={mobileNavOpen} onOpenChange={setMobileNavOpen} />
+
       {/* Trial banner - shown if user is on trial */}
       {firstScheme && <TrialBanner schemeId={firstScheme._id} />}
       {children}
-    </>
+    </MobileNavContext.Provider>
   );
 }

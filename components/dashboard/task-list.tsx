@@ -194,7 +194,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
           <Button
             size="sm"
             onClick={() => handleViewDocument(latestAgmNotice._id)}
-            className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg min-w-[90px]"
+            className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg min-w-[90px] shadow-lg shadow-cyan-600/20"
           >
             {latestAgmNotice.status === "draft" ? "View Draft" : "View Notice"}
           </Button>
@@ -206,7 +206,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
           size="sm"
           onClick={() => handleGenerateNotice(task._id)}
           disabled={isGenerating}
-          className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg min-w-[90px]"
+          className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg min-w-[90px] shadow-lg shadow-cyan-600/20"
         >
           {isGenerating ? (
             <>
@@ -226,7 +226,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
         <Button
           size="sm"
           onClick={() => handleStatusChange(task._id, "in_progress")}
-          className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg min-w-[90px]"
+          className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg min-w-[90px] shadow-lg shadow-cyan-600/20"
         >
           Start
         </Button>
@@ -238,7 +238,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
         <Button
           size="sm"
           onClick={() => handleStatusChange(task._id, "done")}
-          className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg min-w-[90px]"
+          className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg min-w-[90px] shadow-lg shadow-cyan-600/20"
         >
           Complete
         </Button>

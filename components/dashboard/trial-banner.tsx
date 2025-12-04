@@ -29,17 +29,17 @@ export function TrialBanner({ schemeId }: TrialBannerProps) {
       className={`
         relative px-4 py-2.5 text-sm
         ${isUrgent
-          ? "bg-amber-50 border-b border-amber-200 text-amber-900"
-          : "bg-blue-50 border-b border-blue-200 text-blue-900"
+          ? "bg-amber-900/30 border-b border-amber-500/30 text-amber-300"
+          : "bg-cyan-900/30 border-b border-cyan-500/30 text-cyan-300"
         }
       `}
     >
       <div className="max-w-5xl mx-auto flex items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           {isUrgent ? (
-            <Clock className="w-4 h-4 text-amber-600" />
+            <Clock className="w-4 h-4 text-amber-400" />
           ) : (
-            <Sparkles className="w-4 h-4 text-blue-600" />
+            <Sparkles className="w-4 h-4 text-cyan-400" />
           )}
           <span>
             {isUrgent ? (
@@ -52,14 +52,14 @@ export function TrialBanner({ schemeId }: TrialBannerProps) {
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <Link href="/billing">
+          <Link href="/dashboard/billing">
             <Button
               size="sm"
               className={`
                 h-7 text-xs rounded-full px-3
                 ${isUrgent
-                  ? "bg-amber-600 hover:bg-amber-700 text-white"
-                  : "bg-blue-600 hover:bg-blue-700 text-white"
+                  ? "bg-amber-600 hover:bg-amber-500 text-white shadow-lg shadow-amber-600/20"
+                  : "bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg shadow-cyan-600/20"
                 }
               `}
             >
@@ -71,8 +71,8 @@ export function TrialBanner({ schemeId }: TrialBannerProps) {
             className={`
               p-1 rounded-full transition-colors
               ${isUrgent
-                ? "hover:bg-amber-200/50 text-amber-600"
-                : "hover:bg-blue-200/50 text-blue-600"
+                ? "hover:bg-amber-900/50 text-amber-400"
+                : "hover:bg-cyan-900/50 text-cyan-400"
               }
             `}
             aria-label="Dismiss"

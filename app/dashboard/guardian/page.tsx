@@ -38,11 +38,11 @@ function BylawStatus({ schemeId }: { schemeId: Id<"schemes"> }) {
   // Bylaws are processing
   if (bylaw.status === "processing") {
     return (
-      <div className="rounded-xl border border-indigo-200 bg-indigo-50 p-8 text-center">
+      <div className="rounded-xl border border-emerald-500/30 bg-emerald-900/20 p-8 text-center">
         <div className="animate-pulse flex flex-col items-center gap-3">
-          <FileText className="h-10 w-10 text-indigo-400" />
-          <p className="font-medium text-indigo-700">Processing bylaws...</p>
-          <p className="text-sm text-indigo-500">
+          <FileText className="h-10 w-10 text-emerald-400" />
+          <p className="font-medium text-emerald-300">Processing bylaws...</p>
+          <p className="text-sm text-emerald-400/70">
             Extracting text and building search index
           </p>
         </div>

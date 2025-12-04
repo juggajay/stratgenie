@@ -27,28 +27,28 @@ const statusConfig: Record<
 > = {
   on_track: {
     label: "On track",
-    pillClass: "bg-teal-700 text-white",
+    pillClass: "bg-emerald-900/20 text-emerald-400 border border-emerald-500/50",
     icon: CheckCircle2,
     message: "You are compliant. No immediate action required.",
     tone: "reassuring",
   },
   upcoming: {
     label: "Upcoming",
-    pillClass: "bg-blue-100 text-blue-700",
+    pillClass: "bg-cyan-900/20 text-cyan-400 border border-cyan-500/50",
     icon: Clock,
     message: "Time to start preparing. Draft your agenda and gather documents.",
     tone: "informative",
   },
   due_soon: {
     label: "Due soon",
-    pillClass: "bg-amber-100 text-amber-700",
+    pillClass: "bg-amber-900/20 text-amber-400 border border-amber-500/50",
     icon: AlertTriangle,
     message: "Action required. Ensure you meet statutory notice periods.",
     tone: "warning",
   },
   overdue: {
     label: "Overdue",
-    pillClass: "bg-red-100 text-red-700",
+    pillClass: "bg-red-900/20 text-red-400 border border-red-500/50",
     icon: XCircle,
     message: "Immediate action required. Your compliance deadline has passed.",
     tone: "urgent",
@@ -76,7 +76,7 @@ function getDaysUntil(timestamp: number | null): string {
 function StatusPill({ status }: { status: ComplianceStatus }) {
   if (!status) {
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
+      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-700/50 text-slate-400 border border-white/10">
         Setup required
       </span>
     );
@@ -119,12 +119,12 @@ function ComplianceSection({
   const config = status ? statusConfig[status] : null;
 
   return (
-    <Card>
+    <Card className="bg-slate-900/80 backdrop-blur-xl border border-white/10 rounded-xl shadow-lg">
       <CardHeader>
         <div className="flex items-start justify-between gap-4">
           <div>
-            <CardTitle>{title}</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-white">{title}</CardTitle>
+            <CardDescription className="text-slate-400">
               {needsSetup
                 ? "Set your last AGM date to enable tracking"
                 : `Next due: ${formatDate(nextDueDate)}`}
@@ -136,7 +136,7 @@ function ComplianceSection({
       <CardContent className="pt-2 space-y-3">
         {needsSetup ? (
           <>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-slate-400">
               To track your compliance status, please configure your last AGM date
               in scheme settings.
             </p>
@@ -144,7 +144,7 @@ function ComplianceSection({
               <Button
                 onClick={onOpenSettings}
                 variant="outline"
-                className="rounded-lg border-border text-foreground hover:bg-accent transition-smooth"
+                className="rounded-lg border-white/10 text-slate-300 hover:bg-white/5 hover:text-white transition-all"
               >
                 <Settings className="h-4 w-4 mr-2" />
                 Set up AGM tracking
@@ -153,9 +153,9 @@ function ComplianceSection({
           </>
         ) : (
           <>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-slate-400">
               {nextDueDate && (
-                <span className="font-medium text-foreground">{getDaysUntil(nextDueDate)}. </span>
+                <span className="font-medium text-white">{getDaysUntil(nextDueDate)}. </span>
               )}
               {config?.message}
             </p>
@@ -165,7 +165,7 @@ function ComplianceSection({
                   <Button
                     variant="outline"
                     onClick={onViewChecklist}
-                    className="rounded-lg border-border text-foreground hover:bg-accent transition-smooth"
+                    className="rounded-lg border-white/10 text-slate-300 hover:bg-white/5 hover:text-white transition-all"
                   >
                     View checklist
                   </Button>
@@ -173,7 +173,7 @@ function ComplianceSection({
                   <Button
                     onClick={onGenerateChecklist}
                     disabled={isGenerating}
-                    className="bg-brand hover:bg-brand/90 text-brand-foreground rounded-lg transition-smooth"
+                    className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg shadow-lg shadow-cyan-600/20 transition-all"
                   >
                     {isGenerating ? "Generating..." : "Generate AGM checklist"}
                   </Button>
@@ -226,16 +226,16 @@ export function ComplianceCard({
   if (!complianceStatus) {
     return (
       <div className="space-y-4">
-        <Card>
+        <Card className="bg-slate-900/80 backdrop-blur-xl border border-white/10 rounded-xl shadow-lg">
           <CardHeader>
             <div className="animate-pulse">
-              <div className="h-5 bg-muted rounded w-1/3 mb-2"></div>
-              <div className="h-4 bg-muted rounded w-1/2"></div>
+              <div className="h-5 bg-slate-700/50 rounded w-1/3 mb-2"></div>
+              <div className="h-4 bg-slate-700/50 rounded w-1/2"></div>
             </div>
           </CardHeader>
           <CardContent>
             <div className="animate-pulse">
-              <div className="h-4 bg-muted rounded w-3/4"></div>
+              <div className="h-4 bg-slate-700/50 rounded w-3/4"></div>
             </div>
           </CardContent>
         </Card>

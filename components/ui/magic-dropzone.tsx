@@ -1,333 +1,282 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
-import { Upload, FileText, Loader2, CheckCircle2, AlertCircle, Sparkles } from "lucide-react";
+import { useState, useCallback, useEffect, ReactNode } from "react";
+import { Upload, Loader2, CheckCircle2, XCircle, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/**
- * MagicDropzone - A trust-building file upload component with visual feedback
- *
- * Design decisions:
- * - Uses native HTML5 drag-drop (consistent with InvoiceUploadZone, BylawUpload)
- * - CSS animations instead of framer-motion (keeps bundle small, follows CLAUDE.md)
- * - Simulated "scanning" phase builds confidence before upload
- * - Mobile camera support via capture="environment"
- *
- * States: idle → active (dragging) → scanning (simulated) → uploading → complete/error
- */
+type DropzoneStatus = "idle" | "dragging" | "processing" | "success" | "error";
 
-export interface MagicDropzoneProps {
-  /** Called when a valid file is accepted, after the scanning animation */
-  onFileAccepted: (file: File) => void | Promise<void>;
-  /** Called on validation errors */
-  onError?: (error: string) => void;
-  /** Accepted file types (default: application/pdf) */
-  accept?: string;
-  /** Max file size in MB (default: 10) */
+interface MagicDropzoneProps {
+  // New API
+  onFileDrop?: (file: File) => Promise<void>;
+  maxSize?: number;
+  idleTitle?: string;
+  idleDescription?: string;
+  // Legacy API (backwards compatibility)
+  onFileAccepted?: (file: File) => Promise<void>;
   maxSizeMB?: number;
-  /** Disable the dropzone */
-  disabled?: boolean;
-  /** Whether upload is in progress (externally controlled) */
-  isUploading?: boolean;
-  /** Additional className */
-  className?: string;
-  /** Idle state title */
   title?: string;
-  /** Idle state description */
   description?: string;
+  isUploading?: boolean;
+  // Common props
+  accept?: string;
+  processingText?: string[];
+  successText?: string;
+  errorText?: string;
+  children?: ReactNode;
+  className?: string;
 }
 
-type DropzoneState = "idle" | "active" | "scanning" | "uploading" | "error";
-
-const SCANNING_DURATION = 2000; // 2 seconds simulated scanning
+const defaultProcessingTexts = [
+  "Summoning the Genie...",
+  "Analyzing your document...",
+  "Extracting the magic...",
+  "Almost there...",
+];
 
 export function MagicDropzone({
+  // New API props
+  onFileDrop,
+  maxSize,
+  idleTitle,
+  idleDescription,
+  // Legacy API props
   onFileAccepted,
-  onError,
-  accept = "application/pdf",
-  maxSizeMB = 10,
-  disabled = false,
-  isUploading = false,
+  maxSizeMB,
+  title,
+  description,
+  isUploading,
+  // Common props
+  accept = ".pdf,.png,.jpg,.jpeg",
+  processingText = defaultProcessingTexts,
+  successText = "Successfully processed!",
+  errorText = "Something went wrong",
+  children,
   className,
-  title = "Drag & drop your document",
-  description = "or click to browse",
 }: MagicDropzoneProps) {
-  const [state, setState] = useState<DropzoneState>("idle");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string | null>(null);
-  const [scanProgress, setScanProgress] = useState(0);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const scanTimerRef = useRef<NodeJS.Timeout | null>(null);
+  // Merge legacy and new APIs
+  const handleFile = onFileDrop ?? onFileAccepted;
+  const fileSizeLimit = maxSize ?? (maxSizeMB ? maxSizeMB * 1024 * 1024 : 10 * 1024 * 1024);
+  const displayTitle = idleTitle ?? title ?? "Feed the Genie";
+  const displayDescription = idleDescription ?? description ?? "Drop your file here or click to browse";
 
-  // Sync external uploading state
+  const [status, setStatus] = useState<DropzoneStatus>(isUploading ? "processing" : "idle");
+  const [error, setError] = useState<string | null>(null);
+  const [processingIndex, setProcessingIndex] = useState(0);
+
+  // Sync with external isUploading prop
   useEffect(() => {
-    if (isUploading && state !== "uploading") {
-      setState("uploading");
-    } else if (!isUploading && state === "uploading") {
-      setState("idle");
-      setFileName(null);
+    if (isUploading !== undefined) {
+      setStatus(isUploading ? "processing" : "idle");
     }
-  }, [isUploading, state]);
+  }, [isUploading]);
 
-  // Cleanup scan timer on unmount
-  useEffect(() => {
-    return () => {
-      if (scanTimerRef.current) {
-        clearTimeout(scanTimerRef.current);
-      }
-    };
-  }, []);
+  const startProcessingAnimation = useCallback(() => {
+    const interval = setInterval(() => {
+      setProcessingIndex((prev) => (prev + 1) % processingText.length);
+    }, 2000);
+    return interval;
+  }, [processingText.length]);
 
   const validateFile = useCallback((file: File): string | null => {
-    const maxBytes = maxSizeMB * 1024 * 1024;
-
-    // Check file type
-    const acceptedTypes = accept.split(",").map(t => t.trim());
-    const isAccepted = acceptedTypes.some(type => {
-      if (type.startsWith(".")) {
-        return file.name.toLowerCase().endsWith(type.toLowerCase());
-      }
-      if (type.includes("*")) {
-        const [mainType] = type.split("/");
-        return file.type.startsWith(mainType);
-      }
-      return file.type === type;
-    });
-
+    if (fileSizeLimit && file.size > fileSizeLimit) {
+      return `File too large. Maximum size is ${Math.round(fileSizeLimit / 1024 / 1024)}MB`;
+    }
+    const acceptedTypes = accept.split(",").map((t) => t.trim().toLowerCase());
+    const fileExt = `.${file.name.split(".").pop()?.toLowerCase()}`;
+    const isAccepted = acceptedTypes.some(
+      (type) => type === fileExt || type === file.type
+    );
     if (!isAccepted) {
-      return "Please upload a PDF document";
+      return `File type not accepted. Please upload: ${accept}`;
     }
-
-    if (file.size > maxBytes) {
-      return `File size must be less than ${maxSizeMB}MB`;
-    }
-
     return null;
-  }, [accept, maxSizeMB]);
+  }, [accept, fileSizeLimit]);
 
-  const simulateScanning = useCallback((file: File) => {
-    setState("scanning");
-    setScanProgress(0);
-    setFileName(file.name);
+  const handleDrop = useCallback(
+    async (e: React.DragEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setStatus("idle");
 
-    // Animate progress bar with realistic feel
-    const steps = [
-      { progress: 15, delay: 200 },
-      { progress: 35, delay: 400 },
-      { progress: 55, delay: 600 },
-      { progress: 70, delay: 800 },
-      { progress: 85, delay: 1200 },
-      { progress: 95, delay: 1600 },
-      { progress: 100, delay: SCANNING_DURATION },
-    ];
+      const file = e.dataTransfer.files[0];
+      if (!file) return;
 
-    steps.forEach(({ progress, delay }) => {
-      setTimeout(() => setScanProgress(progress), delay);
-    });
+      const validationError = validateFile(file);
+      if (validationError) {
+        setError(validationError);
+        setStatus("error");
+        setTimeout(() => {
+          setStatus("idle");
+          setError(null);
+        }, 3000);
+        return;
+      }
 
-    // After scanning completes, trigger the actual upload
-    scanTimerRef.current = setTimeout(() => {
-      setState("uploading");
-      onFileAccepted(file);
-    }, SCANNING_DURATION);
-  }, [onFileAccepted]);
+      setStatus("processing");
+      setError(null);
+      const interval = startProcessingAnimation();
 
-  const handleFile = useCallback((file: File) => {
-    if (disabled || state === "scanning" || state === "uploading") return;
-
-    setErrorMessage(null);
-
-    const error = validateFile(file);
-    if (error) {
-      setErrorMessage(error);
-      setState("error");
-      onError?.(error);
-      // Reset after showing error
-      setTimeout(() => {
-        setState("idle");
-        setErrorMessage(null);
-      }, 3000);
-      return;
-    }
-
-    // Start the magic: simulate document scanning
-    simulateScanning(file);
-  }, [disabled, state, validateFile, simulateScanning, onError]);
-
-  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setState("idle");
-
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      handleFile(file);
-    }
-  }, [handleFile]);
+      try {
+        if (handleFile) {
+          await handleFile(file);
+        }
+        setStatus("success");
+        setTimeout(() => setStatus("idle"), 2000);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : errorText);
+        setStatus("error");
+        setTimeout(() => {
+          setStatus("idle");
+          setError(null);
+        }, 3000);
+      } finally {
+        clearInterval(interval);
+        setProcessingIndex(0);
+      }
+    },
+    [handleFile, startProcessingAnimation, errorText, validateFile]
+  );
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!disabled && state === "idle") {
-      setState("active");
-    }
-  }, [disabled, state]);
+    setStatus("dragging");
+  }, []);
 
   const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    if (state === "active") {
-      setState("idle");
-    }
-  }, [state]);
+    setStatus("idle");
+  }, []);
 
-  const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      handleFile(file);
-    }
-    // Reset input so same file can be selected again
-    e.target.value = "";
-  }, [handleFile]);
+  const handleFileSelect = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
 
-  const handleClick = useCallback(() => {
-    if (!disabled && (state === "idle" || state === "error")) {
-      inputRef.current?.click();
-    }
-  }, [disabled, state]);
+      const validationError = validateFile(file);
+      if (validationError) {
+        setError(validationError);
+        setStatus("error");
+        setTimeout(() => {
+          setStatus("idle");
+          setError(null);
+        }, 3000);
+        return;
+      }
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if ((e.key === "Enter" || e.key === " ") && !disabled && (state === "idle" || state === "error")) {
-      e.preventDefault();
-      inputRef.current?.click();
-    }
-  }, [disabled, state]);
+      setStatus("processing");
+      setError(null);
+      const interval = startProcessingAnimation();
 
-  const isInteractive = !disabled && (state === "idle" || state === "error" || state === "active");
+      try {
+        if (handleFile) {
+          await handleFile(file);
+        }
+        setStatus("success");
+        setTimeout(() => setStatus("idle"), 2000);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : errorText);
+        setStatus("error");
+        setTimeout(() => {
+          setStatus("idle");
+          setError(null);
+        }, 3000);
+      } finally {
+        clearInterval(interval);
+        setProcessingIndex(0);
+      }
 
-  const renderContent = () => {
-    switch (state) {
-      case "active":
-        return (
-          <div className="flex flex-col items-center gap-3 text-green-600">
-            <div className="relative">
-              <Upload className="h-12 w-12 animate-bounce" />
-              <Sparkles className="h-5 w-5 absolute -top-1 -right-1 text-green-500" />
-            </div>
-            <div className="text-center">
-              <p className="font-medium text-lg">Drop to analyze...</p>
-              <p className="text-sm text-green-500">Release to start scanning</p>
-            </div>
-          </div>
-        );
+      e.target.value = "";
+    },
+    [handleFile, startProcessingAnimation, errorText, validateFile]
+  );
 
-      case "scanning":
-        return (
-          <div className="flex flex-col items-center gap-4 w-full max-w-xs">
-            <div className="relative">
-              <FileText className="h-12 w-12 text-blue-600" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="h-8 w-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
-              </div>
-            </div>
-            <div className="text-center">
-              <p className="font-medium text-blue-600">Scanning document...</p>
-              <p className="text-sm text-slate-500 mt-1 truncate max-w-full">{fileName}</p>
-            </div>
-            {/* Progress bar */}
-            <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-300 ease-out"
-                style={{ width: `${scanProgress}%` }}
-              />
-            </div>
-            <p className="text-xs text-slate-400">Detecting document structure...</p>
-          </div>
-        );
-
-      case "uploading":
-        return (
-          <div className="flex flex-col items-center gap-3 text-slate-600">
-            <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
-            <div className="text-center">
-              <p className="font-medium text-blue-600">Uploading...</p>
-              <p className="text-sm text-slate-500">{fileName}</p>
-            </div>
-          </div>
-        );
-
-      case "error":
-        return (
-          <div className="flex flex-col items-center gap-3 text-red-600">
-            <AlertCircle className="h-12 w-12" />
-            <div className="text-center">
-              <p className="font-medium">Upload failed</p>
-              <p className="text-sm text-red-500">{errorMessage}</p>
-              <p className="text-xs text-slate-500 mt-2">Click to try again</p>
-            </div>
-          </div>
-        );
-
-      default: // idle
-        return (
-          <div className="flex flex-col items-center gap-3 text-slate-600">
-            <div className="relative">
-              <Upload className="h-12 w-12 text-slate-400 transition-transform group-hover:scale-110 group-hover:text-blue-500" />
-            </div>
-            <div className="text-center">
-              <p className="font-medium text-lg text-slate-700">{title}</p>
-              <p className="text-sm text-slate-500">{description}</p>
-            </div>
-            <div className="flex items-center gap-2 text-xs text-slate-400">
-              <span className="px-2 py-1 bg-slate-100 rounded">PDF</span>
-              <span>up to {maxSizeMB}MB</span>
-            </div>
-          </div>
-        );
-    }
-  };
+  const isInteractive = status === "idle" || status === "dragging";
 
   return (
     <div
-      role="button"
-      tabIndex={isInteractive ? 0 : -1}
-      aria-label="Upload document"
-      aria-disabled={disabled}
-      onClick={handleClick}
-      onKeyDown={handleKeyDown}
       onDrop={isInteractive ? handleDrop : undefined}
       onDragOver={isInteractive ? handleDragOver : undefined}
       onDragLeave={isInteractive ? handleDragLeave : undefined}
       className={cn(
-        "group relative border-2 border-dashed rounded-xl p-8 transition-all duration-200",
-        // Base styles
-        "flex flex-col items-center justify-center min-h-[200px]",
-        // State-specific styles
-        state === "idle" && "border-slate-300 bg-slate-50 hover:border-blue-400 hover:bg-blue-50/50",
-        state === "active" && "border-green-500 bg-green-50 scale-[1.02]",
-        state === "scanning" && "border-blue-500 bg-blue-50",
-        state === "uploading" && "border-blue-400 bg-blue-50/50",
-        state === "error" && "border-red-300 bg-red-50",
-        // Interactive styles
-        isInteractive && "cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
-        !isInteractive && "cursor-default",
-        disabled && "opacity-50 cursor-not-allowed",
+        "relative rounded-xl border-2 border-dashed transition-all duration-300",
+        "bg-slate-900/80 backdrop-blur-xl",
+        status === "idle" && "border-white/20 hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)]",
+        status === "dragging" && "border-cyan-500 bg-cyan-900/20 shadow-[0_0_40px_rgba(6,182,212,0.4)]",
+        status === "processing" && "border-violet-500/50 bg-violet-900/10",
+        status === "success" && "border-emerald-500 bg-emerald-900/20",
+        status === "error" && "border-red-500/50 bg-red-900/10",
+        isInteractive && "cursor-pointer",
         className
       )}
     >
-      {renderContent()}
+      <div className="p-8 flex flex-col items-center justify-center text-center min-h-[200px]">
+        {status === "idle" && (
+          <>
+            <div className="relative mb-4">
+              <Upload className="h-12 w-12 text-slate-500 transition-colors group-hover:text-cyan-400" />
+              <Sparkles className="h-4 w-4 text-amber-400 absolute -top-1 -right-1 animate-pulse" />
+            </div>
+            <p className="text-lg font-medium text-white mb-1">{displayTitle}</p>
+            <p className="text-sm text-slate-400">{displayDescription}</p>
+            {children}
+          </>
+        )}
 
-      {/* Hidden file input with mobile camera support */}
-      <input
-        ref={inputRef}
-        type="file"
-        accept={`${accept},image/*`}
-        capture="environment"
-        onChange={handleFileSelect}
-        disabled={disabled || state === "scanning" || state === "uploading"}
-        className="sr-only"
-        aria-hidden="true"
-      />
+        {status === "dragging" && (
+          <>
+            <div className="relative mb-4">
+              <Upload className="h-12 w-12 text-cyan-400 animate-bounce" />
+              <Sparkles className="h-4 w-4 text-amber-400 absolute -top-1 -right-1 animate-spin" />
+            </div>
+            <p className="text-lg font-medium text-cyan-400">Drop it here!</p>
+            <p className="text-sm text-cyan-400/70">Release to upload</p>
+          </>
+        )}
+
+        {status === "processing" && (
+          <>
+            <div className="relative mb-4">
+              <Loader2 className="h-12 w-12 text-violet-400 animate-spin" />
+              <div className="absolute inset-0 h-12 w-12 rounded-full bg-violet-400/20 animate-ping" />
+            </div>
+            <p className="text-lg font-medium text-violet-400 mb-1">
+              {processingText[processingIndex]}
+            </p>
+            <p className="text-sm text-slate-400">This may take a moment...</p>
+          </>
+        )}
+
+        {status === "success" && (
+          <>
+            <div className="relative mb-4">
+              <CheckCircle2 className="h-12 w-12 text-emerald-400" />
+              <div className="absolute inset-0 h-12 w-12 rounded-full bg-emerald-400/30 animate-ping" />
+            </div>
+            <p className="text-lg font-medium text-emerald-400">{successText}</p>
+          </>
+        )}
+
+        {status === "error" && (
+          <>
+            <XCircle className="h-12 w-12 text-red-400 mb-4" />
+            <p className="text-lg font-medium text-red-400 mb-1">{errorText}</p>
+            {error && <p className="text-sm text-red-400/70">{error}</p>}
+          </>
+        )}
+      </div>
+
+      {isInteractive && (
+        <input
+          type="file"
+          accept={accept}
+          onChange={handleFileSelect}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          aria-label="Upload file"
+        />
+      )}
     </div>
   );
 }

@@ -1,0 +1,282 @@
+"use client";
+
+export const dynamic = "force-dynamic";
+
+import { useState } from "react";
+import Link from "next/link";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useSelectedScheme } from "@/hooks/use-selected-scheme";
+import { Button } from "@/components/ui/button";
+import { GlassCard } from "@/components/ui/glass-card";
+import {
+  ArrowLeft,
+  CreditCard,
+  Check,
+  Sparkles,
+  Zap,
+  Shield,
+  Crown,
+  ExternalLink,
+} from "lucide-react";
+
+const plans = [
+  {
+    id: "free",
+    name: "Free Trial",
+    price: "$0",
+    period: "14 days",
+    description: "Try StrataGenie with full features",
+    features: [
+      "1 scheme",
+      "Guardian AI Q&A",
+      "Invoice processing",
+      "Basic compliance tracking",
+    ],
+    cta: "Current Plan",
+    disabled: true,
+    highlight: false,
+  },
+  {
+    id: "pro",
+    name: "Pro",
+    price: "$29",
+    period: "/month",
+    description: "Perfect for self-managed schemes",
+    features: [
+      "Up to 3 schemes",
+      "Unlimited Guardian queries",
+      "AI invoice extraction",
+      "Advanced compliance alerts",
+      "Document generation",
+      "Email notifications",
+    ],
+    cta: "Upgrade to Pro",
+    disabled: false,
+    highlight: true,
+  },
+  {
+    id: "enterprise",
+    name: "Enterprise",
+    price: "Custom",
+    period: "",
+    description: "For strata managers & large portfolios",
+    features: [
+      "Unlimited schemes",
+      "Priority support",
+      "Custom integrations",
+      "Dedicated account manager",
+      "SLA guarantee",
+      "White-label options",
+    ],
+    cta: "Contact Sales",
+    disabled: false,
+    highlight: false,
+  },
+];
+
+export default function BillingPage() {
+  const { selectedSchemeId } = useSelectedScheme();
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const currentUser = useQuery(api.users.currentUser);
+
+  const handleUpgrade = async (planId: string) => {
+    if (planId === "enterprise") {
+      window.open("mailto:sales@stratagenie.com.au?subject=Enterprise%20Inquiry", "_blank");
+      return;
+    }
+
+    setIsProcessing(true);
+    // TODO: Implement Stripe checkout
+    // const response = await fetch('/api/stripe/create-checkout', {
+    //   method: 'POST',
+    //   body: JSON.stringify({ planId }),
+    // });
+    // const { url } = await response.json();
+    // window.location.href = url;
+    setTimeout(() => {
+      setIsProcessing(false);
+      alert("Stripe integration coming soon!");
+    }, 1000);
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-950 bg-grain">
+      {/* Header */}
+      <header className="bg-slate-900/80 backdrop-blur-xl border-b border-white/10 sticky top-0 z-10">
+        <div className="max-w-5xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-6">
+              <Link href="/dashboard" className="flex items-center gap-2">
+                <span className="text-xl font-semibold tracking-tight font-display bg-gradient-to-r from-cyan-400 to-sky-400 bg-clip-text text-transparent">
+                  StrataGenie
+                </span>
+              </Link>
+              <div className="h-6 w-px bg-white/20" />
+              <div>
+                <div className="flex items-center gap-2">
+                  <Link href="/dashboard">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="rounded-lg text-slate-400 hover:text-white hover:bg-white/5 -ml-2"
+                    >
+                      <ArrowLeft className="h-4 w-4 mr-1" />
+                      Dashboard
+                    </Button>
+                  </Link>
+                  <span className="text-white/40">/</span>
+                  <h1 className="text-lg font-medium tracking-tight text-white flex items-center gap-2">
+                    <CreditCard className="h-5 w-5 text-white/70" />
+                    Billing
+                  </h1>
+                </div>
+                <p className="text-sm text-slate-400">
+                  Manage your subscription and usage
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main content */}
+      <main className="max-w-5xl mx-auto px-6 py-8">
+        {/* Current Plan Status */}
+        <GlassCard glow="cyan" className="mb-8 p-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-cyan-900/30 rounded-xl border border-cyan-500/30">
+                <Sparkles className="h-6 w-6 text-cyan-400" />
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-white">Free Trial</h2>
+                <p className="text-sm text-slate-400">
+                  {currentUser?.schemes?.length || 0} scheme(s) active
+                </p>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-sm text-slate-400">Trial ends in</p>
+              <p className="text-2xl font-bold text-cyan-400">12 days</p>
+            </div>
+          </div>
+        </GlassCard>
+
+        {/* Plans */}
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-white mb-4">Choose Your Plan</h2>
+          <div className="grid gap-6 md:grid-cols-3">
+            {plans.map((plan) => (
+              <GlassCard
+                key={plan.id}
+                glow={plan.highlight ? "cyan" : "none"}
+                className={`p-6 relative ${
+                  plan.highlight ? "border-cyan-500/50" : ""
+                }`}
+              >
+                {plan.highlight && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="px-3 py-1 text-xs font-medium bg-cyan-600 text-white rounded-full">
+                      Most Popular
+                    </span>
+                  </div>
+                )}
+                <div className="mb-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    {plan.id === "free" && <Zap className="h-5 w-5 text-amber-400" />}
+                    {plan.id === "pro" && <Shield className="h-5 w-5 text-cyan-400" />}
+                    {plan.id === "enterprise" && <Crown className="h-5 w-5 text-violet-400" />}
+                    <h3 className="text-lg font-semibold text-white">{plan.name}</h3>
+                  </div>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-bold text-white">{plan.price}</span>
+                    <span className="text-slate-400">{plan.period}</span>
+                  </div>
+                  <p className="text-sm text-slate-400 mt-2">{plan.description}</p>
+                </div>
+
+                <ul className="space-y-3 mb-6">
+                  {plan.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-center gap-2 text-sm text-slate-300">
+                      <Check className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                <Button
+                  onClick={() => handleUpgrade(plan.id)}
+                  disabled={plan.disabled || isProcessing}
+                  className={`w-full rounded-lg ${
+                    plan.highlight
+                      ? "bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg shadow-cyan-600/20"
+                      : plan.disabled
+                      ? "bg-slate-700 text-slate-400 cursor-not-allowed"
+                      : "bg-slate-800 hover:bg-slate-700 text-white border border-white/10"
+                  }`}
+                >
+                  {plan.id === "enterprise" && <ExternalLink className="h-4 w-4 mr-2" />}
+                  {plan.cta}
+                </Button>
+              </GlassCard>
+            ))}
+          </div>
+        </div>
+
+        {/* Usage Stats */}
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-white mb-4">Current Usage</h2>
+          <div className="grid gap-4 md:grid-cols-3">
+            <GlassCard className="p-4">
+              <p className="text-sm text-slate-400 mb-1">Guardian Queries</p>
+              <p className="text-2xl font-bold text-white">24 / 50</p>
+              <div className="mt-2 h-2 bg-slate-700 rounded-full overflow-hidden">
+                <div className="h-full bg-emerald-500 rounded-full" style={{ width: "48%" }} />
+              </div>
+            </GlassCard>
+            <GlassCard className="p-4">
+              <p className="text-sm text-slate-400 mb-1">Invoices Processed</p>
+              <p className="text-2xl font-bold text-white">8 / 20</p>
+              <div className="mt-2 h-2 bg-slate-700 rounded-full overflow-hidden">
+                <div className="h-full bg-amber-500 rounded-full" style={{ width: "40%" }} />
+              </div>
+            </GlassCard>
+            <GlassCard className="p-4">
+              <p className="text-sm text-slate-400 mb-1">Documents Generated</p>
+              <p className="text-2xl font-bold text-white">3 / 10</p>
+              <div className="mt-2 h-2 bg-slate-700 rounded-full overflow-hidden">
+                <div className="h-full bg-cyan-500 rounded-full" style={{ width: "30%" }} />
+              </div>
+            </GlassCard>
+          </div>
+        </div>
+
+        {/* Billing History */}
+        <div>
+          <h2 className="text-xl font-semibold text-white mb-4">Billing History</h2>
+          <GlassCard className="p-6">
+            <div className="text-center py-8">
+              <CreditCard className="h-12 w-12 text-slate-500 mx-auto mb-3" />
+              <p className="text-slate-400">No billing history yet</p>
+              <p className="text-sm text-slate-500 mt-1">
+                Your invoices will appear here after you upgrade
+              </p>
+            </div>
+          </GlassCard>
+        </div>
+
+        {/* Footer */}
+        <footer className="mt-12 pt-6 border-t border-white/10">
+          <p className="text-xs text-slate-500 text-center">
+            Questions about billing? Contact us at{" "}
+            <a href="mailto:support@stratagenie.com.au" className="text-cyan-400 hover:underline">
+              support@stratagenie.com.au
+            </a>
+          </p>
+        </footer>
+      </main>
+    </div>
+  );
+}
