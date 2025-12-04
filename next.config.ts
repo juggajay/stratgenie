@@ -12,6 +12,18 @@ const nextConfig: NextConfig = {
   },
   // Transpile ESM packages for compatibility (CH-0012: @react-pdf/renderer)
   transpilePackages: ["@react-pdf/renderer"],
+  // Image optimization configuration
+  images: {
+    // Modern image formats for better compression
+    formats: ["image/avif", "image/webp"],
+    // Allow images from Convex storage
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.convex.cloud",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
