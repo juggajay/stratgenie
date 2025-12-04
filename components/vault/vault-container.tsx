@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { VaultCategory } from "@/lib/compliance-links";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -46,6 +47,8 @@ interface VaultContainerProps {
   submissionUrl: string;
   documents: VaultDocument[];
   requiredDocs: readonly string[];
+  schemeId: Id<"schemes">;
+  categories: readonly VaultCategory[];
 }
 
 const containerIcons: Record<string, React.ReactNode> = {
@@ -60,10 +63,65 @@ export function VaultContainer({
   submissionUrl,
   documents,
   requiredDocs,
+  schemeId,
+  categories,
 }: VaultContainerProps) {
   const [verifyModalOpen, setVerifyModalOpen] = useState(false);
   const [currentDocId, setCurrentDocId] = useState<Id<"documents"> | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const markSubmitted = useMutation(api.documents.markDocumentSubmitted);
+  const generateUploadUrl = useMutation(api.documents.generateVaultUploadUrl);
+  const createVaultDocument = useMutation(api.documents.createVaultDocument);
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      // Get signed upload URL
+      const uploadUrl = await generateUploadUrl();
+
+      // Upload file to Convex storage
+      const result = await fetch(uploadUrl, {
+        method: "POST",
+        headers: { "Content-Type": file.type },
+        body: file,
+      });
+
+      if (!result.ok) {
+        throw new Error("Upload failed");
+      }
+
+      const { storageId } = await result.json();
+
+      // Use the first category for this container
+      const vaultCategory = categories[0];
+
+      // Create vault document record
+      await createVaultDocument({
+        schemeId,
+        fileId: storageId,
+        fileName: file.name,
+        vaultCategory,
+      });
+
+      // Clear the input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const getStatusBadge = (status?: string) => {
     switch (status) {
@@ -145,10 +203,22 @@ export function VaultContainer({
                 <AlertCircle className="h-4 w-4 text-destructive" />
                 <span>No documents uploaded. Required: {requiredDocs.join(", ")}</span>
               </div>
-              <Button variant="outline" size="sm">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleUploadClick}
+                disabled={isUploading}
+              >
                 <Upload className="h-4 w-4 mr-2" />
-                Upload
+                {isUploading ? "Uploading..." : "Upload"}
               </Button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                className="hidden"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
+                onChange={handleFileChange}
+              />
             </div>
           ) : (
             documents.map((doc) => (

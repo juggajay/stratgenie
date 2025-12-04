@@ -195,6 +195,64 @@ export const finalizeDocument = mutation({
 });
 
 /**
+ * Generate upload URL for vault documents (CH-0011).
+ */
+export const generateVaultUploadUrl = mutation({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.storage.generateUploadUrl();
+  },
+});
+
+/**
+ * Create a vault document from uploaded file (CH-0011).
+ */
+export const createVaultDocument = mutation({
+  args: {
+    schemeId: v.id("schemes"),
+    fileId: v.id("_storage"),
+    fileName: v.string(),
+    vaultCategory: v.union(
+      v.literal("fire_safety"),
+      v.literal("insurance"),
+      v.literal("financials"),
+      v.literal("governance"),
+      v.literal("revenue")
+    ),
+    title: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    // Determine document type from vault category
+    const typeMap: Record<string, "fire_safety" | "insurance" | "financial_report" | "agm_notice"> = {
+      fire_safety: "fire_safety",
+      insurance: "insurance",
+      financials: "financial_report",
+      governance: "agm_notice",
+    };
+
+    const docType = typeMap[args.vaultCategory] || "fire_safety";
+    const title = args.title || args.fileName.replace(/\.[^/.]+$/, "");
+
+    // Get the file URL for content reference
+    const fileUrl = await ctx.storage.getUrl(args.fileId);
+
+    const documentId = await ctx.db.insert("documents", {
+      schemeId: args.schemeId,
+      type: docType,
+      status: "final",
+      content: fileUrl || `file://${args.fileId}`,
+      title,
+      createdAt: Date.now(),
+      finalizedAt: Date.now(),
+      vaultCategory: args.vaultCategory,
+      submissionStatus: "ready",
+    });
+
+    return documentId;
+  },
+});
+
+/**
  * Get all vault documents for a scheme (CH-0011).
  * Returns documents grouped by vault category.
  */

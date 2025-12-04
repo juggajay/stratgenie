@@ -42,12 +42,36 @@ export const get = query({
 export const getByStrataNumber = query({
   args: { strataNumber: v.string() },
   handler: async (ctx, args) => {
-    return await ctx.db
+    // Require authentication to prevent enumeration attacks
+    const user = await requireAuth(ctx);
+
+    // Find the scheme
+    const scheme = await ctx.db
       .query("schemes")
       .withIndex("by_strata_number", (q) =>
         q.eq("strataNumber", args.strataNumber)
       )
       .first();
+
+    if (!scheme) {
+      return null;
+    }
+
+    // Verify user has access to this scheme
+    const membership = await ctx.db
+      .query("userSchemes")
+      .withIndex("by_user_and_scheme", (q) =>
+        q.eq("userId", user._id).eq("schemeId", scheme._id)
+      )
+      .first();
+
+    if (!membership) {
+      // User doesn't have access - return null instead of throwing
+      // to prevent revealing whether the scheme exists
+      return null;
+    }
+
+    return scheme;
   },
 });
 

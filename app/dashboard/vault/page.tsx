@@ -163,6 +163,8 @@ export default function VaultPage() {
                 submissionUrl={container.submissionUrl}
                 documents={containerDocs}
                 requiredDocs={container.requiredDocs}
+                schemeId={selectedSchemeId}
+                categories={container.categories}
               />
             );
           })}
