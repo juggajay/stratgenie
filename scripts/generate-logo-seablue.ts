@@ -26,21 +26,22 @@ Genie character (BIG - the star of the logo):
 - Purple/cyan magical smoke swirling around
 - Gold sparkles and stars
 
-TEXT (medium size, not huge):
-- "StrataGenie" in medium-sized, bold font
+TEXT (LARGE and BOLD):
+- "StrataGenie" in LARGE, EXTRA-BOLD, THICK font
 - "Strata" in VERY LIGHT GRAY (#e5e7eb) - almost white
 - "Genie" in CYAN (#06b6d4)
-- Use bold sans-serif font
-- Text should be smaller than the genie height
+- Use extra-bold/black weight sans-serif font
+- Text height should be about 2/3 (two-thirds) the height of the genie
+- Letters should be THICK and CHUNKY
 
 REQUIREMENTS:
 - PURE WHITE (#FFFFFF) background
-- BIG genie mascot on left - this is the main focus
-- Smaller text on right
+- BIG genie mascot on left
+- Text on right at 2/3 the height of the genie
 - 4:1 wide horizontal format
 - Professional tech company look
 
-The genie should be the dominant visual element.`,
+The genie is slightly larger than the text.`,
     filename: "logo-seablue-wide.png",
   },
 ];
