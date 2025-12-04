@@ -35,6 +35,8 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   FileText,
+  Beaker,
+  Loader2,
 } from "lucide-react";
 
 function FailedInvoicesSection({ schemeId }: { schemeId: Id<"schemes"> }) {
@@ -183,6 +185,22 @@ function ReportsTab({
   onReportSaved?: () => void;
 }) {
   const [reportDialogOpen, setReportDialogOpen] = useState(false);
+  const [isSeeding, setIsSeeding] = useState(false);
+  const [seedResult, setSeedResult] = useState<string | null>(null);
+  const seedTestData = useMutation(api.finance.seedTestTransactions);
+
+  const handleSeedTestData = async () => {
+    setIsSeeding(true);
+    setSeedResult(null);
+    try {
+      const result = await seedTestData({ schemeId });
+      setSeedResult(`Created ${result.transactionsCreated} test transactions with opening balances.`);
+    } catch (error) {
+      setSeedResult(`Error: ${error instanceof Error ? error.message : "Failed to seed data"}`);
+    } finally {
+      setIsSeeding(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -234,6 +252,49 @@ function ReportsTab({
             <span>Automatic filing to your Compliance Vault</span>
           </li>
         </ul>
+      </div>
+
+      {/* Test Data Seeder (Development) */}
+      <div className="rounded-xl border border-amber-500/30 bg-amber-900/10 p-6">
+        <div className="flex items-start gap-4">
+          <div className="rounded-lg bg-amber-500/20 p-3">
+            <Beaker className="h-6 w-6 text-amber-400" />
+          </div>
+          <div className="flex-1">
+            <h3 className="text-lg font-medium text-amber-400">
+              Test Data Generator
+            </h3>
+            <p className="text-sm text-amber-300/70 mt-1">
+              Create sample transactions and opening balances for FY 2024-25 to test
+              the financial reporting feature.
+            </p>
+            <div className="mt-4 flex items-center gap-3">
+              <Button
+                onClick={handleSeedTestData}
+                disabled={isSeeding}
+                variant="outline"
+                className="rounded-lg border-amber-500/50 text-amber-400 hover:bg-amber-900/30"
+              >
+                {isSeeding ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Seeding...
+                  </>
+                ) : (
+                  <>
+                    <Beaker className="h-4 w-4 mr-2" />
+                    Seed Test Data
+                  </>
+                )}
+              </Button>
+              {seedResult && (
+                <span className={`text-sm ${seedResult.startsWith("Error") ? "text-red-400" : "text-emerald-400"}`}>
+                  {seedResult}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Financial Report Dialog */}

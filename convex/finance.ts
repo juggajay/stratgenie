@@ -761,3 +761,84 @@ export const backfillTransactionFunds = mutation({
     return { updated, total: transactions.length };
   },
 });
+
+/**
+ * Seed test transactions for financial reporting testing.
+ * Creates sample income and expense transactions for the current financial year.
+ */
+export const seedTestTransactions = mutation({
+  args: {
+    schemeId: v.id("schemes"),
+  },
+  handler: async (ctx, args) => {
+    // Verify user has admin role
+    await requireRole(ctx, args.schemeId, "admin");
+
+    // Set opening balances on the scheme
+    await ctx.db.patch(args.schemeId, {
+      openingBalanceAdmin: BigInt(1500000), // $15,000.00
+      openingBalanceCapital: BigInt(2500000), // $25,000.00
+      financialYearEnd: "06-30",
+    });
+
+    // Current financial year dates (FY 2024-25: July 1 2024 - June 30 2025)
+    const baseDate = new Date("2024-09-15").getTime();
+
+    // Sample transactions - mix of admin and capital works
+    const testTransactions = [
+      // Admin Fund - Income
+      { description: "Q1 Levy Collection - Admin", amount: 450000, type: "income" as const, category: "levy_income" as const, fund: "admin" as const, daysOffset: 0 },
+      { description: "Q2 Levy Collection - Admin", amount: 450000, type: "income" as const, category: "levy_income" as const, fund: "admin" as const, daysOffset: 90 },
+      { description: "Interest on Admin Account", amount: 12500, type: "income" as const, category: "interest" as const, fund: "admin" as const, daysOffset: 180 },
+
+      // Admin Fund - Expenses
+      { description: "Building Insurance Premium", amount: 280000, type: "expense" as const, category: "insurance" as const, fund: "admin" as const, daysOffset: 15 },
+      { description: "Strata Management Fee Q1", amount: 75000, type: "expense" as const, category: "management_fees" as const, fund: "admin" as const, daysOffset: 30 },
+      { description: "Strata Management Fee Q2", amount: 75000, type: "expense" as const, category: "management_fees" as const, fund: "admin" as const, daysOffset: 120 },
+      { description: "Common Area Cleaning - Sep", amount: 35000, type: "expense" as const, category: "cleaning" as const, fund: "admin" as const, daysOffset: 45 },
+      { description: "Common Area Cleaning - Oct", amount: 35000, type: "expense" as const, category: "cleaning" as const, fund: "admin" as const, daysOffset: 75 },
+      { description: "Electricity - Common Areas Q1", amount: 42000, type: "expense" as const, category: "utilities" as const, fund: "admin" as const, daysOffset: 60 },
+      { description: "Water Rates", amount: 28000, type: "expense" as const, category: "utilities" as const, fund: "admin" as const, daysOffset: 90 },
+      { description: "Fire Safety Inspection", amount: 45000, type: "expense" as const, category: "repairs_maintenance" as const, fund: "admin" as const, daysOffset: 100 },
+      { description: "Plumber - Common Pipe Repair", amount: 85000, type: "expense" as const, category: "repairs_maintenance" as const, fund: "admin" as const, daysOffset: 110 },
+
+      // Capital Works Fund - Income
+      { description: "Q1 Levy Collection - Capital", amount: 200000, type: "income" as const, category: "levy_income" as const, fund: "capital_works" as const, daysOffset: 0 },
+      { description: "Q2 Levy Collection - Capital", amount: 200000, type: "income" as const, category: "levy_income" as const, fund: "capital_works" as const, daysOffset: 90 },
+      { description: "Interest on Capital Account", amount: 8500, type: "income" as const, category: "interest" as const, fund: "capital_works" as const, daysOffset: 180 },
+
+      // Capital Works Fund - Expenses
+      { description: "Roof Repairs - Stage 1", amount: 350000, type: "expense" as const, category: "major_works" as const, fund: "capital_works" as const, daysOffset: 50 },
+      { description: "Lift Maintenance Contract", amount: 120000, type: "expense" as const, category: "major_works" as const, fund: "capital_works" as const, daysOffset: 80 },
+      { description: "External Painting - Quote Deposit", amount: 50000, type: "expense" as const, category: "major_works" as const, fund: "capital_works" as const, daysOffset: 150 },
+    ];
+
+    let created = 0;
+    for (const tx of testTransactions) {
+      const transactionDate = baseDate + tx.daysOffset * 24 * 60 * 60 * 1000;
+
+      await ctx.db.insert("transactions", {
+        schemeId: args.schemeId,
+        description: tx.description,
+        amount: BigInt(tx.amount),
+        type: tx.type,
+        category: tx.category,
+        fund: tx.fund,
+        status: "paid",
+        transactionDate,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+      });
+      created++;
+    }
+
+    return {
+      success: true,
+      transactionsCreated: created,
+      openingBalances: {
+        admin: "$15,000.00",
+        capital: "$25,000.00",
+      },
+    };
+  },
+});
