@@ -12,6 +12,7 @@ import { SchemeSelector } from "@/components/dashboard/scheme-selector";
 import { InvoiceUploadZone } from "@/components/finance/invoice-upload-zone";
 import { InvoiceReviewDialog } from "@/components/finance/invoice-review-dialog";
 import { TransactionList, PendingTransactionsBadge } from "@/components/finance/transaction-list";
+import { FinancialReportDialog } from "@/components/finance/financial-report-dialog";
 import { LevyRunsList } from "@/components/levies/levy-runs-list";
 import { StrataRollList } from "@/components/levies/strata-roll-list";
 import { Button } from "@/components/ui/button";
@@ -33,6 +34,7 @@ import {
   Building,
   ArrowUpRight,
   ArrowDownRight,
+  FileText,
 } from "lucide-react";
 
 function FailedInvoicesSection({ schemeId }: { schemeId: Id<"schemes"> }) {
@@ -173,6 +175,78 @@ function IncomeTab({ schemeId }: { schemeId: Id<"schemes"> }) {
   );
 }
 
+function ReportsTab({
+  schemeId,
+  onReportSaved,
+}: {
+  schemeId: Id<"schemes">;
+  onReportSaved?: () => void;
+}) {
+  const [reportDialogOpen, setReportDialogOpen] = useState(false);
+
+  return (
+    <div className="space-y-6">
+      {/* Generate Report Card */}
+      <div className="rounded-xl border border-border bg-card p-6 shadow-card">
+        <div className="flex items-start gap-4">
+          <div className="rounded-lg bg-cyan-500/10 p-3">
+            <FileText className="h-6 w-6 text-cyan-500" />
+          </div>
+          <div className="flex-1">
+            <h3 className="text-lg font-medium">
+              Statement of Key Financial Information
+            </h3>
+            <p className="text-sm text-muted-foreground mt-1">
+              Generate the statutory financial report required for your AGM under
+              the NSW Strata Schemes Management Regulation 2016.
+            </p>
+            <div className="mt-4">
+              <Button
+                onClick={() => setReportDialogOpen(true)}
+                className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg shadow-lg shadow-cyan-600/20"
+              >
+                <FileText className="h-4 w-4 mr-2" />
+                Generate Statutory Report
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Info about the report */}
+      <div className="rounded-xl border border-border bg-card/50 p-6">
+        <h4 className="font-medium mb-3">What&apos;s included in this report?</h4>
+        <ul className="space-y-2 text-sm text-muted-foreground">
+          <li className="flex items-start gap-2">
+            <span className="text-cyan-500">&#x2022;</span>
+            <span>Opening and closing balances for Admin and Capital Works funds</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-cyan-500">&#x2022;</span>
+            <span>Income and expenditure breakdown by statutory category</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-cyan-500">&#x2022;</span>
+            <span>Professional PDF format compliant with NSW regulations</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-cyan-500">&#x2022;</span>
+            <span>Automatic filing to your Compliance Vault</span>
+          </li>
+        </ul>
+      </div>
+
+      {/* Financial Report Dialog */}
+      <FinancialReportDialog
+        schemeId={schemeId}
+        open={reportDialogOpen}
+        onOpenChange={setReportDialogOpen}
+        onSaved={onReportSaved}
+      />
+    </div>
+  );
+}
+
 export default function FinancePage() {
   const { selectedSchemeId, setSelectedSchemeId } = useSelectedScheme();
   const [activeTab, setActiveTab] = useState("expenses");
@@ -250,7 +324,7 @@ export default function FinancePage() {
           <div className="space-y-6">
             {selectedSchemeId ? (
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-6">
+                <TabsList className="grid w-full grid-cols-3 mb-6">
                   <TabsTrigger value="expenses" className="gap-2">
                     <ArrowUpRight className="h-4 w-4" />
                     Expenses
@@ -258,6 +332,10 @@ export default function FinancePage() {
                   <TabsTrigger value="income" className="gap-2">
                     <ArrowDownRight className="h-4 w-4" />
                     Income / Levies
+                  </TabsTrigger>
+                  <TabsTrigger value="reports" className="gap-2">
+                    <FileText className="h-4 w-4" />
+                    Reports
                   </TabsTrigger>
                 </TabsList>
 
@@ -271,6 +349,10 @@ export default function FinancePage() {
 
                 <TabsContent value="income">
                   <IncomeTab schemeId={selectedSchemeId} />
+                </TabsContent>
+
+                <TabsContent value="reports">
+                  <ReportsTab schemeId={selectedSchemeId} />
                 </TabsContent>
               </Tabs>
             ) : (

@@ -10,6 +10,8 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  // Transpile ESM packages for compatibility (CH-0012: @react-pdf/renderer)
+  transpilePackages: ["@react-pdf/renderer"],
 };
 
 export default nextConfig;

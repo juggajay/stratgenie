@@ -2,6 +2,13 @@ import { v } from "convex/values";
 import { mutation, query, action, internalQuery, internalMutation } from "./_generated/server";
 import { api, internal } from "./_generated/api";
 import { checkAccess, requireRole } from "./lib/permissions";
+import {
+  inferFundFromCategory,
+  getStatutoryExpenseCategory,
+  createEmptyFinancialStats,
+  type TransactionCategory,
+  type FundType,
+} from "./lib/financialReporting";
 
 // ============================================================================
 // Invoice Queries
@@ -87,6 +94,10 @@ export const generateUploadUrl = mutation({
   },
 });
 
+// Allowed file extensions for invoice uploads
+const ALLOWED_INVOICE_EXTENSIONS = [".pdf", ".png", ".jpg", ".jpeg"];
+const MAX_FILENAME_LENGTH = 255;
+
 /**
  * Create an invoice record after file upload.
  * This triggers the extraction process.
@@ -100,6 +111,22 @@ export const createInvoice = mutation({
   handler: async (ctx, args) => {
     // Verify user has member role for this scheme
     await requireRole(ctx, args.schemeId, "member");
+
+    // Validate filename length to prevent abuse
+    if (args.fileName.length > MAX_FILENAME_LENGTH) {
+      throw new Error("Filename too long");
+    }
+
+    // Validate file extension
+    const fileNameLower = args.fileName.toLowerCase();
+    const hasValidExtension = ALLOWED_INVOICE_EXTENSIONS.some((ext) =>
+      fileNameLower.endsWith(ext)
+    );
+    if (!hasValidExtension) {
+      throw new Error(
+        `Invalid file type. Allowed types: ${ALLOWED_INVOICE_EXTENSIONS.join(", ")}`
+      );
+    }
 
     // Validate scheme exists
     const scheme = await ctx.db.get(args.schemeId);
@@ -567,5 +594,170 @@ export const deleteTransaction = mutation({
     await ctx.db.delete(args.transactionId);
 
     return { success: true };
+  },
+});
+
+// ============================================================================
+// Statutory Financial Reporting (CH-0012)
+// ============================================================================
+
+/**
+ * Get aggregated financial statistics for statutory reporting.
+ * Aggregates approved transactions by fund and category for a date range.
+ */
+export const getFinancialStats = query({
+  args: {
+    schemeId: v.id("schemes"),
+    startDate: v.number(), // timestamp
+    endDate: v.number(), // timestamp
+  },
+  handler: async (ctx, args) => {
+    // Verify user has access to this scheme
+    await checkAccess(ctx, args.schemeId);
+
+    // Get all approved transactions in the date range
+    const allTransactions = await ctx.db
+      .query("transactions")
+      .withIndex("by_scheme_and_status", (q) =>
+        q.eq("schemeId", args.schemeId).eq("status", "approved")
+      )
+      .collect();
+
+    // Filter by date range (using invoiceDate or createdAt)
+    const transactions = allTransactions.filter((t) => {
+      const txDate = t.invoiceDate
+        ? new Date(t.invoiceDate).getTime()
+        : t.createdAt;
+      return txDate >= args.startDate && txDate <= args.endDate;
+    });
+
+    // Initialize stats
+    const stats = createEmptyFinancialStats(args.startDate, args.endDate);
+    stats.transactionCount = transactions.length;
+
+    // Aggregate transactions
+    for (const tx of transactions) {
+      // Determine fund (use explicit fund or infer from category)
+      const fund: FundType =
+        tx.fund || inferFundFromCategory(tx.category as TransactionCategory);
+      const fundStats =
+        fund === "admin" ? stats.adminFund : stats.capitalWorksFund;
+
+      if (tx.type === "income") {
+        // For now, all income is categorized as "other" unless we add income types
+        fundStats.income.other += tx.amount;
+        fundStats.income.total += tx.amount;
+      } else {
+        // Expense - categorize by statutory category
+        const category = getStatutoryExpenseCategory(
+          tx.category as TransactionCategory,
+          fund
+        );
+
+        // Add to category (create if doesn't exist)
+        if (!fundStats.expense[category]) {
+          fundStats.expense[category] = 0n;
+        }
+        fundStats.expense[category] += tx.amount;
+        fundStats.expense.total += tx.amount;
+      }
+    }
+
+    return stats;
+  },
+});
+
+/**
+ * Get scheme financial settings including opening balances.
+ */
+export const getSchemeFinancialSettings = query({
+  args: {
+    schemeId: v.id("schemes"),
+  },
+  handler: async (ctx, args) => {
+    // Verify user has access to this scheme
+    await checkAccess(ctx, args.schemeId);
+
+    const scheme = await ctx.db.get(args.schemeId);
+    if (!scheme) {
+      throw new Error("Scheme not found");
+    }
+
+    return {
+      openingBalanceAdmin: scheme.openingBalanceAdmin,
+      openingBalanceCapital: scheme.openingBalanceCapital,
+      financialYearEnd: scheme.financialYearEnd || "06-30",
+    };
+  },
+});
+
+/**
+ * Update scheme financial settings (opening balances).
+ */
+export const updateSchemeFinancialSettings = mutation({
+  args: {
+    schemeId: v.id("schemes"),
+    openingBalanceAdmin: v.optional(v.int64()),
+    openingBalanceCapital: v.optional(v.int64()),
+    financialYearEnd: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    // Verify user has admin role for this scheme
+    await requireRole(ctx, args.schemeId, "admin");
+
+    const updates: Record<string, unknown> = {};
+
+    if (args.openingBalanceAdmin !== undefined) {
+      updates.openingBalanceAdmin = args.openingBalanceAdmin;
+    }
+    if (args.openingBalanceCapital !== undefined) {
+      updates.openingBalanceCapital = args.openingBalanceCapital;
+    }
+    if (args.financialYearEnd !== undefined) {
+      // Validate format MM-DD
+      if (!/^\d{2}-\d{2}$/.test(args.financialYearEnd)) {
+        throw new Error("Financial year end must be in MM-DD format");
+      }
+      updates.financialYearEnd = args.financialYearEnd;
+    }
+
+    if (Object.keys(updates).length > 0) {
+      await ctx.db.patch(args.schemeId, updates);
+    }
+
+    return { success: true };
+  },
+});
+
+/**
+ * Backfill fund field on existing transactions based on category.
+ * This is a migration helper for CH-0012.
+ */
+export const backfillTransactionFunds = mutation({
+  args: {
+    schemeId: v.id("schemes"),
+  },
+  handler: async (ctx, args) => {
+    // Verify user has admin role
+    await requireRole(ctx, args.schemeId, "admin");
+
+    // Get all transactions without a fund field
+    const transactions = await ctx.db
+      .query("transactions")
+      .withIndex("by_scheme", (q) => q.eq("schemeId", args.schemeId))
+      .collect();
+
+    let updated = 0;
+    for (const tx of transactions) {
+      if (tx.fund === undefined) {
+        const inferredFund = inferFundFromCategory(
+          tx.category as TransactionCategory
+        );
+        await ctx.db.patch(tx._id, { fund: inferredFund });
+        updated++;
+      }
+    }
+
+    return { updated, total: transactions.length };
   },
 });

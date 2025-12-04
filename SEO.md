@@ -2,7 +2,7 @@
 
 > **IMPORTANT:** This is the single source of truth for all SEO work on StrataGenie. When making SEO changes, update this file rather than creating new documentation. This ensures we have one comprehensive reference.
 
-**Last Updated:** 3 December 2025
+**Last Updated:** 4 December 2025
 
 ---
 
@@ -16,12 +16,13 @@
 6. [Interactive SEO Tools](#interactive-seo-tools)
 7. [Suburb Landing Pages](#suburb-landing-pages)
 8. [Email Capture & Lead Generation](#email-capture--lead-generation)
-9. [Sitemap & Indexing](#sitemap--indexing)
-10. [Middleware Configuration](#middleware-configuration)
-11. [Pending Work](#pending-work)
-12. [Content Inventory](#content-inventory)
-13. [Target Keywords](#target-keywords)
-14. [Changelog](#changelog)
+9. [Master Keyword Strategy Framework](#master-keyword-strategy-framework)
+10. [Sitemap & Indexing](#sitemap--indexing)
+11. [Middleware Configuration](#middleware-configuration)
+12. [Pending Work](#pending-work)
+13. [Content Inventory](#content-inventory)
+14. [Target Keywords](#target-keywords)
+15. [Changelog](#changelog)
 
 ---
 
@@ -464,6 +465,507 @@ Both emails include:
 
 ---
 
+## Master Keyword Strategy Framework
+
+This section provides actionable guidelines for writers, editors, and content creators to optimize content naturally while following SEO best practices. These rules ensure consistent keyword optimization across all StrataGenie content.
+
+### 1. Keyword Density Guidelines by Content Type
+
+Keyword density (primary keyword as % of total words) varies by content type. These are targets, not hard rules—prioritize natural readability.
+
+#### Blog Posts (800–1,500 words)
+
+| Element | Target | Example |
+|---------|--------|---------|
+| Primary keyword density | 0.5–1.2% | For "strata levy payment plans nsw": 4–18 occurrences |
+| LSI keywords (per type) | 3–5 variations | "levy payment plan", "payment options", "strata payment schedules" |
+| Avoid over-optimization below | 0.3% | Less than 2–3 occurrences = likely missed opportunity |
+| Avoid over-optimization above | 2.0% | More than 30 occurrences in 1,500 words = keyword stuffing |
+
+**Writer's Rule:** Read the post aloud. If you notice the keyword awkwardly repeated, you've gone too far.
+
+#### Pillar Pages (2,000–3,000 words)
+
+| Element | Target | Example |
+|---------|--------|---------|
+| Primary keyword density | 0.4–0.9% | For "strata compliance nsw": 8–27 occurrences |
+| LSI keywords (per type) | 5–8 variations | "compliance requirements", "strata regulations", "nsw strata law" |
+| Internal links to cluster posts | 4–8 | Link to all child blog posts at least once |
+| Avoid over-optimization above | 1.5% | Pillar pages should feel authoritative, not salesy |
+
+**Writer's Rule:** A pillar page teaches deeply. Keywords should feel natural across many sections and subsections.
+
+#### Guide Pages & Resource Pages (1,500–2,500 words)
+
+| Element | Target | Example |
+|---------|--------|---------|
+| Primary keyword density | 0.5–1.0% | 7–25 occurrences |
+| LSI keywords (per type) | 4–6 variations | Mix synonyms and related phrases |
+| External authority links | 2–4 | Link to NSW Fair Trading, legislation, or industry resources |
+
+#### Tool Pages (400–800 words marketing copy)
+
+| Element | Target | Example |
+|---------|--------|---------|
+| Primary keyword density | 0.8–1.5% | For "strata levy calculator": 3–12 occurrences |
+| Tool-specific keywords | 2–3 | "free calculator", "instant results", "no signup required" |
+| Trust signals | 3–5 | User testimonials, "trusted by X% of schemes", certifications |
+
+**Writer's Rule:** Tool pages are sales-focused. Keywords can appear slightly higher because each sentence serves the CTA.
+
+#### Suburb Landing Pages (300–600 words)
+
+| Element | Target | Example |
+|---------|--------|---------|
+| Primary keyword density | 1.0–2.0% | For "[suburb] strata management": 3–12 occurrences |
+| Local modifiers | 5–8 | Suburb name, postcode, regional term, "North Sydney area" |
+| LSI keywords | 3–4 | "strata committees", "levy rates", "compliance" |
+
+**Writer's Rule:** Suburb pages are thin content but locally targeted. Higher keyword density is acceptable because the page is focused.
+
+---
+
+### 2. LSI Keyword Integration Rules
+
+**LSI (Latent Semantic Indexing) keywords** are semantically related terms that help Google understand context and topical authority. They reduce the need for exact-match keyword repetition.
+
+#### How to Identify LSI Keywords
+
+1. **Google Search Suggestions:** Type your primary keyword in Google, note the autocomplete suggestions and "People also ask" section.
+2. **Related Searches:** Scroll to the bottom of Google SERP for related searches.
+3. **SEO Tools:** Use Ahrefs, SEMrush, Moz to see related terms that rank alongside your target keyword.
+4. **Industry Terminology:** Use NSW Fair Trading, Strata Community Association, or Owners Corporations Act terminology.
+
+#### Example LSI Clusters for "Strata Levy Payment Plans NSW"
+
+**Primary Keyword:** strata levy payment plans nsw
+
+**LSI Keyword Variations:**
+- Synonyms: payment schedules, payment arrangements, payment options
+- Related phrases: strata debt payment plans, financial hardship, levy arrears
+- Problem phrases: struggling with strata levies, can't pay strata levies
+- Action phrases: how to negotiate levy payments, apply for payment plan
+
+#### LSI Integration Rules
+
+| Rule | Example | Why |
+|------|---------|-----|
+| Use 3–5 LSI variations per 500 words | In a 1,500-word post, use 9–15 unique LSI terms | Signals to Google the content depth and semantic relevance |
+| Vary sentence structure | Don't say "strata levy payment plans" every time | Mix: "payment arrangements", "paying strata levies", "levy schedules" |
+| Place LSI in different sections | H2 headers, body paragraphs, FAQs, meta description | Google weights LSI heavily when distributed across structure |
+| Never force LSI keywords | Skip a variation if it makes the sentence awkward | Natural readability > forced keyword variation |
+| Use LSI in anchor text | "Learn about levy payment plans" vs "Click here" | Rich anchor text helps Google index context |
+
+#### LSI Placement Best Practice
+
+For a 1,500-word blog post structure:
+
+```
+H1 (primary keyword): "Strata Levy Payment Plans NSW"
+↓
+Intro (1 LSI variation): "If you're struggling with strata levies..."
+↓
+H2 #1 (1 LSI): "Understanding Strata Levy Payment Arrangements"
+    Body paragraph (2 LSI): "payment schedules", "financial hardship"
+↓
+H2 #2 (1 LSI): "How to Negotiate Payment Options"
+    Body paragraph (2 LSI): "levy arrears", "payment schedules"
+↓
+FAQ Section (3-4 LSI variations)
+↓
+Conclusion (1 LSI): "Taking action on levy payments"
+```
+
+---
+
+### 3. Entity Optimization Checklist
+
+**Entities** in SEO are real-world "things": people, places, organizations, concepts. Google's Knowledge Graph ranks pages that clearly define and link entities.
+
+#### Core Entity Definitions for StrataGenie
+
+Before writing, confirm your content defines these entities:
+
+**NSW Strata Management Entities:**
+- Owners Corporation
+- Strata Manager (role)
+- Strata Committee
+- Strata Scheme
+- Scheme Administrator
+- Lot Owner
+- Common Property
+- Unit Entitlement
+- Administrative Fund
+- Capital Works Fund
+
+**NSW Government Entities:**
+- NSW Fair Trading
+- Owners Corporations Act 2015
+- Strata Schemes Management Act 2015
+- Strata Hub (government portal)
+- Local Council / Local Government Area
+
+#### Entity Optimization Checklist
+
+For every blog post or pillar page, fill this out:
+
+```
+✓ Primary Entity: [Define in opening sentence]
+  - Definition provided in first paragraph? YES / NO
+  - First mention includes official title? YES / NO
+
+✓ Secondary Entities: [List 3-5]
+  1. [Entity]: Defined at first mention? YES / NO
+  2. [Entity]: Internal link to related content? YES / NO
+  3. [Entity]: External link to official source? YES / NO
+  4. [Entity]: Mentioned in schema markup? YES / NO
+  5. [Entity]: Appears in H2 or H3 headers? YES / NO
+
+✓ Relationship Clarity:
+  - How does primary entity relate to secondary entities? [Explained]
+  - Are hierarchies clear? (e.g., Owners Corp → Committee → Secretary) YES / NO
+
+✓ Schema Markup:
+  - ArticleSchema includes schema:mentions[]? YES / NO
+  - Organization schema links to related entities? YES / NO
+```
+
+#### Entity Integration Examples
+
+**Good Entity Definition:**
+"An Owners Corporation is the legal entity representing all lot owners in a strata scheme. Under NSW law, the Owners Corporation automatically holds legal title to common property on behalf of members."
+
+**Poor Entity Definition:**
+"The Owners Corp is important for strata."
+
+---
+
+### 4. Keyword Placement Best Practices
+
+**Strategic placement** of primary and LSI keywords in key positions signals importance to Google.
+
+#### Title Tag Optimization
+
+| Position | Rule | Example |
+|----------|------|---------|
+| **Start of title (ideal)** | Place primary keyword within first 3 words | ✓ "Strata Levy Payment Plans NSW: 2025 Guide" |
+| Length | 50–60 characters | ✓ Fits in SERP preview |
+| Avoid keyword stuffing | Max 1 primary keyword + 1 modifier | ✗ "Strata Levy Payment Plans NSW Payment Plans" |
+| Include power words | "Guide", "How to", "2025", "Complete", "Free" | ✓ "Complete Guide to Strata Levy Payment Plans NSW" |
+
+**Writer's Rule:** Title tags are billboards. The primary keyword should be the first idea in the reader's mind.
+
+#### H1 Header Optimization
+
+| Rule | Example |
+|------|---------|
+| One H1 per page only | ✓ One H1 at the top |
+| Include primary keyword naturally | ✓ "How to Negotiate Strata Levy Payment Plans in NSW" |
+| Avoid exact match title duplication | ✓ H1 slightly different from title tag |
+| Use H1 for the main topic, not a feature | ✗ "Welcome to Our Levy Payment Calculator" (bad) |
+
+**Bad H1:** "Welcome"
+**Good H1:** "2025 Guide to Strata Levy Payment Plans in NSW"
+
+#### H2 & H3 Header Optimization
+
+| Rule | Example |
+|------|---------|
+| Include LSI keyword if natural | ✓ "H2: What Are Strata Levy Payment Arrangements?" |
+| Create descriptive subheadings | ✓ "H3: Step 1 – Request a Payment Schedule" |
+| Use questions (FAQ pattern) | ✓ "H2: Can I Negotiate My Strata Levies?" |
+| Avoid keyword stuffing in headers | ✗ "Strata Levy Payment Plans Payment Arrangements Options" |
+| Headers should guide reader, not just optimize | ✓ Clear structure that helps skimming |
+
+**H2 Structure for a "How To" Post:**
+```
+H1: How to Negotiate Strata Levy Payment Plans NSW
+  H2: Why Negotiate Levy Payments?
+  H2: Step-by-Step Guide to Requesting Payment Plans
+    H3: Step 1: Contact Your Strata Manager
+    H3: Step 2: Provide Financial Hardship Documentation
+    H3: Step 3: Propose a Payment Schedule
+  H2: Common Payment Options in NSW
+  H2: What If Your Request Is Denied?
+```
+
+#### Meta Description Optimization
+
+| Rule | Example |
+|------|---------|
+| Length | 150–160 characters (fits on mobile + desktop) |
+| Include primary keyword | ✓ "Learn about strata levy payment plans in NSW..." |
+| Include LSI keyword | ✓ "...payment arrangements and financial hardship options" |
+| Include CTA | ✓ "...Start your 7-day free trial" |
+| Avoid duplication | ✓ Each page has unique description |
+
+**Example Meta Description:**
+"Struggling with strata levies? Learn about NSW payment plans and financial hardship options. Get answers to common questions. Start free."
+(158 characters)
+
+#### First 100 Words Optimization
+
+| Rule | Why |
+|------|-----|
+| Include primary keyword in opening paragraph | Google weights early content more heavily |
+| Include LSI keyword in opening paragraph | Signals topic relevance from the start |
+| Define the topic clearly | Readers (and Google) understand what they're reading |
+| Include call-to-action hint | "In this guide, you'll learn..." |
+
+**Good Opening (First 100 words):**
+"Strata levy payment plans are formal arrangements negotiated between lot owners and their Owners Corporation to spread payments over time. If you're facing financial hardship or struggling with levy payment schedules, NSW law allows you to request a payment arrangement. In this guide, we'll walk through the process, explore common payment options, and answer the questions we hear most often from schemes managing these situations."
+
+#### Body Content Optimization
+
+| Position | Rule | Example |
+|----------|------|---------|
+| **First mention** | Use primary keyword, bold it | "**Strata levy payment plans** are arrangements..." |
+| **Each section** | Start section with LSI variation | "H2: Understanding Payment Arrangements" |
+| **1 per 300 words** | Natural primary keyword repetition | 1 mention per 300-word section |
+| **Anchor text** | Use descriptive text with keywords | ✓ "Learn about levy payment options" vs ✗ "Click here" |
+| **Lists/bullets** | Include LSI keywords in list items | ✓ Each bullet includes related term |
+
+#### Image Alt Text & File Names
+
+| Element | Rule | Example |
+|----------|------|---------|
+| **Alt text** | Include primary + 1 LSI keyword | "Strata levy payment plan spreadsheet" (not "image1") |
+| **File names** | Use keywords with hyphens | `strata-levy-payment-schedule.png` (not `image_2.jpg`) |
+| **Image titles** | Descriptive, not keyword-stuffed | "A sample payment plan spreadsheet" |
+
+---
+
+### 5. Over-Optimization Warning Signs
+
+**Over-optimization** (keyword stuffing) looks unnatural, harms readability, and triggers Google penalties. Watch for these red flags:
+
+#### Red Flag Checklist
+
+| Red Flag | What It Looks Like | Fix |
+|----------|-------------------|-----|
+| **Keyword in every sentence** | "Strata levy payment plans can help. Strata levy payment plans let you... Strata levy payment plans..." | Use LSI: "payment arrangements", "payment schedules", "payment options" |
+| **Awkward sentence structure** | "Strata levy payment plans for strata levy payment are plans for strata." | Rewrite naturally: "Many schemes offer flexible payment arrangements." |
+| **Hidden/low-contrast text** | Cramming keywords in white text on white background | Never use hidden text; it's a black-hat technique |
+| **Keyword in internal anchor text excessively** | Every link says "strata levy payment plans" | Vary anchor: "payment options", "levy schedules", "financial hardship" |
+| **Unrelated LSI keywords** | Adding random strata terms that don't fit context | Only use LSI keywords that genuinely relate to the topic |
+| **Exact-match domain overuse** | Mentioning the domain name repeatedly | Use domain 0–1 times naturally in body content |
+| **Comment spam with keywords** | Bot-generated comments with keywords and links | Moderate comments; remove obvious spam |
+
+#### Over-Optimization Scoring
+
+**Rate your content (0–10 scale):**
+
+```
+0–2: Severe over-optimization (keyword stuffing)
+     → Rewrite major sections
+
+3–5: Moderate over-optimization
+     → Remove 30–40% of primary keyword mentions
+     → Add more LSI keyword variation
+
+6–8: Healthy optimization
+     → Minor tweaks for LSI variety
+     → Good balance of keywords and readability
+
+9–10: Natural, reader-first content
+     → Keywords integrated seamlessly
+     → Multiple sections, varied terminology
+     → CTA is clear without being pushy
+```
+
+#### Copy-and-Paste Detection
+
+**Google's algorithms (especially after Helpful Content Update) penalize low-effort, AI-generated content.** Avoid:
+
+- Copying large sections from competitors
+- Using ChatGPT/Claude output without heavy editing
+- Reusing the same sentence structure across multiple posts
+- Generic intro/outro templates
+
+**Test:** Paste a paragraph into Copyscape or use Google's site: operator to check for duplicates.
+
+---
+
+### 6. Natural Keyword Optimization Workflow
+
+**Step-by-step process for writers to optimize content naturally:**
+
+#### Step 1: Keyword Research (Before Writing)
+
+```
+1. Choose primary keyword (target page, search intent)
+2. Identify 5–7 LSI keywords:
+   - Google autocomplete
+   - People also ask
+   - Related searches
+   - Ahrefs/SEMrush "related keywords"
+3. Note search intent (informational vs. transactional)
+4. Check top 3 competing pages for structure and keywords
+```
+
+**Output:** Keyword brief (1 page with primary + LSI keywords + structure)
+
+#### Step 2: Outline with Keywords (Before Writing)
+
+```
+H1: [Primary keyword in conversational way]
+└─ Intro paragraph: Define primary keyword + mention 1 LSI
+└─ H2 #1: [Include LSI keyword #1]
+│  └─ Body: Natural topic discussion
+└─ H2 #2: [Include LSI keyword #2]
+│  └─ Body: Natural topic discussion
+└─ H2 #3: [FAQ or problem-solution, include LSI #3]
+└─ Conclusion: Restate primary keyword + 1 LSI + CTA
+```
+
+#### Step 3: Write Naturally (Don't Keyword-Hunt)
+
+```
+Focus on:
+- Clear, concise sentences
+- Helping the reader first
+- Using terminology naturally
+- Answering reader questions
+
+Don't focus on:
+- Hitting exact word counts
+- Forcing keywords
+- Matching competitor structure word-for-word
+```
+
+#### Step 4: Edit for Keyword Optimization (After First Draft)
+
+**Pass 1 – Readability:**
+- Read aloud. Awkward? Rewrite.
+- Remove passive voice where possible.
+- Check: Do headers guide the reader?
+
+**Pass 2 – Keyword Density:**
+- Count primary keyword occurrences.
+- Is it 0.5–1.2% for blogs? (Use word count / keyword count)
+- Too high? Replace 30% with LSI keywords.
+- Too low? Add 1–2 mentions in intro/H2/conclusion.
+
+**Pass 3 – LSI Variety:**
+- Highlight every primary keyword mention.
+- Highlight every LSI keyword mention.
+- Do sections feel repetitive? Add new LSI terms.
+- Is each section distinct? Good.
+
+**Pass 4 – Structure & Links:**
+- H1: Includes primary keyword? ✓
+- Meta description: Includes primary + LSI keyword + CTA? ✓
+- First 100 words: Sets topic clearly? ✓
+- Internal links: Relevant, natural anchor text? ✓
+- External links: Credible sources (NSW Fair Trading, etc.)? ✓
+
+**Pass 5 – Final Read:**
+- Read the entire piece again.
+- Does it feel natural to a human reader?
+- Would you share this content?
+- Would you trust advice from this page?
+
+If yes to all three: **Publish.**
+
+#### Step 5: Monitor Performance (After Publishing)
+
+| Metric | Where to Check | Action |
+|--------|-----------------|--------|
+| Impressions for target keyword | Google Search Console | Is it showing in top 50? (good starting point) |
+| Click-through rate (CTR) | GSC | Is CTR for your title above 4%? If not, A/B test titles |
+| Average position | GSC | Trending up or down? |
+| User engagement (time on page, bounce rate) | Google Analytics | Is it > 2 min? If < 1 min, content may be off-topic |
+| Conversions (email signups, downloads, trial signups) | Analytics + Convex | Are visitors taking action? If not, strengthen CTA |
+
+**Optimization Cadence:**
+- After 2 weeks: Check GSC impressions
+- After 6 weeks: Check position and CTR
+- After 3 months: Major content update if underperforming
+- After 6 months: Full content refresh (update stats, add new LSI, fix broken links)
+
+---
+
+### 7. Content Optimization Checklist
+
+Use this pre-publish checklist for every piece of content:
+
+#### SEO Checklist (Before Publishing)
+
+```
+KEYWORD OPTIMIZATION:
+☐ Primary keyword in H1 (conversational, not forced)
+☐ Primary keyword in first 100 words
+☐ Primary keyword in meta description
+☐ Primary keyword in title tag (first 3 words ideally)
+☐ LSI keyword density: 3–5 per 500 words
+☐ Keyword density check: 0.5–1.2% (count: length / keyword count)
+☐ No awkward keyword repetition (read aloud test)
+
+STRUCTURE & READABILITY:
+☐ One H1 per page
+☐ H2s follow logical flow
+☐ H2s include LSI keywords where natural
+☐ Each section is 200–400 words (scannable)
+☐ Short paragraphs (2–3 sentences max)
+☐ Bullet points or lists for scanability
+☐ Conclusion summarizes key points
+☐ CTA is clear and next steps obvious
+
+ENTITY & SEMANTIC SEO:
+☐ Primary entity defined in first paragraph
+☐ Secondary entities mentioned and linked
+☐ No jargon without explanation
+☐ NSW law/terminology used correctly
+☐ Internal links to related content (3–5)
+☐ External links to authority sources (2–3)
+
+TECHNICAL & UX:
+☐ Meta description: 150–160 characters
+☐ Image alt text includes keyword (not stuffed)
+☐ Internal anchor text is descriptive
+☐ No hidden text or cloaking
+☐ Page loads fast (test in Google PageSpeed)
+☐ Mobile-friendly (test in Google Mobile-Friendly Test)
+☐ Frontmatter (title, description, category, tags) complete
+☐ Schema markup properly added (if applicable)
+
+CONTENT QUALITY:
+☐ No copyright or plagiarism (Copyscape check)
+☐ Facts are cited or linked to sources
+☐ Writer's voice is consistent
+☐ No spelling/grammar errors (Grammarly check)
+☐ Links are working (no 404s)
+☐ Content is unique (not copy-paste from other pages)
+☐ Tone matches audience (volunteer committee members, not technical)
+
+ENGAGEMENT & CONVERSION:
+☐ CTA is above the fold (visible without scrolling)
+☐ CTA is clear (button or compelling text)
+☐ Related posts linked at bottom
+☐ Newsletter signup or tool offer included
+☐ Email capture form works
+☐ Testimonial or social proof included (if applicable)
+```
+
+---
+
+### 8. Keywords-Per-Page Quick Reference
+
+**Use this table to quickly reference keyword targets by content type:**
+
+| Content Type | Length | Primary KW Density | LSI Count | Target Positions | Expect Ranking |
+|--------------|--------|-------------------|-----------|-----------------|---|
+| Blog Post | 800–1,500 | 0.5–1.2% | 3–5 | 10–30 | 3–6 months |
+| Pillar Page | 2,000–3,000 | 0.4–0.9% | 5–8 | 10–20 | 4–8 months |
+| Guide Page | 1,500–2,500 | 0.5–1.0% | 4–6 | 10–25 | 3–6 months |
+| Tool Page | 400–800 | 0.8–1.5% | 2–3 | 5–20 | 2–4 months |
+| Suburb Page | 300–600 | 1.0–2.0% | 3–4 | 15–50 | 2–3 months |
+| FAQ Section | 200–400 | 1.0–1.5% | 2–3 | 20–100 | 2–4 weeks |
+
+**Note:** Rankings are estimates assuming no other ranking factors are negative (site authority, backlinks, etc.).
+
+---
+
 ## Sitemap & Indexing
 
 ### Sitemap Generation
@@ -630,6 +1132,19 @@ All 20 suburbs listed in the Suburb Landing Pages section above.
 ---
 
 ## Changelog
+
+### 4 December 2025
+
+- Added **Master Keyword Strategy Framework** section:
+  - Keyword density guidelines by content type (blog, pillar, guide, tool, suburb pages)
+  - LSI keyword integration rules with identification techniques
+  - Entity optimization checklist for semantic SEO
+  - Comprehensive keyword placement best practices (H1, H2, meta, body, images)
+  - Over-optimization warning signs with red flag checklist
+  - Natural keyword optimization workflow (5-step process for writers)
+  - Pre-publish SEO checklist (31-point comprehensive review)
+  - Quick reference table for keyword density by content type
+  - Writer's rules and actionable guidelines throughout
 
 ### 3 December 2025
 

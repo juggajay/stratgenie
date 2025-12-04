@@ -47,6 +47,11 @@ export default defineSchema({
     // Scheme details
     lotCount: v.optional(v.number()), // Number of lots in the scheme
 
+    // CH-0012: Statutory financial reporting
+    openingBalanceAdmin: v.optional(v.int64()), // cents (AUD)
+    openingBalanceCapital: v.optional(v.int64()), // cents (AUD)
+    financialYearEnd: v.optional(v.string()), // e.g., "06-30" for June 30
+
     // Trial/subscription tracking (CH-0008)
     trialEndsAt: v.optional(v.number()), // timestamp, null = paid/grandfathered
   })
@@ -162,6 +167,8 @@ export default defineSchema({
         v.literal("other")
       )
     ),
+    // CH-0012: Fund assignment for statutory reporting
+    fund: v.optional(v.union(v.literal("admin"), v.literal("capital_works"))),
     status: v.union(
       v.literal("draft"),
       v.literal("approved"),

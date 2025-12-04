@@ -274,6 +274,57 @@ export const getVaultDocuments = query({
 });
 
 /**
+ * Create a new document (CH-0012: Financial Reports).
+ * Generic document creation for programmatic use.
+ */
+export const createDocument = mutation({
+  args: {
+    schemeId: v.id("schemes"),
+    type: v.union(
+      v.literal("agm_notice"),
+      v.literal("agm_minutes"),
+      v.literal("levy_notice"),
+      v.literal("fire_safety"),
+      v.literal("insurance"),
+      v.literal("financial_report")
+    ),
+    title: v.string(),
+    content: v.string(),
+    vaultCategory: v.optional(
+      v.union(
+        v.literal("fire_safety"),
+        v.literal("insurance"),
+        v.literal("financials"),
+        v.literal("governance"),
+        v.literal("revenue")
+      )
+    ),
+    submissionStatus: v.optional(
+      v.union(
+        v.literal("missing"),
+        v.literal("ready"),
+        v.literal("submitted")
+      )
+    ),
+  },
+  handler: async (ctx, args) => {
+    const documentId = await ctx.db.insert("documents", {
+      schemeId: args.schemeId,
+      type: args.type,
+      status: "final",
+      content: args.content,
+      title: args.title,
+      createdAt: Date.now(),
+      finalizedAt: Date.now(),
+      vaultCategory: args.vaultCategory,
+      submissionStatus: args.submissionStatus,
+    });
+
+    return documentId;
+  },
+});
+
+/**
  * Mark a document as submitted to government portal (CH-0011).
  */
 export const markDocumentSubmitted = mutation({
