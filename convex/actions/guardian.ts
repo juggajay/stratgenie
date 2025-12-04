@@ -214,7 +214,13 @@ export const askGuardian = action({
       const questionEmbedding = embeddingResponse.data[0].embedding;
 
       // Step 2: Get all chunks for the scheme and compute similarity
-      const allChunks = await ctx.runQuery(internal.guardian.getChunksForScheme, {
+      const allChunks: Array<{
+        _id: string;
+        schemeId: string;
+        text: string;
+        embedding: number[];
+        sectionHeader?: string;
+      }> = await ctx.runQuery(internal.guardian.getChunksForScheme, {
         schemeId: args.schemeId,
       });
 
@@ -238,24 +244,25 @@ export const askGuardian = action({
       }
 
       // Calculate scores and sort
-      const scoredResults = allChunks.map((chunk) => {
+      type ScoredChunk = typeof allChunks[number] & { score: number };
+      const scoredResults: ScoredChunk[] = allChunks.map((chunk) => {
         const score = cosineSimilarity(questionEmbedding, chunk.embedding);
         return { ...chunk, score };
       });
 
-      scoredResults.sort((a, b) => b.score - a.score);
+      scoredResults.sort((a: ScoredChunk, b: ScoredChunk) => b.score - a.score);
 
       // Log top scores for debugging
-      const topScores = scoredResults.slice(0, 5).map(r => r.score.toFixed(3));
+      const topScores = scoredResults.slice(0, 5).map((r: ScoredChunk) => r.score.toFixed(3));
       console.log(`[Guardian] Top 5 similarity scores: ${topScores.join(", ")}`);
 
       // Always use top 5 chunks - let GPT determine relevance from context
       // text-embedding-3-small typically has lower absolute scores (0.2-0.5 range)
-      const relevantChunks = scoredResults.slice(0, 5);
+      const relevantChunks: ScoredChunk[] = scoredResults.slice(0, 5);
 
       // Step 3: Build context from retrieved chunks
-      const context = relevantChunks
-        .map((chunk, i) => {
+      const context: string = relevantChunks
+        .map((chunk: ScoredChunk, i: number) => {
           const header = chunk.sectionHeader
             ? `[${chunk.sectionHeader}]`
             : `[Section ${i + 1}]`;
@@ -264,7 +271,7 @@ export const askGuardian = action({
         .join("\n\n---\n\n");
 
       // Step 4: Generate answer using GPT-4o
-      const systemPrompt = `You are a helpful assistant for NSW strata scheme bylaws. Your role is to help committee members understand their scheme's bylaws.
+      const systemPrompt: string = `You are a helpful assistant for NSW strata scheme bylaws. Your role is to help committee members understand their scheme's bylaws.
 
 IMPORTANT RULES:
 1. Answer based ONLY on the provided bylaw excerpts below. Do not use any external knowledge.
@@ -276,7 +283,7 @@ IMPORTANT RULES:
 BYLAW EXCERPTS:
 ${context}`;
 
-      const chatResponse = await openai.chat.completions.create({
+      const chatResponse: Awaited<ReturnType<typeof openai.chat.completions.create>> = await openai.chat.completions.create({
         model: "gpt-4o",
         messages: [
           { role: "system", content: systemPrompt },
@@ -286,10 +293,10 @@ ${context}`;
         temperature: 0.3,
       });
 
-      const answer = chatResponse.choices[0]?.message?.content || "";
+      const answer: string = chatResponse.choices[0]?.message?.content || "";
 
       // Step 5: Format citations
-      const citations = relevantChunks.map((chunk) => ({
+      const citations = relevantChunks.map((chunk: ScoredChunk) => ({
         text: chunk.text.slice(0, 200) + (chunk.text.length > 200 ? "..." : ""),
         sectionHeader: chunk.sectionHeader,
         score: Math.round(chunk.score * 100) / 100,

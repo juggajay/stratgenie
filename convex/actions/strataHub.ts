@@ -128,15 +128,32 @@ export const analyzeDocument = action({
       let extractedText: string;
       try {
         const result = await extractText(new Uint8Array(arrayBuffer));
-        // unpdf returns text as an array of strings (one per page), join them
-        extractedText = Array.isArray(result.text)
-          ? result.text.join('\n')
-          : String(result.text || '');
+        console.log("[analyzeDocument] Raw unpdf result:", JSON.stringify(result, null, 2).substring(0, 500));
+
+        // Handle various unpdf return formats
+        // Cast to any to handle different unpdf versions
+        const pdfResult = result as { text?: string | string[]; pages?: Array<{ text?: string }>; totalPages?: number };
+        if (typeof result === 'string') {
+          extractedText = result;
+        } else if (pdfResult && typeof pdfResult.text === 'string') {
+          extractedText = pdfResult.text;
+        } else if (pdfResult && Array.isArray(pdfResult.text)) {
+          extractedText = pdfResult.text.join('\n');
+        } else if (pdfResult && pdfResult.pages && Array.isArray(pdfResult.pages)) {
+          // Some versions return { pages: [{ text: "..." }, ...] }
+          extractedText = pdfResult.pages.map((p: { text?: string }) => p.text || '').join('\n');
+        } else {
+          // Fallback: stringify and extract
+          extractedText = String(pdfResult?.text || result || '');
+        }
+
         console.log("[analyzeDocument] Extracted", extractedText.length, "characters from PDF");
 
         // Log first 2000 chars of raw text for debugging extraction issues
-        console.log("[analyzeDocument] Raw text preview (first 2000 chars):");
-        console.log(extractedText.substring(0, 2000));
+        if (extractedText.length > 0) {
+          console.log("[analyzeDocument] Raw text preview (first 2000 chars):");
+          console.log(extractedText.substring(0, 2000));
+        }
       } catch (pdfError) {
         console.error("[analyzeDocument] PDF parsing failed:", pdfError);
         await ctx.runMutation(internal.strataHub.markReportFailed, {
