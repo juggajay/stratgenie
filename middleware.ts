@@ -6,6 +6,9 @@ const isPublicRoute = createRouteMatcher([
   "/sign-in(.*)",
   "/sign-up(.*)",
   "/api/webhooks(.*)",
+  // SEO files
+  "/sitemap.xml",
+  "/robots.txt",
   // Marketing/SEO pages
   "/blog(.*)",
   "/privacy",
@@ -13,6 +16,8 @@ const isPublicRoute = createRouteMatcher([
   "/tools(.*)",
   "/guides(.*)",
   "/strata-management(.*)",
+  // Google verification
+  "/google(.*).html",
   // Preview page for UI testing
   "/preview(.*)",
 ]);

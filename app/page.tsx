@@ -29,7 +29,7 @@ import {
 
 function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black border-b border-cyan-500/20">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-[#0a1929] via-[#0a1929]/95 to-transparent">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between relative">
         <Link href="/" className="flex items-center -ml-2">
           <Image

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StrataGenie - Sydney Sunday Theme Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ocean-blue: #1E3A5F;
+      --ocean-blue-light: #2D4A6F;
+      --sandstone: #B8A990;
+      --sandstone-light: #D4C8B8;
+      --cream: #F7F5F0;
+      --cream-dark: #EDE8E0;
+      --mint: #7BC4A8;
+      --persimmon: #D4704A;
+      --charcoal: #2D3436;
+      --warm-grey: #6C7A7D;
+      --secretary: #4A5568;
+      --treasurer: #10B981;
+      --guardian: #C45C3A;
+      --background: var(--cream);
+      --foreground: var(--charcoal);
+      --card: #FFFFFF;
+      --border: var(--sandstone-light);
+      --primary: var(--ocean-blue);
+      --muted: var(--warm-grey);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--background); color: var(--foreground); line-height: 1.5; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'Merriweather', serif; font-weight: 700; }
+    .header { background: var(--card); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+    .header-content { max-width: 1024px; margin: 0 auto; padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+    .header-left { display: flex; align-items: center; gap: 1.5rem; }
+    .logo { font-family: 'Merriweather', serif; font-size: 1.25rem; font-weight: 700; color: var(--primary); }
+    .divider { width: 1px; height: 1.5rem; background: var(--border); }
+    .page-title { font-size: 1.125rem; color: var(--foreground); }
+    .page-subtitle { font-size: 0.875rem; color: var(--muted); font-family: 'DM Sans', sans-serif; font-weight: 400; }
+    .header-actions { display: flex; gap: 0.75rem; }
+    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: all 0.2s; border: none; font-family: 'DM Sans', sans-serif; }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--ocean-blue-light); }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--foreground); }
+    .btn-outline:hover { background: var(--cream-dark); border-color: var(--primary); }
+    .btn-success { background: var(--mint); color: white; }
+    .btn-warning { background: var(--persimmon); color: white; }
+    .btn-ghost { background: transparent; color: var(--muted); }
+    .btn-ghost:hover { background: var(--cream-dark); color: var(--foreground); }
+    .main { max-width: 1024px; margin: 0 auto; padding: 2rem 1.5rem; }
+    .grid { display: grid; grid-template-columns: 280px 1fr; gap: 1.5rem; }
+    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03); }
+    .card-header { padding: 1.25rem 1.5rem 0.75rem; }
+    .card-title { font-size: 1.125rem; margin-bottom: 0.25rem; }
+    .card-description { font-size: 0.875rem; color: var(--muted); }
+    .card-content { padding: 0 1.5rem 1.5rem; }
+    .scheme-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; border-radius: 0.5rem; border: 1px solid var(--border); cursor: pointer; transition: all 0.2s; margin-bottom: 0.5rem; background: transparent; width: 100%; text-align: left; }
+    .scheme-item:hover { border-color: var(--primary); background: rgba(30, 58, 95, 0.02); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); }
+    .scheme-item.active { border-color: var(--primary); background: rgba(30, 58, 95, 0.05); box-shadow: 0 2px 8px rgba(30, 58, 95, 0.1); }
+    .scheme-icon { width: 2.5rem; height: 2.5rem; border-radius: 0.5rem; background: var(--cream-dark); display: flex; align-items: center; justify-content: center; color: var(--muted); }
+    .scheme-item.active .scheme-icon { background: rgba(30, 58, 95, 0.1); color: var(--primary); }
+    .scheme-name { font-size: 0.875rem; font-weight: 500; }
+    .scheme-number { font-size: 0.75rem; color: var(--muted); }
+    .compliance-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+    .status-badge { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
+    .status-success { background: rgba(123, 196, 168, 0.15); color: #059669; border: 1px solid rgba(123, 196, 168, 0.3); }
+    .status-warning { background: rgba(212, 112, 74, 0.1); color: var(--persimmon); border: 1px solid rgba(212, 112, 74, 0.3); }
+    .status-info { background: rgba(30, 58, 95, 0.1); color: var(--primary); border: 1px solid rgba(30, 58, 95, 0.2); }
+    .agent-guardian { border-left: 3px solid var(--guardian); }
+    .agent-treasurer { border-left: 3px solid var(--treasurer); }
+    .agent-secretary { border-left: 3px solid var(--secretary); }
+    .agent-icon { width: 2rem; height: 2rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; }
+    .agent-icon.guardian { background: rgba(196, 92, 58, 0.1); color: var(--guardian); }
+    .agent-icon.treasurer { background: rgba(16, 185, 129, 0.1); color: var(--treasurer); }
+    .agent-icon.secretary { background: rgba(74, 85, 104, 0.1); color: var(--secretary); }
+    .action-card { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border-radius: 0.75rem; border: 1px solid var(--border); margin-bottom: 0.75rem; transition: all 0.2s; }
+    .action-card:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06); }
+    .action-card.urgent { background: rgba(212, 112, 74, 0.05); border-color: rgba(212, 112, 74, 0.3); }
+    .action-card.attention { border-left: 3px solid var(--persimmon); }
+    .action-content { flex: 1; }
+    .action-title { font-weight: 600; margin-bottom: 0.25rem; }
+    .action-description { font-size: 0.875rem; color: var(--muted); }
+    .action-buttons { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+    .dropzone { border: 2px dashed var(--border); border-radius: 0.75rem; padding: 3rem 2rem; text-align: center; transition: all 0.2s; cursor: pointer; }
+    .dropzone:hover { border-color: var(--primary); background: rgba(30, 58, 95, 0.02); }
+    .dropzone-icon { width: 4rem; height: 4rem; border-radius: 50%; background: var(--cream-dark); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--muted); position: relative; }
+    .dropzone-sparkle { position: absolute; top: -4px; right: -4px; color: var(--persimmon); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .dropzone-title { font-family: 'Merriweather', serif; font-size: 1.125rem; margin-bottom: 0.25rem; }
+    .dropzone-subtitle { font-size: 0.875rem; color: var(--muted); }
+    .task-row { display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; padding: 0.75rem; border-bottom: 1px solid var(--border); align-items: center; }
+    .task-row:last-child { border-bottom: none; }
+    .task-row:hover { background: rgba(30, 58, 95, 0.02); }
+    .task-name { display: flex; align-items: center; gap: 0.75rem; }
+    .task-icon { color: var(--muted); }
+    .task-icon.done { color: var(--mint); }
+    .task-due { text-align: right; font-size: 0.875rem; }
+    .task-due.overdue { color: #dc2626; font-weight: 500; }
+    .task-due-date { font-size: 0.75rem; color: var(--muted); }
+    .empty-state { text-align: center; padding: 3rem 2rem; background: rgba(123, 196, 168, 0.05); border-radius: 0.75rem; border: 1px solid rgba(123, 196, 168, 0.2); }
+    .empty-icon { width: 4rem; height: 4rem; border-radius: 50%; background: rgba(123, 196, 168, 0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--mint); }
+    .empty-title { color: #059669; margin-bottom: 0.25rem; }
+    .empty-subtitle { color: var(--muted); font-size: 0.875rem; }
+    .footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.75rem; color: var(--muted); }
+    .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    @media (max-width: 768px) { .color-grid { grid-template-columns: repeat(2, 1fr); } }
+    .color-swatch { text-align: center; }
+    .color-box { height: 4rem; border-radius: 0.5rem; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem; font-weight: 500; }
+    .color-label { font-size: 0.75rem; color: var(--muted); }
+    .icon { width: 1.25rem; height: 1.25rem; }
+    .icon-sm { width: 1rem; height: 1rem; }
+    .icon-lg { width: 2rem; height: 2rem; }
+    .setup-banner { background: rgba(212, 112, 74, 0.1); border: 1px solid rgba(212, 112, 74, 0.3); border-radius: 0.75rem; padding: 0.75rem 1rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 0.75rem; }
+    .setup-banner-icon { padding: 0.375rem; background: rgba(212, 112, 74, 0.2); border-radius: 0.5rem; color: var(--persimmon); }
+    .setup-banner-content { flex: 1; }
+    .setup-banner-title { font-weight: 500; font-size: 0.875rem; }
+    .setup-banner-text { font-size: 0.875rem; color: var(--muted); }
+    .fab { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 3.5rem; height: 3.5rem; border-radius: 50%; background: var(--primary); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3); animation: pulse-shadow 3s infinite; }
+    @keyframes pulse-shadow { 0%, 100% { box-shadow: 0 0 0 0 rgba(30, 58, 95, 0.4); } 50% { box-shadow: 0 0 0 12px rgba(30, 58, 95, 0); } }
+    @media (min-width: 1024px) { .fab { display: none; } }
+    .section { margin-bottom: 2rem; }
+    .section-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <div class="header-left">
+        <span class="logo">StrataGenie</span>
+        <div class="divider"></div>
+        <div>
+          <h1 class="page-title">Dashboard</h1>
+          <p class="page-subtitle">Your strata compliance overview</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-outline">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+          Guardian
+        </button>
+        <button class="btn btn-outline">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+          Finance
+        </button>
+        <button class="btn btn-outline">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+          Strata Roll
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="setup-banner">
+      <div class="setup-banner-icon">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+      </div>
+      <div class="setup-banner-content">
+        <p class="setup-banner-title">Complete your scheme setup</p>
+        <p class="setup-banner-text">Add your lot count and last AGM date to enable compliance tracking.</p>
+      </div>
+      <button class="btn btn-warning" style="font-size: 0.75rem; padding: 0.375rem 0.75rem;">
+        <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+        Complete Setup
+      </button>
+    </div>
+
+    <div class="grid">
+      <div>
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Your Schemes</h2>
+            <p class="card-description">Select a scheme to view compliance</p>
+          </div>
+          <div class="card-content">
+            <button class="scheme-item active">
+              <div class="scheme-icon">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+              </div>
+              <div>
+                <p class="scheme-name">Pinecrest Apartments</p>
+                <p class="scheme-number">SP12345</p>
+              </div>
+            </button>
+            <button class="scheme-item">
+              <div class="scheme-icon">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+              </div>
+              <div>
+                <p class="scheme-name">Ocean View Towers</p>
+                <p class="scheme-number">SP67890</p>
+              </div>
+            </button>
+            <button class="btn btn-outline" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+              <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+              Add scheme
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card section">
+          <div class="card-header">
+            <div class="compliance-header">
+              <div>
+                <h2 class="card-title">Compliance Status</h2>
+                <p class="card-description">Next AGM due: 10 March 2026</p>
+              </div>
+              <span class="status-badge status-success">
+                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                On Track
+              </span>
+            </div>
+          </div>
+          <div class="card-content">
+            <p style="font-size: 0.875rem; color: var(--muted); margin-bottom: 1rem;">
+              <strong style="color: var(--foreground);">96 days until next AGM.</strong> Your scheme is currently compliant with all NSW requirements.
+            </p>
+            <div style="display: flex; gap: 0.75rem;">
+              <button class="btn btn-primary">Generate AGM checklist</button>
+              <button class="btn btn-outline">View tasks</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card section">
+          <div class="card-header">
+            <h2 class="card-title">Compliance Tasks</h2>
+            <p class="card-description">2 pending · 1 completed</p>
+          </div>
+          <div class="card-content">
+            <div class="task-row">
+              <div class="task-name">
+                <svg class="icon task-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"></circle></svg>
+                <span>Send AGM Notice</span>
+              </div>
+              <div class="task-due">
+                <span>Due in 14 days</span>
+                <p class="task-due-date">24 Feb 2026</p>
+              </div>
+              <button class="btn btn-primary" style="font-size: 0.75rem; padding: 0.375rem 0.75rem;">Generate</button>
+            </div>
+            <div class="task-row">
+              <div class="task-name">
+                <svg class="icon task-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span>Hold AGM</span>
+              </div>
+              <div class="task-due">
+                <span>Due in 96 days</span>
+                <p class="task-due-date">10 Mar 2026</p>
+              </div>
+              <button class="btn btn-outline" style="font-size: 0.75rem; padding: 0.375rem 0.75rem;">Start</button>
+            </div>
+            <div class="task-row">
+              <div class="task-name">
+                <svg class="icon task-icon done" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span style="text-decoration: line-through; color: var(--muted);">File Strata Hub Report</span>
+              </div>
+              <div class="task-due">
+                <span style="color: var(--muted);">Completed</span>
+                <p class="task-due-date">15 Dec 2024</p>
+              </div>
+              <button class="btn btn-ghost" style="font-size: 0.75rem; padding: 0.375rem 0.75rem;">Undo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card section">
+          <div class="card-header">
+            <h2 class="card-title">Quick Upload</h2>
+            <p class="card-description">Drop documents for AI processing</p>
+          </div>
+          <div class="card-content">
+            <div class="dropzone">
+              <div class="dropzone-icon">
+                <svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                <svg class="dropzone-sparkle icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"></path></svg>
+              </div>
+              <p class="dropzone-title">Drop your documents here</p>
+              <p class="dropzone-subtitle">Invoices, minutes, or compliance docs</p>
+              <p style="font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem;">or click to browse</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <p class="section-title">Action Feed (Inbox Zero Style)</p>
+          <div class="action-card agent-treasurer">
+            <div class="agent-icon treasurer">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+            </div>
+            <div class="action-content">
+              <p class="action-title">Invoice from Bob's Plumbing</p>
+              <p class="action-description">$150 needs approval</p>
+              <div class="action-buttons">
+                <button class="btn btn-success" style="font-size: 0.75rem; padding: 0.375rem 0.75rem;">Approve</button>
+                <button class="btn btn-outline" style="font-size: 0.75rem; padding: 0.375rem 0.75rem;">View PDF</button>
+              </div>
+            </div>
+          </div>
+          <div class="action-card attention agent-guardian">
+            <div class="agent-icon guardian">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            </div>
+            <div class="action-content">
+              <p class="action-title">Fire Safety Statement</p>
+              <p class="action-description">Due in 30 days</p>
+              <div class="action-buttons">
+                <button class="btn btn-primary" style="font-size: 0.75rem; padding: 0.375rem 0.75rem;">Send RFQ</button>
+              </div>
+            </div>
+          </div>
+          <div class="action-card urgent agent-treasurer">
+            <div class="agent-icon treasurer">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <div class="action-content">
+              <p class="action-title">Unit 4 late on levies</p>
+              <p class="action-description">$450 outstanding</p>
+              <div class="action-buttons">
+                <button class="btn btn-warning" style="font-size: 0.75rem; padding: 0.375rem 0.75rem;">Send Reminder</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <p class="section-title">Empty State (All Caught Up)</p>
+          <div class="empty-state">
+            <div class="empty-icon">
+              <svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <h3 class="empty-title">All caught up!</h3>
+            <p class="empty-subtitle">Your building is compliant. Nothing needs attention.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" style="margin-top: 3rem;">
+      <p class="section-title">Sydney Sunday Color Palette</p>
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-box" style="background: var(--ocean-blue);">Ocean Blue</div>
+          <p class="color-label">#1E3A5F</p>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background: var(--sandstone); color: var(--charcoal);">Sandstone</div>
+          <p class="color-label">#B8A990</p>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background: var(--mint);">Mint</div>
+          <p class="color-label">#7BC4A8</p>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background: var(--persimmon);">Persimmon</div>
+          <p class="color-label">#D4704A</p>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background: var(--charcoal);">Charcoal</div>
+          <p class="color-label">#2D3436</p>
+        </div>
+      </div>
+      <p class="section-title">Agent Identity Colors</p>
+      <div class="color-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="color-swatch">
+          <div class="color-box" style="background: var(--secretary);">Secretary</div>
+          <p class="color-label">#4A5568 - Governance</p>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background: var(--treasurer);">Treasurer</div>
+          <p class="color-label">#10B981 - Finance</p>
+        </div>
+        <div class="color-swatch">
+          <div class="color-box" style="background: var(--guardian);">Guardian</div>
+          <p class="color-label">#C45C3A - Compliance</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>Sydney Sunday Theme - Warm, trustworthy design for strata management</p>
+      <p style="margin-top: 0.25rem;">This tool provides administrative guidance only, not legal advice.</p>
+    </footer>
+  </main>
+
+  <button class="fab" title="Capture document">
+    <svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+  </button>
+</body>
+</html>

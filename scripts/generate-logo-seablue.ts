@@ -13,35 +13,13 @@ const API_KEY = "AIzaSyBbqRTDzD2M1GFFgv6y0VQqMdtu3SMRMdk";
 const logos = [
   {
     name: "StrataGenie Logo - Sea Blue Clear",
-    prompt: `Create a horizontal logo for "StrataGenie" with PURE WHITE background.
+    prompt: `Company logo with transparent background.
 
-LAYOUT:
-- Left: LARGE friendly cartoon genie character (about 40% of logo width)
-- Right: Medium-sized TEXT "StrataGenie" (about 60% of logo width)
+Cute cartoon genie mascot on the left - cyan blue chunky round body, arms crossed, big white smile, emerging from golden magic lamp, purple smoke trail, gold sparkles around.
 
-Genie character (BIG - the star of the logo):
-- Friendly smiling cyan/sea blue cartoon genie emerging from golden magic lamp
-- The genie should be LARGE and prominent - the main visual element
-- Cyan color (#06b6d4)
-- Purple/cyan magical smoke swirling around
-- Gold sparkles and stars
+Text "StrataGenie" on the right - the word "Strata" must be PURE WHITE color for contrast, the word "Genie" in bright cyan/turquoise. Bold modern sans-serif font.
 
-TEXT (LARGE and BOLD):
-- "StrataGenie" in LARGE, EXTRA-BOLD, THICK font
-- "Strata" in PURE WHITE (#ffffff) - bright white color
-- "Genie" in CYAN (#06b6d4)
-- Use extra-bold/black weight sans-serif font
-- Text height should be about 2/3 (two-thirds) the height of the genie
-- Letters should be THICK and CHUNKY
-
-REQUIREMENTS:
-- PURE WHITE (#FFFFFF) background
-- BIG genie mascot on left
-- Text on right at 2/3 the height of the genie
-- 4:1 wide horizontal format
-- Professional tech company look
-
-The genie is slightly larger than the text.`,
+IMPORTANT: Transparent/clear background, no solid color background. PNG with transparency.`,
     filename: "logo-seablue-wide.png",
   },
 ];
