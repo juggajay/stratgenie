@@ -821,13 +821,13 @@ export const seedTestTransactions = mutation({
         schemeId: args.schemeId,
         description: tx.description,
         amount: BigInt(tx.amount),
+        gst: BigInt(Math.round(tx.amount / 11)), // Calculate GST (10%)
         type: tx.type,
         category: tx.category,
         fund: tx.fund,
         status: "paid",
         transactionDate,
         createdAt: Date.now(),
-        updatedAt: Date.now(),
       });
       created++;
     }

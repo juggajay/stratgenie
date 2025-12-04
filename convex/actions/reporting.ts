@@ -140,6 +140,10 @@ export const generateStatutoryReportData = action({
       schemeId: args.schemeId,
     });
 
+    if (!settings) {
+      throw new Error("Could not retrieve financial settings for scheme");
+    }
+
     // Calculate date range for the financial year
     const yearEnd = settings.financialYearEnd || "06-30";
     const { startDate, endDate, label } = getFinancialYearDates(
@@ -209,6 +213,11 @@ export const validateReportRequirements = action({
       schemeId: args.schemeId,
     });
 
+    if (!settings) {
+      errors.push("Could not retrieve financial settings");
+      return { valid: false, warnings, errors };
+    }
+
     // Check opening balances
     if (
       settings.openingBalanceAdmin === undefined ||
@@ -266,9 +275,9 @@ export const saveReportToVault = action({
     financialYear: v.string(), // e.g., "FY 2024-25"
     htmlContent: v.string(), // HTML representation for document storage
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<{ success: boolean; documentId: Id<"documents">; message: string }> => {
     // Create document record
-    const documentId = await ctx.runMutation(api.documents.createDocument, {
+    const documentId: Id<"documents"> = await ctx.runMutation(api.documents.createDocument, {
       schemeId: args.schemeId,
       type: "financial_report",
       title: `Statement of Key Financial Information - ${args.financialYear}`,

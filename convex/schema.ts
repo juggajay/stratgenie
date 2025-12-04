@@ -157,14 +157,22 @@ export default defineSchema({
     invoiceDate: v.optional(v.string()), // Date on invoice (ISO string)
     category: v.optional(
       v.union(
+        // Expense categories
         v.literal("repairs"),
+        v.literal("repairs_maintenance"),
         v.literal("insurance"),
         v.literal("utilities"),
         v.literal("admin"),
         v.literal("cleaning"),
         v.literal("gardening"),
         v.literal("legal"),
-        v.literal("other")
+        v.literal("management_fees"),
+        v.literal("major_works"),
+        v.literal("other"),
+        // Income categories (CH-0012)
+        v.literal("levy_income"),
+        v.literal("interest"),
+        v.literal("other_income")
       )
     ),
     // CH-0012: Fund assignment for statutory reporting
@@ -174,6 +182,8 @@ export default defineSchema({
       v.literal("approved"),
       v.literal("paid")
     ),
+    // CH-0012: Date of transaction for financial reporting
+    transactionDate: v.optional(v.number()), // timestamp
     // Original AI extraction (preserved for audit)
     originalExtraction: v.optional(
       v.object({
