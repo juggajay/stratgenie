@@ -63,16 +63,16 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="left"
-        className="w-[280px] p-0 bg-slate-900/95 backdrop-blur-xl border-r border-white/10"
+        className="w-[280px] p-0 bg-card border-r border-border"
       >
-        <SheetHeader className="px-4 py-4 border-b border-white/10">
+        <SheetHeader className="px-4 py-4 border-b border-border">
           <div className="flex items-center justify-between">
-            <SheetTitle className="text-xl font-semibold tracking-tight font-display bg-gradient-to-r from-cyan-400 to-sky-400 bg-clip-text text-transparent">
+            <SheetTitle className="text-xl font-bold tracking-tight font-display text-primary">
               StrataGenie
             </SheetTitle>
             <button
               onClick={() => onOpenChange(false)}
-              className="p-2 -mr-2 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+              className="p-2 -mr-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-lg transition-colors"
             >
               <X className="h-5 w-5" />
             </button>
@@ -95,20 +95,20 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
                     className={cn(
                       "flex items-center gap-3 px-3 py-3 rounded-lg transition-all",
                       isActive
-                        ? "bg-cyan-600/20 text-cyan-400 border border-cyan-500/30"
-                        : "text-slate-300 hover:bg-white/5 hover:text-white"
+                        ? "bg-primary/10 text-primary border border-primary/20"
+                        : "text-foreground hover:bg-secondary"
                     )}
                   >
                     <div
                       className={cn(
                         "p-2 rounded-lg",
-                        isActive ? "bg-cyan-600/20" : "bg-white/5"
+                        isActive ? "bg-primary/10" : "bg-secondary"
                       )}
                     >
                       <ItemIcon
                         className={cn(
                           "h-5 w-5",
-                          isActive ? "text-cyan-400" : "text-slate-400"
+                          isActive ? "text-primary" : "text-muted-foreground"
                         )}
                       />
                     </div>
@@ -119,7 +119,7 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
                       <span
                         className={cn(
                           "block text-xs",
-                          isActive ? "text-cyan-400/70" : "text-slate-500"
+                          isActive ? "text-primary/70" : "text-muted-foreground"
                         )}
                       >
                         {item.description}
@@ -133,8 +133,8 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
         </nav>
 
         {/* Footer */}
-        <div className="absolute bottom-0 left-0 right-0 px-4 py-4 border-t border-white/10 bg-slate-950/50">
-          <p className="text-xs text-slate-500 text-center">
+        <div className="absolute bottom-0 left-0 right-0 px-4 py-4 border-t border-border bg-secondary/30">
+          <p className="text-xs text-muted-foreground text-center">
             Administrative guidance only.
             <br />
             Not legal advice.

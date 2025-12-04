@@ -29,7 +29,7 @@ import {
 
 function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-xl border-b border-cyan-500/20">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-black border-b border-cyan-500/20">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between relative">
         <Link href="/" className="flex items-center -ml-2">
           <Image
@@ -37,7 +37,7 @@ function Navbar() {
             alt="StrataGenie"
             width={400}
             height={100}
-            className="h-20 md:h-24 w-auto object-contain object-left"
+            className="h-28 md:h-32 w-auto object-contain object-left"
           />
         </Link>
         <div className="hidden md:flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
@@ -378,6 +378,17 @@ function AgentsSection() {
           <p className="text-lg text-slate-400 max-w-2xl mx-auto">
             Each agent is purpose-built for a specific strata responsibility, working 24/7 to keep your scheme compliant.
           </p>
+
+          {/* Celebration image */}
+          <div className="mt-10 mb-4 flex justify-center">
+            <Image
+              src="/images/celebration-users.png"
+              alt="Happy strata committee members celebrating"
+              width={400}
+              height={300}
+              className="w-auto h-48 md:h-64 object-contain"
+            />
+          </div>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">

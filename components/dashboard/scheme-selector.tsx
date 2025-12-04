@@ -80,14 +80,22 @@ export function SchemeSelector({
               <button
                 key={scheme._id}
                 onClick={() => onSchemeSelect(scheme._id)}
-                className={`w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-lift hover:-translate-y-0.5 hover:shadow-elevated ${
+                className={`w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
                   selectedSchemeId === scheme._id
-                    ? "border-brand bg-brand/5"
-                    : "border-border hover:border-brand/50"
+                    ? "border-primary bg-primary/5 shadow-sm"
+                    : "border-border hover:border-primary/50 hover:bg-secondary/50"
                 }`}
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
-                  <Building2 className="h-5 w-5 text-muted-foreground" />
+                <div className={`flex h-10 w-10 items-center justify-center rounded-lg transition-colors ${
+                  selectedSchemeId === scheme._id
+                    ? "bg-primary/10"
+                    : "bg-secondary"
+                }`}>
+                  <Building2 className={`h-5 w-5 transition-colors ${
+                    selectedSchemeId === scheme._id
+                      ? "text-primary"
+                      : "text-muted-foreground"
+                  }`} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium text-foreground truncate">

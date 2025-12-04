@@ -25,6 +25,7 @@ interface ChatInterfaceProps {
 }
 
 export function ChatInterface({ schemeId }: ChatInterfaceProps) {
+  // ALL LOGIC PRESERVED - only styling changes
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -96,42 +97,44 @@ export function ChatInterface({ schemeId }: ChatInterfaceProps) {
   };
 
   return (
-    <Card className="flex flex-col h-[600px] border border-white/10 rounded-xl bg-slate-900/80 backdrop-blur-xl shadow-lg">
-      {/* Header */}
-      <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-gradient-to-r from-emerald-900/30 to-transparent">
-        <div className="p-2 bg-emerald-900/50 rounded-lg border border-emerald-500/30">
-          <Shield className="h-5 w-5 text-emerald-400" />
+    <Card className="flex flex-col h-[600px] agent-guardian">
+      {/* Header - Guardian terracotta theme */}
+      <div className="flex items-center gap-3 px-4 py-3 border-b border-border bg-gradient-to-r from-guardian/10 to-transparent">
+        <div className="p-2 bg-guardian/10 rounded-lg border border-guardian/30">
+          <Shield className="h-5 w-5 text-guardian" />
         </div>
         <div>
-          <h3 className="font-medium text-white">Ask the Guardian</h3>
-          <p className="text-xs text-slate-400">AI-powered bylaw Q&A</p>
+          <h3 className="font-display font-bold text-foreground">Ask the Guardian</h3>
+          <p className="text-xs text-muted-foreground">AI-powered bylaw Q&A</p>
         </div>
       </div>
 
       {/* Disclaimer Banner */}
-      <div className="px-4 py-2 bg-amber-900/20 border-b border-amber-500/20 flex items-start gap-2">
-        <AlertTriangle className="h-4 w-4 text-amber-400 flex-shrink-0 mt-0.5" />
-        <p className="text-xs text-amber-300/80">
+      <div className="px-4 py-2 bg-persimmon/10 border-b border-persimmon/20 flex items-start gap-2">
+        <AlertTriangle className="h-4 w-4 text-persimmon flex-shrink-0 mt-0.5" />
+        <p className="text-xs text-persimmon">
           This is not legal advice. Answers are based on your uploaded bylaws.
           Consult a lawyer for legal matters.
         </p>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-secondary/30">
         {messages.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-full text-center text-slate-400">
-            <Shield className="h-12 w-12 mb-3 text-emerald-500/50" />
-            <p className="font-medium text-slate-300">Welcome to the Guardian</p>
-            <p className="text-sm mt-1 text-slate-500">Ask me anything about your scheme&apos;s bylaws</p>
+          <div className="flex flex-col items-center justify-center h-full text-center">
+            <div className="w-16 h-16 rounded-full bg-guardian/10 flex items-center justify-center mb-3">
+              <Shield className="h-8 w-8 text-guardian/60" />
+            </div>
+            <p className="font-display font-bold text-foreground">Welcome to the Guardian</p>
+            <p className="text-sm mt-1 text-muted-foreground">Ask me anything about your scheme&apos;s bylaws</p>
             <div className="mt-4 space-y-2 text-sm">
-              <p className="text-slate-500">Try asking:</p>
+              <p className="text-muted-foreground">Try asking:</p>
               <div className="flex flex-wrap gap-2 justify-center">
                 {["Can I have a pet?", "What are the parking rules?", "Can I renovate?"].map((q) => (
                   <button
                     key={q}
                     onClick={() => setInput(q)}
-                    className="px-3 py-1 bg-slate-800 hover:bg-slate-700 rounded-full text-slate-300 transition-colors border border-white/10"
+                    className="px-3 py-1.5 bg-card hover:bg-secondary rounded-full text-foreground transition-colors border border-border text-sm"
                   >
                     {q}
                   </button>
@@ -149,8 +152,8 @@ export function ChatInterface({ schemeId }: ChatInterfaceProps) {
             <div
               className={`max-w-[85%] ${
                 message.role === "user"
-                  ? "bg-slate-700 text-white rounded-2xl rounded-br-md border border-white/10"
-                  : "bg-slate-800/80 text-slate-100 rounded-2xl rounded-bl-md border border-emerald-500/20"
+                  ? "bg-primary text-primary-foreground rounded-2xl rounded-br-md"
+                  : "bg-card text-foreground rounded-2xl rounded-bl-md border border-guardian/30"
               }`}
             >
               {/* Message header */}
@@ -158,15 +161,15 @@ export function ChatInterface({ schemeId }: ChatInterfaceProps) {
                 message.role === "user" ? "justify-end" : ""
               }`}>
                 {message.role === "guardian" && (
-                  <Shield className="h-4 w-4 text-emerald-400" />
+                  <Shield className="h-4 w-4 text-guardian" />
                 )}
                 <span className={`text-xs font-medium ${
-                  message.role === "user" ? "text-slate-400" : "text-emerald-400/70"
+                  message.role === "user" ? "text-primary-foreground/70" : "text-guardian"
                 }`}>
                   {message.role === "user" ? "You" : "Guardian"}
                 </span>
                 {message.role === "user" && (
-                  <User className="h-4 w-4 text-slate-400" />
+                  <User className="h-4 w-4 text-primary-foreground/70" />
                 )}
               </div>
 
@@ -182,7 +185,7 @@ export function ChatInterface({ schemeId }: ChatInterfaceProps) {
                 <div className="px-4 pb-3">
                   <button
                     onClick={() => toggleCitations(message.id)}
-                    className="flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300 font-medium"
+                    className="flex items-center gap-1 text-xs text-guardian hover:text-guardian/80 font-medium"
                   >
                     {expandedCitations.has(message.id) ? (
                       <>
@@ -202,17 +205,17 @@ export function ChatInterface({ schemeId }: ChatInterfaceProps) {
                       {message.citations.map((citation, idx) => (
                         <div
                           key={idx}
-                          className="bg-slate-900/60 border border-emerald-500/20 rounded-lg p-3"
+                          className="bg-secondary border border-guardian/20 rounded-lg p-3"
                         >
                           {citation.sectionHeader && (
-                            <p className="text-xs font-medium text-emerald-400 mb-1">
+                            <p className="text-xs font-medium text-guardian mb-1">
                               {citation.sectionHeader}
                             </p>
                           )}
-                          <p className="text-xs text-slate-300 leading-relaxed">
+                          <p className="text-xs text-foreground leading-relaxed">
                             {citation.text}
                           </p>
-                          <p className="text-xs text-slate-500 mt-1">
+                          <p className="text-xs text-muted-foreground mt-1">
                             Relevance: {Math.round(citation.score * 100)}%
                           </p>
                         </div>
@@ -228,13 +231,13 @@ export function ChatInterface({ schemeId }: ChatInterfaceProps) {
         {/* Loading indicator */}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-slate-800/80 rounded-2xl rounded-bl-md px-4 py-3 border border-emerald-500/20">
+            <div className="bg-card rounded-2xl rounded-bl-md px-4 py-3 border border-guardian/30">
               <div className="flex items-center gap-2">
-                <Shield className="h-4 w-4 text-emerald-400" />
-                <span className="text-xs font-medium text-emerald-400/70">Guardian</span>
+                <Shield className="h-4 w-4 text-guardian" />
+                <span className="text-xs font-medium text-guardian">Guardian</span>
               </div>
-              <div className="flex items-center gap-2 mt-2 text-sm text-slate-300">
-                <Loader2 className="h-4 w-4 animate-spin text-emerald-400" />
+              <div className="flex items-center gap-2 mt-2 text-sm text-foreground">
+                <Loader2 className="h-4 w-4 animate-spin text-guardian" />
                 <span>Researching your bylaws...</span>
               </div>
             </div>
@@ -245,7 +248,7 @@ export function ChatInterface({ schemeId }: ChatInterfaceProps) {
       </div>
 
       {/* Input */}
-      <form onSubmit={handleSubmit} className="p-4 border-t border-white/10 bg-slate-900/50">
+      <form onSubmit={handleSubmit} className="p-4 border-t border-border bg-card">
         <div className="flex gap-2">
           <input
             type="text"
@@ -253,12 +256,11 @@ export function ChatInterface({ schemeId }: ChatInterfaceProps) {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask about your bylaws..."
             disabled={isLoading}
-            className="flex-1 px-4 py-2 bg-slate-800/80 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 disabled:bg-slate-800/50 disabled:cursor-not-allowed text-sm text-white placeholder:text-slate-500"
+            className="flex-1 px-4 py-2 bg-secondary border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian/50 focus:border-guardian disabled:bg-secondary/50 disabled:cursor-not-allowed text-sm text-foreground placeholder:text-muted-foreground"
           />
           <Button
             type="submit"
             disabled={!input.trim() || isLoading}
-            className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg px-4 shadow-lg shadow-cyan-600/20"
           >
             <Send className="h-4 w-4" />
           </Button>

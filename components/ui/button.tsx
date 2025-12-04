@@ -7,13 +7,23 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-brand hover:bg-brand/90 text-brand-foreground rounded-lg shadow-sm hover:shadow-md",
+        // Primary - Ocean Blue with subtle shadow
+        default: "bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg shadow-sm hover:shadow-ocean",
+        // Destructive
         destructive: "bg-destructive hover:bg-destructive/90 text-white rounded-lg",
+        // Outline - Sandstone border
         outline:
-          "border border-border bg-card hover:bg-accent text-foreground rounded-lg",
+          "border border-border bg-card hover:bg-secondary hover:border-primary text-foreground rounded-lg",
+        // Secondary - Cream background
         secondary: "bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-lg",
-        ghost: "hover:bg-accent text-foreground rounded-lg",
-        link: "text-brand underline-offset-4 hover:underline",
+        // Ghost - No background
+        ghost: "hover:bg-secondary text-foreground rounded-lg",
+        // Link - Ocean Blue text
+        link: "text-primary underline-offset-4 hover:underline",
+        // Success - Mint accent
+        success: "bg-mint hover:bg-mint/90 text-white rounded-lg",
+        // Warning - Persimmon accent
+        warning: "bg-persimmon hover:bg-persimmon/90 text-white rounded-lg",
       },
       size: {
         default: "h-10 px-4 py-2",

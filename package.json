@@ -51,6 +51,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
     "pdfkit": "^0.17.2",
+    "playwright": "^1.57.0",
     "postcss": "^8",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",

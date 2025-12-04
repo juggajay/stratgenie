@@ -28,10 +28,11 @@ interface MagicDropzoneProps {
 }
 
 const defaultProcessingTexts = [
-  "Summoning the Genie...",
-  "Analyzing your document...",
-  "Extracting the magic...",
-  "Almost there...",
+  "Scanning document...",
+  "Identifying vendor...",
+  "Checking against budget...",
+  "Extracting GST...",
+  "Verifying ABN...",
 ];
 
 export function MagicDropzone({
@@ -54,11 +55,11 @@ export function MagicDropzone({
   children,
   className,
 }: MagicDropzoneProps) {
-  // Merge legacy and new APIs
+  // Merge legacy and new APIs - ALL LOGIC PRESERVED
   const handleFile = onFileDrop ?? onFileAccepted;
   const fileSizeLimit = maxSize ?? (maxSizeMB ? maxSizeMB * 1024 * 1024 : 10 * 1024 * 1024);
-  const displayTitle = idleTitle ?? title ?? "Feed the Genie";
-  const displayDescription = idleDescription ?? description ?? "Drop your file here or click to browse";
+  const displayTitle = idleTitle ?? title ?? "Drop your documents here";
+  const displayDescription = idleDescription ?? description ?? "Invoices, minutes, or compliance docs";
 
   const [status, setStatus] = useState<DropzoneStatus>(isUploading ? "processing" : "idle");
   const [error, setError] = useState<string | null>(null);
@@ -202,12 +203,12 @@ export function MagicDropzone({
       onDragLeave={isInteractive ? handleDragLeave : undefined}
       className={cn(
         "relative rounded-xl border-2 border-dashed transition-all duration-300",
-        "bg-slate-900/80 backdrop-blur-xl",
-        status === "idle" && "border-white/20 hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)]",
-        status === "dragging" && "border-cyan-500 bg-cyan-900/20 shadow-[0_0_40px_rgba(6,182,212,0.4)]",
-        status === "processing" && "border-violet-500/50 bg-violet-900/10",
-        status === "success" && "border-emerald-500 bg-emerald-900/20",
-        status === "error" && "border-red-500/50 bg-red-900/10",
+        // Sydney Sunday dropzone states
+        status === "idle" && "dropzone-idle hover:border-primary hover:shadow-ocean",
+        status === "dragging" && "dropzone-active scale-[1.02]",
+        status === "processing" && "border-primary/50 bg-primary/5",
+        status === "success" && "dropzone-success",
+        status === "error" && "dropzone-error",
         isInteractive && "cursor-pointer",
         className
       )}
@@ -216,11 +217,14 @@ export function MagicDropzone({
         {status === "idle" && (
           <>
             <div className="relative mb-4">
-              <Upload className="h-12 w-12 text-slate-500 transition-colors group-hover:text-cyan-400" />
-              <Sparkles className="h-4 w-4 text-amber-400 absolute -top-1 -right-1 animate-pulse" />
+              <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center">
+                <Upload className="h-8 w-8 text-muted-foreground transition-colors" />
+              </div>
+              <Sparkles className="h-5 w-5 text-persimmon absolute -top-1 -right-1 animate-pulse" />
             </div>
-            <p className="text-lg font-medium text-white mb-1">{displayTitle}</p>
-            <p className="text-sm text-slate-400">{displayDescription}</p>
+            <p className="font-display text-lg font-bold text-foreground mb-1">{displayTitle}</p>
+            <p className="text-sm text-muted-foreground">{displayDescription}</p>
+            <p className="text-xs text-muted-foreground mt-2">or click to browse</p>
             {children}
           </>
         )}
@@ -228,42 +232,60 @@ export function MagicDropzone({
         {status === "dragging" && (
           <>
             <div className="relative mb-4">
-              <Upload className="h-12 w-12 text-cyan-400 animate-bounce" />
-              <Sparkles className="h-4 w-4 text-amber-400 absolute -top-1 -right-1 animate-spin" />
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                <Upload className="h-8 w-8 text-primary animate-bounce" />
+              </div>
+              <Sparkles className="h-5 w-5 text-persimmon absolute -top-1 -right-1 animate-spin" />
             </div>
-            <p className="text-lg font-medium text-cyan-400">Drop it here!</p>
-            <p className="text-sm text-cyan-400/70">Release to upload</p>
+            <p className="font-display text-lg font-bold text-primary">Drop it here!</p>
+            <p className="text-sm text-primary/70">Release to upload</p>
           </>
         )}
 
         {status === "processing" && (
           <>
             <div className="relative mb-4">
-              <Loader2 className="h-12 w-12 text-violet-400 animate-spin" />
-              <div className="absolute inset-0 h-12 w-12 rounded-full bg-violet-400/20 animate-ping" />
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                <Loader2 className="h-8 w-8 text-primary animate-spin" />
+              </div>
+              <div className="absolute inset-0 w-16 h-16 rounded-full bg-primary/20 animate-ping" />
             </div>
-            <p className="text-lg font-medium text-violet-400 mb-1">
+            <p className="font-display text-lg font-bold text-primary mb-1">
               {processingText[processingIndex]}
             </p>
-            <p className="text-sm text-slate-400">This may take a moment...</p>
+            <div className="flex items-center gap-1.5 mt-2">
+              {processingText.map((_, idx) => (
+                <div
+                  key={idx}
+                  className={cn(
+                    "w-2 h-2 rounded-full transition-colors",
+                    idx === processingIndex ? "bg-primary" : "bg-border"
+                  )}
+                />
+              ))}
+            </div>
           </>
         )}
 
         {status === "success" && (
           <>
             <div className="relative mb-4">
-              <CheckCircle2 className="h-12 w-12 text-emerald-400" />
-              <div className="absolute inset-0 h-12 w-12 rounded-full bg-emerald-400/30 animate-ping" />
+              <div className="w-16 h-16 rounded-full bg-mint/20 flex items-center justify-center">
+                <CheckCircle2 className="h-8 w-8 text-mint" />
+              </div>
+              <div className="absolute inset-0 w-16 h-16 rounded-full bg-mint/30 animate-ping" />
             </div>
-            <p className="text-lg font-medium text-emerald-400">{successText}</p>
+            <p className="font-display text-lg font-bold text-mint">{successText}</p>
           </>
         )}
 
         {status === "error" && (
           <>
-            <XCircle className="h-12 w-12 text-red-400 mb-4" />
-            <p className="text-lg font-medium text-red-400 mb-1">{errorText}</p>
-            {error && <p className="text-sm text-red-400/70">{error}</p>}
+            <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mb-4">
+              <XCircle className="h-8 w-8 text-red-500" />
+            </div>
+            <p className="font-display text-lg font-bold text-red-600 mb-1">{errorText}</p>
+            {error && <p className="text-sm text-red-500">{error}</p>}
           </>
         )}
       </div>

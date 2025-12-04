@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, Fraunces } from "next/font/google";
+import { DM_Sans, Merriweather } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 import { Toaster } from "sonner";
@@ -16,8 +16,9 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
-const fraunces = Fraunces({
+const merriweather = Merriweather({
   subsets: ["latin"],
+  weight: ["400", "700"],
   variable: "--font-display",
   display: "swap",
 });
@@ -123,7 +124,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" className={`${dmSans.variable} ${fraunces.variable}`}>
+      <html lang="en" className={`${dmSans.variable} ${merriweather.variable}`}>
         <body className="antialiased">
           <GoogleAnalytics />
           <ConvexClientProvider>{children}</ConvexClientProvider>

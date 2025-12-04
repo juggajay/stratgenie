@@ -12,7 +12,7 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Circle, Clock, FileText, Loader2 } from "lucide-react";
+import { CheckCircle2, Circle, Clock, Loader2 } from "lucide-react";
 import { DocumentPreviewDialog } from "@/components/documents/document-preview-dialog";
 
 type TaskStatus = "draft" | "in_progress" | "done";
@@ -25,17 +25,17 @@ const statusConfig: Record<
   draft: {
     label: "To do",
     icon: Circle,
-    iconClass: "text-slate-400",
+    iconClass: "text-muted-foreground",
   },
   in_progress: {
     label: "In progress",
     icon: Clock,
-    iconClass: "text-blue-500",
+    iconClass: "text-primary",
   },
   done: {
     label: "Done",
     icon: CheckCircle2,
-    iconClass: "text-green-500",
+    iconClass: "text-mint",
   },
 };
 
@@ -143,8 +143,8 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
           </CardHeader>
           <CardContent>
             <div className="animate-pulse space-y-3">
-              <div className="h-12 bg-slate-100 rounded"></div>
-              <div className="h-12 bg-slate-100 rounded"></div>
+              <div className="h-12 bg-secondary rounded"></div>
+              <div className="h-12 bg-secondary rounded"></div>
             </div>
           </CardContent>
         </Card>
@@ -163,7 +163,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-muted-foreground">
               No tasks yet. Generate an AGM checklist to get started.
             </p>
           </CardContent>
@@ -185,7 +185,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
     // Special handling for send_agm_notice task
     if (task.type === "send_agm_notice") {
       if (task.status === "done") {
-        return <span className="text-xs text-slate-400">Completed</span>;
+        return <span className="text-xs text-muted-foreground">Completed</span>;
       }
 
       // Check if there's an existing document
@@ -194,7 +194,6 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
           <Button
             size="sm"
             onClick={() => handleViewDocument(latestAgmNotice._id)}
-            className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg min-w-[90px] shadow-lg shadow-cyan-600/20"
           >
             {latestAgmNotice.status === "draft" ? "View Draft" : "View Notice"}
           </Button>
@@ -206,7 +205,6 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
           size="sm"
           onClick={() => handleGenerateNotice(task._id)}
           disabled={isGenerating}
-          className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg min-w-[90px] shadow-lg shadow-cyan-600/20"
         >
           {isGenerating ? (
             <>
@@ -226,7 +224,6 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
         <Button
           size="sm"
           onClick={() => handleStatusChange(task._id, "in_progress")}
-          className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg min-w-[90px] shadow-lg shadow-cyan-600/20"
         >
           Start
         </Button>
@@ -238,7 +235,6 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
         <Button
           size="sm"
           onClick={() => handleStatusChange(task._id, "done")}
-          className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg min-w-[90px] shadow-lg shadow-cyan-600/20"
         >
           Complete
         </Button>
@@ -250,7 +246,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
         size="sm"
         variant="ghost"
         onClick={() => handleStatusChange(task._id, "draft")}
-        className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg min-w-[90px] group"
+        className="text-muted-foreground hover:text-foreground group"
       >
         <span className="group-hover:hidden">Completed</span>
         <span className="hidden group-hover:inline">Undo</span>
@@ -270,9 +266,9 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
         <CardContent className="pt-2">
           {/* Error message */}
           {error && (
-            <div className="mb-4 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">
+            <div className="mb-4 text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
               {error}
-              <p className="text-xs mt-1 text-red-500">
+              <p className="text-xs mt-1 text-red-600">
                 Make sure scheme settings are configured (Secretary, Location,
                 Time).
               </p>
@@ -281,20 +277,20 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
 
           <div className="overflow-hidden">
             {/* Table header */}
-            <div className="grid grid-cols-[1fr_auto_auto] gap-4 px-3 py-2 border-b border-slate-100">
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+            <div className="grid grid-cols-[1fr_auto_auto] gap-4 px-3 py-2 border-b border-border">
+              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                 Task
               </span>
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wide text-right">
+              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide text-right">
                 Due
               </span>
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wide w-28 text-right">
+              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide w-28 text-right">
                 Action
               </span>
             </div>
 
             {/* Task rows */}
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-border">
               {tasks.map((task) => {
                 const config = statusConfig[task.status];
                 const Icon = config.icon;
@@ -304,7 +300,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
                 return (
                   <div
                     key={task._id}
-                    className="grid grid-cols-[1fr_auto_auto] gap-4 px-3 py-3 hover:bg-slate-50 transition-colors items-center"
+                    className="grid grid-cols-[1fr_auto_auto] gap-4 px-3 py-3 hover:bg-secondary/50 transition-colors items-center"
                   >
                     {/* Task name + status icon */}
                     <div className="flex items-center gap-3 min-w-0">
@@ -314,8 +310,8 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
                       <span
                         className={`text-sm truncate ${
                           task.status === "done"
-                            ? "text-slate-400 line-through"
-                            : "text-slate-900"
+                            ? "text-muted-foreground line-through"
+                            : "text-foreground"
                         }`}
                       >
                         {task.title}
@@ -328,12 +324,12 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
                         className={`text-sm ${
                           isOverdue
                             ? "text-red-600 font-medium"
-                            : "text-slate-600"
+                            : "text-muted-foreground"
                         }`}
                       >
                         {formatRelativeDate(task.dueDate)}
                       </span>
-                      <span className="block text-xs text-slate-400">
+                      <span className="block text-xs text-muted-foreground">
                         {formatDate(task.dueDate)}
                       </span>
                     </div>

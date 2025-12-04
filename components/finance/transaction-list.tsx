@@ -47,17 +47,17 @@ function formatDate(dateStr: string | undefined): string {
 const statusConfig = {
   draft: {
     label: "Pending Review",
-    pillClass: "bg-amber-100 text-amber-700",
+    pillClass: "status-warning",
     icon: Clock,
   },
   approved: {
     label: "Approved",
-    pillClass: "bg-green-100 text-green-700",
+    pillClass: "status-success",
     icon: CheckCircle2,
   },
   paid: {
     label: "Paid",
-    pillClass: "bg-blue-100 text-blue-700",
+    pillClass: "status-info",
     icon: Receipt,
   },
 };
@@ -92,19 +92,19 @@ export function TransactionList({
   const isLoading = transactions === undefined;
 
   return (
-    <Card className="border border-slate-200 rounded-xl bg-white shadow-sm">
+    <Card className="agent-treasurer">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <CardTitle className="text-lg font-medium">{title}</CardTitle>
+            <CardTitle>{title}</CardTitle>
             {description && (
-              <CardDescription className="text-sm text-slate-500">
+              <CardDescription>
                 {description}
               </CardDescription>
             )}
           </div>
           {transactions && transactions.length > 0 && (
-            <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
+            <span className="text-xs font-medium text-muted-foreground bg-secondary px-2 py-1 rounded-full">
               {transactions.length} {transactions.length === 1 ? "item" : "items"}
             </span>
           )}
@@ -116,13 +116,13 @@ export function TransactionList({
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="animate-pulse flex items-center justify-between p-3 bg-slate-50 rounded-lg"
+                className="animate-pulse flex items-center justify-between p-3 bg-secondary rounded-lg"
               >
                 <div className="space-y-2">
-                  <div className="h-4 bg-slate-200 rounded w-32"></div>
-                  <div className="h-3 bg-slate-200 rounded w-24"></div>
+                  <div className="h-4 bg-border rounded w-32"></div>
+                  <div className="h-3 bg-border rounded w-24"></div>
                 </div>
-                <div className="h-4 bg-slate-200 rounded w-20"></div>
+                <div className="h-4 bg-border rounded w-20"></div>
               </div>
             ))}
           </div>
@@ -131,26 +131,26 @@ export function TransactionList({
             {transactions.map((transaction) => (
               <div
                 key={transaction._id}
-                className="flex items-center justify-between p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors group"
+                className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg hover:bg-secondary transition-colors group"
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="font-medium text-slate-900 truncate">
+                    <p className="font-medium text-foreground truncate">
                       {transaction.vendorName || "Unknown Vendor"}
                     </p>
                     <StatusPill status={transaction.status} />
                   </div>
-                  <div className="flex items-center gap-3 mt-1 text-sm text-slate-500">
+                  <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
                     <span>{formatDate(transaction.invoiceDate)}</span>
                     {transaction.category && (
                       <>
-                        <span className="text-slate-300">•</span>
+                        <span className="text-border">•</span>
                         <span className="capitalize">{transaction.category}</span>
                       </>
                     )}
                     {transaction.description && (
                       <>
-                        <span className="text-slate-300">•</span>
+                        <span className="text-border">•</span>
                         <span className="truncate max-w-[200px]">
                           {transaction.description}
                         </span>
@@ -161,10 +161,10 @@ export function TransactionList({
 
                 <div className="flex items-center gap-4 ml-4">
                   <div className="text-right">
-                    <p className="font-semibold text-slate-900">
+                    <p className="font-semibold text-treasurer">
                       {formatCurrency(transaction.amount)}
                     </p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-muted-foreground">
                       GST: {formatCurrency(transaction.gst)}
                     </p>
                   </div>
@@ -176,7 +176,7 @@ export function TransactionList({
                       onClick={() =>
                         onReviewTransaction(transaction.invoiceId!, transaction._id)
                       }
-                      className="rounded-lg border-slate-300 text-slate-700 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       <Eye className="h-4 w-4 mr-1" />
                       {transaction.status === "draft" ? "Review" : "View"}
@@ -188,8 +188,8 @@ export function TransactionList({
             ))}
           </div>
         ) : (
-          <div className="text-center py-8 text-slate-500">
-            <Receipt className="h-10 w-10 mx-auto mb-3 text-slate-300" />
+          <div className="text-center py-8 text-muted-foreground">
+            <Receipt className="h-10 w-10 mx-auto mb-3 text-border" />
             <p>{emptyMessage}</p>
           </div>
         )}
@@ -205,9 +205,9 @@ export function PendingTransactionsBadge({ schemeId }: { schemeId: Id<"schemes">
   if (!counts || counts.draft === 0) return null;
 
   return (
-    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-full">
-      <Clock className="h-4 w-4 text-amber-600" />
-      <span className="text-sm font-medium text-amber-700">
+    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 status-warning rounded-full">
+      <Clock className="h-4 w-4" />
+      <span className="text-sm font-medium">
         {counts.draft} pending {counts.draft === 1 ? "invoice" : "invoices"}
       </span>
     </div>

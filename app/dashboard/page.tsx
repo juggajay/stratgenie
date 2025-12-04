@@ -23,27 +23,28 @@ import {
 import { Receipt, Shield, Building } from "lucide-react";
 
 export default function DashboardPage() {
+  // All existing state and logic preserved exactly
   const { selectedSchemeId, setSelectedSchemeId } = useSelectedScheme();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [strataRollOpen, setStrataRollOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background bg-grain">
-      {/* Header */}
-      <header className="bg-header border-b border-header/50 sticky top-0 z-10">
+    <div className="min-h-screen bg-background">
+      {/* Header - Sydney Sunday warm theme */}
+      <header className="bg-card border-b border-border sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
-              <span className="text-xl font-semibold tracking-tight text-header-foreground font-display">
+              <span className="text-xl font-bold tracking-tight text-foreground font-display">
                 StrataGenie
               </span>
             </div>
-            <div className="h-6 w-px bg-header-foreground/20" />
+            <div className="h-6 w-px bg-border" />
             <div>
-              <h1 className="text-lg font-medium tracking-tight text-header-foreground">
+              <h1 className="text-lg font-display font-bold tracking-tight text-foreground">
                 Dashboard
               </h1>
-              <p className="text-sm text-header-foreground/70">
+              <p className="text-sm text-muted-foreground">
                 Your strata compliance overview
               </p>
             </div>
@@ -52,7 +53,6 @@ export default function DashboardPage() {
             <Link href="/dashboard/guardian">
               <Button
                 variant="outline"
-                className="rounded-lg border-border text-foreground hover:bg-accent transition-smooth"
               >
                 <Shield className="h-4 w-4 mr-2" />
                 Guardian
@@ -61,7 +61,6 @@ export default function DashboardPage() {
             <Link href="/dashboard/finance">
               <Button
                 variant="outline"
-                className="rounded-lg border-border text-foreground hover:bg-accent transition-smooth"
               >
                 <Receipt className="h-4 w-4 mr-2" />
                 Finance
@@ -72,7 +71,6 @@ export default function DashboardPage() {
                 <SheetTrigger asChild>
                   <Button
                     variant="outline"
-                    className="rounded-lg border-border text-foreground hover:bg-accent transition-smooth"
                   >
                     <Building className="h-4 w-4 mr-2" />
                     Strata Roll
@@ -80,7 +78,7 @@ export default function DashboardPage() {
                 </SheetTrigger>
                 <SheetContent side="right" className="w-full sm:max-w-2xl overflow-y-auto">
                   <SheetHeader>
-                    <SheetTitle className="flex items-center gap-2">
+                    <SheetTitle className="flex items-center gap-2 font-display">
                       <Building className="h-5 w-5" />
                       Strata Roll
                     </SheetTitle>
@@ -107,7 +105,7 @@ export default function DashboardPage() {
 
       {/* Main content */}
       <main className="max-w-5xl mx-auto px-6 py-8">
-        {/* Setup incomplete banner */}
+        {/* Setup incomplete banner - logic preserved */}
         {selectedSchemeId && (
           <SetupBanner
             schemeId={selectedSchemeId}
@@ -135,7 +133,7 @@ export default function DashboardPage() {
                 <TaskList schemeId={selectedSchemeId} />
               </>
             ) : (
-              <div className="rounded-xl border border-border bg-card p-8 text-center shadow-card">
+              <div className="paper p-8 text-center">
                 <p className="text-muted-foreground">
                   Select a scheme to view compliance status
                 </p>
@@ -146,7 +144,7 @@ export default function DashboardPage() {
 
         {/* Disclaimer */}
         <footer className="mt-12 pt-6 border-t border-border">
-          <p className="text-xs text-muted-foreground/70 text-center">
+          <p className="text-xs text-muted-foreground text-center">
             This tool provides administrative guidance only, not legal advice.
             Always verify compliance requirements with NSW Fair Trading.
           </p>

@@ -29,24 +29,24 @@ export function TrialBanner({ schemeId }: TrialBannerProps) {
       className={`
         relative px-4 py-2.5 text-sm
         ${isUrgent
-          ? "bg-amber-900/30 border-b border-amber-500/30 text-amber-300"
-          : "bg-cyan-900/30 border-b border-cyan-500/30 text-cyan-300"
+          ? "bg-persimmon/10 border-b border-persimmon/30 text-persimmon"
+          : "bg-primary/5 border-b border-primary/20 text-primary"
         }
       `}
     >
       <div className="max-w-5xl mx-auto flex items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           {isUrgent ? (
-            <Clock className="w-4 h-4 text-amber-400" />
+            <Clock className="w-4 h-4 text-persimmon" />
           ) : (
-            <Sparkles className="w-4 h-4 text-cyan-400" />
+            <Sparkles className="w-4 h-4 text-primary" />
           )}
-          <span>
+          <span className="text-foreground">
             {isUrgent ? (
-              <strong>Only {daysRemaining} day{daysRemaining !== 1 ? "s" : ""} left in your trial!</strong>
+              <strong className="text-persimmon">Only {daysRemaining} day{daysRemaining !== 1 ? "s" : ""} left in your trial!</strong>
             ) : (
               <>
-                <strong>{daysRemaining} days</strong> remaining in your free trial
+                <strong className="text-primary">{daysRemaining} days</strong> remaining in your free trial
               </>
             )}
           </span>
@@ -55,13 +55,8 @@ export function TrialBanner({ schemeId }: TrialBannerProps) {
           <Link href="/dashboard/billing">
             <Button
               size="sm"
-              className={`
-                h-7 text-xs rounded-full px-3
-                ${isUrgent
-                  ? "bg-amber-600 hover:bg-amber-500 text-white shadow-lg shadow-amber-600/20"
-                  : "bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg shadow-cyan-600/20"
-                }
-              `}
+              variant={isUrgent ? "warning" : "default"}
+              className="h-7 text-xs rounded-full px-3"
             >
               Upgrade Now
             </Button>
@@ -71,8 +66,8 @@ export function TrialBanner({ schemeId }: TrialBannerProps) {
             className={`
               p-1 rounded-full transition-colors
               ${isUrgent
-                ? "hover:bg-amber-900/50 text-amber-400"
-                : "hover:bg-cyan-900/50 text-cyan-400"
+                ? "hover:bg-persimmon/20 text-persimmon"
+                : "hover:bg-primary/20 text-primary"
               }
             `}
             aria-label="Dismiss"

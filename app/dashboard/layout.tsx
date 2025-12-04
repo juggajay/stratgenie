@@ -1,12 +1,13 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Loader2 } from "lucide-react";
 import { TrialBanner } from "@/components/dashboard/trial-banner";
 import { MobileNav } from "@/components/dashboard/mobile-nav";
+import { CaptureFab } from "@/components/dashboard/capture-fab";
 
 // Mobile nav context for sharing state
 const MobileNavContext = createContext<{
@@ -16,6 +17,15 @@ const MobileNavContext = createContext<{
 
 export const useMobileNav = () => useContext(MobileNavContext);
 
+// FAB capture context for handling mobile camera captures
+type CaptureHandler = (file: File) => void;
+const CaptureContext = createContext<{
+  onCapture: CaptureHandler | null;
+  setOnCapture: (handler: CaptureHandler | null) => void;
+}>({ onCapture: null, setOnCapture: () => {} });
+
+export const useCapture = () => useContext(CaptureContext);
+
 export default function DashboardLayout({
   children,
 }: {
@@ -24,6 +34,32 @@ export default function DashboardLayout({
   const router = useRouter();
   const [isReady, setIsReady] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [captureHandler, setCaptureHandler] = useState<CaptureHandler | null>(null);
+
+  // Wrapper to update capture handler from children
+  const setOnCapture = useCallback((handler: CaptureHandler | null) => {
+    setCaptureHandler(() => handler);
+  }, []);
+
+  // Default capture handler - navigates to finance page with file
+  const handleCapture = useCallback((file: File) => {
+    if (captureHandler) {
+      captureHandler(file);
+    } else {
+      // Default: navigate to finance page
+      // Store file in session storage for the finance page to pick up
+      const reader = new FileReader();
+      reader.onload = () => {
+        sessionStorage.setItem('pendingCapture', JSON.stringify({
+          name: file.name,
+          type: file.type,
+          data: reader.result,
+        }));
+        router.push('/dashboard/finance');
+      };
+      reader.readAsDataURL(file);
+    }
+  }, [captureHandler, router]);
 
   // Sync user and get current user data
   const storeUser = useMutation(api.users.store);
@@ -69,10 +105,10 @@ export default function DashboardLayout({
   // Loading state
   if (!isReady) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin text-cyan-500 mx-auto mb-4" />
-          <p className="text-slate-400">Loading your dashboard...</p>
+          <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading your dashboard...</p>
         </div>
       </div>
     );
@@ -83,12 +119,17 @@ export default function DashboardLayout({
 
   return (
     <MobileNavContext.Provider value={{ isOpen: mobileNavOpen, setIsOpen: setMobileNavOpen }}>
-      {/* Mobile navigation sheet */}
-      <MobileNav open={mobileNavOpen} onOpenChange={setMobileNavOpen} />
+      <CaptureContext.Provider value={{ onCapture: captureHandler, setOnCapture }}>
+        {/* Mobile navigation sheet */}
+        <MobileNav open={mobileNavOpen} onOpenChange={setMobileNavOpen} />
 
-      {/* Trial banner - shown if user is on trial */}
-      {firstScheme && <TrialBanner schemeId={firstScheme._id} />}
-      {children}
+        {/* Trial banner - shown if user is on trial */}
+        {firstScheme && <TrialBanner schemeId={firstScheme._id} />}
+        {children}
+
+        {/* Mobile capture FAB - always visible on mobile */}
+        <CaptureFab onCapture={handleCapture} />
+      </CaptureContext.Provider>
     </MobileNavContext.Provider>
   );
 }

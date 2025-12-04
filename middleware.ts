@@ -13,6 +13,8 @@ const isPublicRoute = createRouteMatcher([
   "/tools(.*)",
   "/guides(.*)",
   "/strata-management(.*)",
+  // Preview page for UI testing
+  "/preview(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, request) => {

@@ -34,7 +34,7 @@ export function AppHeader({
   const pathname = usePathname();
 
   return (
-    <header className="bg-slate-900/80 backdrop-blur-xl border-b border-white/10 sticky top-0 z-10">
+    <header className="bg-card border-b border-border sticky top-0 z-10">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4 sm:gap-6">
@@ -42,7 +42,7 @@ export function AppHeader({
             {onMobileMenuToggle && (
               <button
                 onClick={onMobileMenuToggle}
-                className="lg:hidden p-2 -ml-2 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                className="lg:hidden p-2 -ml-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-lg transition-colors"
                 aria-label="Toggle navigation menu"
               >
                 <Menu className="h-5 w-5" />
@@ -51,13 +51,13 @@ export function AppHeader({
 
             {/* Branding */}
             <Link href="/dashboard" className="flex items-center gap-2 group">
-              <span className="text-xl font-semibold tracking-tight font-display bg-gradient-to-r from-cyan-400 to-sky-400 bg-clip-text text-transparent">
+              <span className="text-xl font-bold tracking-tight font-display text-primary">
                 StrataGenie
               </span>
             </Link>
 
             {/* Divider - hide on mobile */}
-            <div className="hidden sm:block h-6 w-px bg-white/20" />
+            <div className="hidden sm:block h-6 w-px bg-border" />
 
             {/* Page title section */}
             <div className="hidden sm:block">
@@ -67,7 +67,7 @@ export function AppHeader({
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="rounded-lg text-slate-400 hover:text-white hover:bg-white/5 -ml-2"
+                      className="-ml-2"
                     >
                       <ArrowLeft className="h-4 w-4 mr-1" />
                       Back
@@ -75,15 +75,15 @@ export function AppHeader({
                   </Link>
                 )}
                 {showBackButton && (
-                  <span className="text-white/40">/</span>
+                  <span className="text-border">/</span>
                 )}
-                <h1 className="text-lg font-medium tracking-tight text-white flex items-center gap-2">
-                  {Icon && <Icon className="h-5 w-5 text-white/70" />}
+                <h1 className="text-lg font-display font-bold tracking-tight text-foreground flex items-center gap-2">
+                  {Icon && <Icon className="h-5 w-5 text-muted-foreground" />}
                   {title}
                 </h1>
               </div>
               {description && (
-                <p className="text-sm text-slate-400">
+                <p className="text-sm text-muted-foreground">
                   {description}
                 </p>
               )}
@@ -104,10 +104,10 @@ export function AppHeader({
                       variant="ghost"
                       size="sm"
                       className={cn(
-                        "rounded-lg transition-all",
+                        "transition-all",
                         isActive
-                          ? "bg-white/10 text-white"
-                          : "text-slate-400 hover:text-white hover:bg-white/5"
+                          ? "bg-primary/10 text-primary"
+                          : "text-muted-foreground hover:text-foreground"
                       )}
                     >
                       <NavIcon className="h-4 w-4 mr-2" />
@@ -124,26 +124,26 @@ export function AppHeader({
         </div>
 
         {/* Mobile page title - shown below header on small screens */}
-        <div className="sm:hidden mt-3 pt-3 border-t border-white/10">
+        <div className="sm:hidden mt-3 pt-3 border-t border-border">
           <div className="flex items-center gap-2">
             {showBackButton && (
               <Link href={backHref}>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="rounded-lg text-slate-400 hover:text-white hover:bg-white/5 -ml-2 p-2"
+                  className="-ml-2 p-2"
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
               </Link>
             )}
             <div>
-              <h1 className="text-base font-medium tracking-tight text-white flex items-center gap-2">
-                {Icon && <Icon className="h-4 w-4 text-white/70" />}
+              <h1 className="text-base font-display font-bold tracking-tight text-foreground flex items-center gap-2">
+                {Icon && <Icon className="h-4 w-4 text-muted-foreground" />}
                 {title}
               </h1>
               {description && (
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-muted-foreground mt-0.5">
                   {description}
                 </p>
               )}
