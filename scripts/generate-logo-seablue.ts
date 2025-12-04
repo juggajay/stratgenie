@@ -28,7 +28,7 @@ Genie character (BIG - the star of the logo):
 
 TEXT (LARGE and BOLD):
 - "StrataGenie" in LARGE, EXTRA-BOLD, THICK font
-- "Strata" in VERY LIGHT GRAY (#e5e7eb) - almost white
+- "Strata" in PURE WHITE (#ffffff) - bright white color
 - "Genie" in CYAN (#06b6d4)
 - Use extra-bold/black weight sans-serif font
 - Text height should be about 2/3 (two-thirds) the height of the genie
