@@ -88,3 +88,26 @@ export const getAll = query({
     return await ctx.db.query("leads").collect();
   },
 });
+
+/**
+ * Check if an email has already used the Strata Hub Reporter
+ */
+export const checkStrataHubAccess = query({
+  args: {
+    email: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const existingLead = await ctx.db
+      .query("leads")
+      .withIndex("by_email", (q) => q.eq("email", args.email.toLowerCase()))
+      .first();
+
+    // Check if this email has used the strata hub reporter before
+    const hasUsed = existingLead?.source === "strata_hub_reporter";
+
+    return {
+      hasUsed,
+      existingLead: existingLead ? { name: existingLead.name } : null,
+    };
+  },
+});

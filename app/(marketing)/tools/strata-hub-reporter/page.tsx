@@ -2,14 +2,13 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   FileText,
   ArrowLeft,
   Loader2,
   CheckCircle2,
   AlertCircle,
-  Lock,
-  Unlock,
   Building2,
   Calendar,
   DollarSign,
@@ -17,8 +16,59 @@ import {
   Users,
   Flame,
   Sparkles,
+  Mail,
+  ArrowRight,
+  XCircle,
 } from "lucide-react";
 import { useMutation, useAction, useQuery } from "convex/react";
+
+// Agent story carousel data - tells the journey of managing a strata scheme
+const agentStory = [
+  {
+    name: "Secretary Agent",
+    step: "Step 1",
+    headline: "Never miss an AGM deadline again",
+    story: "Your Secretary Agent watches the calendar 24/7. It auto-calculates when your AGM is due, drafts compliant notices, and keeps your compliance dashboard green.",
+    image: "/images/agents/hero-secretary.png",
+    color: "cyan",
+    bgGradient: "from-cyan-500/20 to-sky-500/10",
+    borderColor: "border-cyan-500/30",
+    textColor: "text-cyan-600",
+  },
+  {
+    name: "Treasurer Agent",
+    step: "Step 2",
+    headline: "Invoices processed in seconds",
+    story: "Drop in any invoice. Your Treasurer Agent extracts the vendor, amount, and GST automatically. It validates ABNs and keeps your admin and capital works funds separate.",
+    image: "/images/agents/hero-treasurer.png",
+    color: "emerald",
+    bgGradient: "from-emerald-500/20 to-green-500/10",
+    borderColor: "border-emerald-500/30",
+    textColor: "text-emerald-600",
+  },
+  {
+    name: "Postman Agent",
+    step: "Step 3",
+    headline: "Levy notices sent with one click",
+    story: "Enter your budget. Your Postman Agent calculates each lot's share based on unit entitlements, generates professional PDF notices, and emails them to all owners instantly.",
+    image: "/images/agents/hero-postman.png",
+    color: "amber",
+    bgGradient: "from-amber-500/20 to-yellow-500/10",
+    borderColor: "border-amber-500/30",
+    textColor: "text-amber-600",
+  },
+  {
+    name: "Guardian Agent",
+    step: "Step 4",
+    headline: "Bylaw disputes settled instantly",
+    story: "\"Can I install an AC unit?\" Ask your Guardian Agent any bylaw question in plain English. Get instant answers citing the exact clause from your building's rules.",
+    image: "/images/agents/hero-guardian.png",
+    color: "purple",
+    bgGradient: "from-purple-500/20 to-violet-500/10",
+    borderColor: "border-purple-500/30",
+    textColor: "text-purple-600",
+  },
+];
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -57,23 +107,25 @@ function formatCurrency(cents: bigint | number | undefined): string {
   }).format(dollars);
 }
 
-type Step = "upload" | "processing" | "results";
+type Step = "email" | "upload" | "processing" | "results" | "already_used";
 
 export default function StrataHubReporterPage() {
-  const [step, setStep] = useState<Step>("upload");
+  const [step, setStep] = useState<Step>("email");
   const [sessionId, setSessionId] = useState("");
   const [reportId, setReportId] = useState<Id<"strataHubReports"> | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [isUnlocking, setIsUnlocking] = useState(false);
+  const [isCheckingAccess, setIsCheckingAccess] = useState(false);
   const [fileName, setFileName] = useState("");
+  const [agentIndex, setAgentIndex] = useState(0);
+  const [storyComplete, setStoryComplete] = useState(false);
+  const [analysisReady, setAnalysisReady] = useState(false);
 
   // Convex hooks
   const generateUploadUrl = useMutation(api.strataHub.generateUploadUrl);
   const createReport = useMutation(api.strataHub.createReport);
   const analyzeDocument = useAction(api.actions.strataHub.analyzeDocument);
-  const unlockReport = useMutation(api.strataHub.unlockReport);
   const captureLead = useMutation(api.leads.capture);
   const report = useQuery(
     api.strataHub.getReportById,
@@ -85,12 +137,75 @@ export default function StrataHubReporterPage() {
     setSessionId(getSessionId());
   }, []);
 
-  // Poll for report updates when processing
+  // Track when analysis is ready (but don't show results yet)
   useEffect(() => {
     if (report?.status === "completed" || report?.status === "failed") {
-      setStep("results");
+      setAnalysisReady(true);
     }
   }, [report?.status]);
+
+  // Don't auto-transition - user must click to proceed
+  // Results only show when user explicitly dismisses the carousel
+
+  // Cycle through agent story during processing - must watch all 4
+  useEffect(() => {
+    if (step !== "processing") return;
+
+    // Reset state when entering processing
+    setAgentIndex(0);
+    setStoryComplete(false);
+    setAnalysisReady(false);
+
+    let currentIndex = 0;
+    const interval = setInterval(() => {
+      currentIndex++;
+      if (currentIndex >= agentStory.length) {
+        // Story complete - user has seen all agents
+        setStoryComplete(true);
+        clearInterval(interval);
+      } else {
+        setAgentIndex(currentIndex);
+      }
+    }, 5000); // 5 seconds per agent = 20 seconds total
+
+    return () => clearInterval(interval);
+  }, [step]);
+
+  // Handle email submission - gate BEFORE upload
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setIsCheckingAccess(true);
+    try {
+      // Check if email has already used the tool
+      const response = await fetch(`/api/check-strata-hub-access?email=${encodeURIComponent(email)}`);
+      const { hasUsed } = await response.json();
+
+      if (hasUsed) {
+        setStep("already_used");
+      } else {
+        // Capture lead immediately
+        await captureLead({
+          email,
+          name: name || undefined,
+          source: "strata_hub_reporter",
+        });
+        setStep("upload");
+      }
+    } catch (error) {
+      console.error("Access check failed:", error);
+      // On error, allow access (fail open for better UX)
+      await captureLead({
+        email,
+        name: name || undefined,
+        source: "strata_hub_reporter",
+      });
+      setStep("upload");
+    } finally {
+      setIsCheckingAccess(false);
+    }
+  };
 
   const handleFileUpload = useCallback(
     async (file: File) => {
@@ -140,30 +255,6 @@ export default function StrataHubReporterPage() {
     [sessionId, generateUploadUrl, createReport, analyzeDocument]
   );
 
-  const handleUnlock = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !reportId) return;
-
-    setIsUnlocking(true);
-    try {
-      // Capture lead and unlock report
-      await Promise.all([
-        captureLead({
-          email,
-          name: name || undefined,
-          source: "strata_hub_reporter",
-        }),
-        unlockReport({ reportId }),
-      ]);
-    } catch (error) {
-      console.error("Failed to unlock:", error);
-    } finally {
-      setIsUnlocking(false);
-    }
-  };
-
-  const isUnlocked = report?.unlocked === true;
-
   return (
     <div className="py-12 px-6">
       <div className="max-w-4xl mx-auto">
@@ -190,32 +281,73 @@ export default function StrataHubReporterPage() {
           </p>
         </div>
 
-        {/* Upload Step */}
-        {step === "upload" && (
+        {/* Email Step - Gate BEFORE upload */}
+        {step === "email" && (
           <Card className="border border-slate-200 rounded-xl bg-white shadow-sm max-w-xl mx-auto">
             <CardHeader className="text-center">
               <CardTitle className="text-lg font-medium flex items-center justify-center gap-2">
-                <Sparkles className="w-5 h-5 text-blue-600" />
-                Upload Your Document
+                <Mail className="w-5 h-5 text-blue-600" />
+                Get Your Free Report
               </CardTitle>
               <CardDescription className="text-sm text-slate-500">
-                Supports AGM Minutes, Financial Statements, or Annual Reports (PDF)
+                Enter your email and we&apos;ll analyze your document in ~30 seconds
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <MagicDropzone
-                onFileAccepted={handleFileUpload}
-                isUploading={isUploading}
-                accept="application/pdf"
-                maxSizeMB={10}
-                title="Drag & drop your document"
-                description="or tap to scan with camera"
-              />
+              <form onSubmit={handleEmailSubmit} className="space-y-4">
+                <div>
+                  <Label htmlFor="name" className="text-sm font-medium text-slate-700">
+                    Name (optional)
+                  </Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder="Your name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="mt-1 rounded-lg"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="email" className="text-sm font-medium text-slate-700">
+                    Email address
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="mt-1 rounded-lg"
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  disabled={isCheckingAccess}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                >
+                  {isCheckingAccess ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Checking...
+                    </>
+                  ) : (
+                    <>
+                      Continue
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </>
+                  )}
+                </Button>
+                <p className="text-xs text-slate-500 text-center">
+                  One free report per email. We&apos;ll send occasional compliance tips.
+                </p>
+              </form>
 
               <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
                 <h4 className="text-sm font-medium text-blue-900 mb-2 flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-green-600" />
-                  What we extract instantly:
+                  What we extract from your document:
                 </h4>
                 <ul className="text-sm text-blue-800 space-y-1.5">
                   <li className="flex items-center gap-2">
@@ -244,23 +376,231 @@ export default function StrataHubReporterPage() {
           </Card>
         )}
 
-        {/* Processing Step */}
-        {step === "processing" && (
-          <Card className="border border-slate-200 rounded-xl bg-white shadow-sm max-w-xl mx-auto">
+        {/* Already Used Step */}
+        {step === "already_used" && (
+          <Card className="border-2 border-amber-200 bg-amber-50 rounded-xl max-w-xl mx-auto">
             <CardContent className="pt-8 text-center">
-              <Loader2 className="w-12 h-12 text-blue-600 mx-auto mb-4 animate-spin" />
-              <h3 className="text-lg font-medium text-slate-900 mb-2">
-                Analyzing Your Document
+              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <XCircle className="w-8 h-8 text-amber-600" />
+              </div>
+              <h3 className="text-lg font-medium text-amber-900 mb-2">
+                You&apos;ve Already Used Your Free Report
               </h3>
-              <p className="text-sm text-slate-600 mb-4">
-                Our AI is extracting the key data points from your document.
-                This usually takes 10-30 seconds.
+              <p className="text-sm text-amber-800 mb-6">
+                Each email address can only use the Strata Hub Reporter once.
+                Want unlimited reports and full compliance automation?
               </p>
-              <div className="text-xs text-slate-500">
-                File: {fileName}
+              <div className="space-y-3">
+                <Link href="/sign-up">
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
+                    Start Free Trial
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+                <Button
+                  variant="outline"
+                  className="w-full rounded-lg"
+                  onClick={() => {
+                    setEmail("");
+                    setStep("email");
+                  }}
+                >
+                  Use Different Email
+                </Button>
               </div>
             </CardContent>
           </Card>
+        )}
+
+        {/* Upload Step */}
+        {step === "upload" && (
+          <Card className="border border-slate-200 rounded-xl bg-white shadow-sm max-w-xl mx-auto">
+            <CardHeader className="text-center">
+              <CardTitle className="text-lg font-medium flex items-center justify-center gap-2">
+                <Sparkles className="w-5 h-5 text-blue-600" />
+                Upload Your Document
+              </CardTitle>
+              <CardDescription className="text-sm text-slate-500">
+                Supports AGM Minutes, Financial Statements, or Annual Reports (PDF)
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <MagicDropzone
+                onFileAccepted={handleFileUpload}
+                isUploading={isUploading}
+                accept="application/pdf"
+                maxSizeMB={10}
+                title="Drag & drop your document"
+                description="or tap to scan with camera"
+              />
+
+              <p className="text-xs text-slate-500 text-center mt-4">
+                Analyzing for: <span className="font-medium text-slate-700">{email}</span>
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Processing Step - Premium Agent Story Carousel */}
+        {step === "processing" && (
+          <div className="max-w-2xl mx-auto">
+            {/* Dark premium container */}
+            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-8 shadow-2xl border border-white/10">
+
+              {/* Header with status */}
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+                      <Loader2 className="w-5 h-5 text-blue-400 animate-spin" />
+                    </div>
+                    {analysisReady && (
+                      <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center">
+                        <CheckCircle2 className="w-3 h-3 text-white" />
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-white">
+                      {analysisReady ? "Analysis complete!" : "Analyzing document..."}
+                    </p>
+                    <p className="text-xs text-slate-400">{fileName}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs text-slate-500 uppercase tracking-wide">Agent {agentIndex + 1} of 4</p>
+                </div>
+              </div>
+
+              {/* Progress bar */}
+              <div className="mb-8">
+                <div className="h-1 bg-slate-700 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-cyan-500 via-emerald-500 to-purple-500 transition-all duration-500 ease-out"
+                    style={{ width: `${((agentIndex + 1) / agentStory.length) * 100}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Intro text */}
+              <div className="text-center mb-6">
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                  Meet Your Team
+                </h2>
+                <p className="text-slate-400 text-sm">
+                  Four specialized agents, working 24/7 for your scheme
+                </p>
+              </div>
+
+              {/* Agent Card - Light background for contrast */}
+              <div className={`relative rounded-2xl border-2 ${agentStory[agentIndex].borderColor} bg-white shadow-xl overflow-hidden transition-all duration-700 ease-out`}>
+                {/* Subtle colored accent bar at top */}
+                <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${agentStory[agentIndex].bgGradient}`} />
+
+                <div className="relative flex flex-col md:flex-row items-center">
+                  {/* Agent Image - with subtle colored background */}
+                  <div className={`relative w-full md:w-56 h-56 flex-shrink-0 bg-gradient-to-br ${agentStory[agentIndex].bgGradient}`}>
+                    <Image
+                      src={agentStory[agentIndex].image}
+                      alt={agentStory[agentIndex].name}
+                      fill
+                      className="object-contain p-4 drop-shadow-lg transition-transform duration-700 ease-out"
+                      priority
+                    />
+                  </div>
+
+                  {/* Agent Story Content */}
+                  <div className="flex-1 p-6 md:p-8">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${agentStory[agentIndex].textColor} bg-slate-100`}>
+                        {agentStory[agentIndex].step}
+                      </span>
+                    </div>
+                    <h3 className={`text-2xl md:text-3xl font-bold mb-2 ${agentStory[agentIndex].textColor}`}>
+                      {agentStory[agentIndex].name}
+                    </h3>
+                    <p className="text-lg font-semibold text-slate-800 mb-3">
+                      {agentStory[agentIndex].headline}
+                    </p>
+                    <p className="text-slate-600 leading-relaxed text-sm md:text-base">
+                      {agentStory[agentIndex].story}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step indicators */}
+              <div className="flex justify-center gap-3 mt-6">
+                {agentStory.map((agent, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-500 ${
+                      idx === agentIndex
+                        ? `bg-gradient-to-br ${agent.bgGradient} border-2 ${agent.borderColor} scale-110 shadow-lg`
+                        : idx < agentIndex
+                        ? "bg-slate-700 border border-slate-600"
+                        : "bg-slate-800 border border-slate-700"
+                    }`}
+                  >
+                    {idx < agentIndex ? (
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    ) : (
+                      <span className={`text-xs font-bold ${idx === agentIndex ? agentStory[idx].textColor : "text-slate-500"}`}>
+                        {idx + 1}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Show when story is complete and analysis is ready */}
+              {storyComplete && analysisReady ? (
+                <div className="mt-8 pt-6 border-t border-white/10 animate-in fade-in duration-500">
+                  <div className="text-center mb-6">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/20 text-emerald-400 mb-4">
+                      <CheckCircle2 className="w-5 h-5" />
+                      <span className="font-medium">Your report is ready!</span>
+                    </div>
+                    <p className="text-slate-300 text-sm">
+                      Want all 4 agents working for your scheme?
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <Link
+                      href="/sign-up"
+                      className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-full hover:from-cyan-400 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:-translate-y-0.5"
+                    >
+                      Start 14-Day Free Trial
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                    <button
+                      onClick={() => setStep("results")}
+                      className="inline-flex items-center gap-2 px-6 py-3 text-slate-400 hover:text-white transition-colors text-sm"
+                    >
+                      <XCircle className="w-4 h-4" />
+                      Skip, show my report
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {/* Progress indicator while watching */}
+                  {!storyComplete && (
+                    <div className="mt-6 text-center">
+                      <p className="text-slate-500 text-xs">
+                        {analysisReady ? (
+                          <span className="text-emerald-400">Analysis complete — watch the tour to continue</span>
+                        ) : (
+                          <span>Analyzing your document while you explore...</span>
+                        )}
+                      </p>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
         )}
 
         {/* Results Step */}
@@ -305,8 +645,8 @@ export default function StrataHubReporterPage() {
                           Analysis Complete
                         </h3>
                         <p className="text-sm text-green-800">
-                          We've extracted the Strata Hub data points from your document.
-                          {!isUnlocked && " Enter your email below to unlock the full results."}
+                          We&apos;ve extracted the Strata Hub data points from your document.
+                          Copy these values directly into the Strata Hub portal.
                         </p>
                       </div>
                     </div>
@@ -317,21 +657,15 @@ export default function StrataHubReporterPage() {
                 <Card className="border border-slate-200 rounded-xl bg-white shadow-sm">
                   <CardHeader>
                     <CardTitle className="text-lg font-medium flex items-center gap-2">
-                      {isUnlocked ? (
-                        <Unlock className="w-5 h-5 text-green-600" />
-                      ) : (
-                        <Lock className="w-5 h-5 text-slate-400" />
-                      )}
+                      <CheckCircle2 className="w-5 h-5 text-green-600" />
                       Extracted Data
                     </CardTitle>
                     <CardDescription>
-                      {isUnlocked
-                        ? "Your full Strata Hub report data"
-                        : "Enter your email to unlock the full results"}
+                      Your Strata Hub report data — ready to copy
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className={`grid md:grid-cols-2 gap-4 ${!isUnlocked ? "blur-sm select-none" : ""}`}>
+                    <div className="grid md:grid-cols-2 gap-4">
                       {/* Strata Plan Number */}
                       <div className="p-4 bg-slate-50 rounded-lg">
                         <div className="flex items-center gap-2 mb-2">
@@ -423,68 +757,6 @@ export default function StrataHubReporterPage() {
                         </p>
                       </div>
                     </div>
-
-                    {/* Email Gate - High-Conversion Copy */}
-                    {!isUnlocked && (
-                      <div className="mt-6 p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Sparkles className="w-5 h-5 text-green-600" />
-                          <h4 className="font-medium text-green-900">
-                            Your Compliance Cheat Sheet is Ready
-                          </h4>
-                        </div>
-                        <p className="text-sm text-green-800 mb-4">
-                          Enter your email below and we&apos;ll reveal your complete Strata Hub data — ready to copy into the portal.
-                        </p>
-                        <form onSubmit={handleUnlock} className="space-y-3">
-                          <div className="grid sm:grid-cols-2 gap-3">
-                            <div>
-                              <Label htmlFor="name" className="sr-only">Name</Label>
-                              <Input
-                                id="name"
-                                type="text"
-                                placeholder="Your name (optional)"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                className="rounded-lg border-green-300 bg-white focus:border-green-500 focus:ring-green-500"
-                              />
-                            </div>
-                            <div>
-                              <Label htmlFor="email" className="sr-only">Email</Label>
-                              <Input
-                                id="email"
-                                type="email"
-                                placeholder="your@email.com"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                                className="rounded-lg border-green-300 bg-white focus:border-green-500 focus:ring-green-500"
-                              />
-                            </div>
-                          </div>
-                          <Button
-                            type="submit"
-                            disabled={isUnlocking}
-                            className="w-full bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-sm hover:shadow-md transition-all"
-                          >
-                            {isUnlocking ? (
-                              <>
-                                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                Revealing...
-                              </>
-                            ) : (
-                              <>
-                                <Sparkles className="w-4 h-4 mr-2" />
-                                Reveal My Report
-                              </>
-                            )}
-                          </Button>
-                          <p className="text-xs text-green-700 text-center">
-                            We&apos;ll send you occasional compliance tips. Unsubscribe anytime.
-                          </p>
-                        </form>
-                      </div>
-                    )}
                   </CardContent>
                 </Card>
 

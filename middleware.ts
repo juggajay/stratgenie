@@ -6,6 +6,7 @@ const isPublicRoute = createRouteMatcher([
   "/sign-in(.*)",
   "/sign-up(.*)",
   "/api/webhooks(.*)",
+  "/api/check-strata-hub-access(.*)",
   // SEO files
   "/sitemap.xml",
   "/robots.txt",

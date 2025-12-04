@@ -33,7 +33,7 @@ function Navbar() {
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between relative">
         <Link href="/" className="flex items-center -ml-2">
           <Image
-            src="/images/logo/logo-seablue-final.png"
+            src="/images/logo/logo-seablue-transparent-v3.png"
             alt="StrataGenie"
             width={400}
             height={100}
@@ -904,7 +904,7 @@ function Footer() {
           <div className="md:col-span-2">
             <div className="mb-5">
               <Image
-                src="/images/logo/logo-seablue-final.png"
+                src="/images/logo/logo-seablue-transparent-v3.png"
                 alt="StrataGenie"
                 width={400}
                 height={100}
