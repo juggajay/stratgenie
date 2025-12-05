@@ -22,7 +22,7 @@ export function SchemeSelector({
   onSchemeSelect: (schemeId: Id<"schemes">) => void;
 }) {
   const schemes = useQuery(api.schemes.list);
-  const createScheme = useMutation(api.schemes.create);
+  const createScheme = useMutation(api.schemes.createFirstScheme);
   const setComplianceDates = useMutation(api.compliance.setSchemeComplianceDates);
 
   const [isCreating, setIsCreating] = useState(false);
