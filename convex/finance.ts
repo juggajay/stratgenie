@@ -615,19 +615,31 @@ export const getFinancialStats = query({
     // Get the scheme - matches getScheme behavior (no auth check for reading)
     
 
-    // Get all approved transactions in the date range
-    const allTransactions = await ctx.db
+    // Get all approved and paid transactions in the date range
+    // (exclude draft transactions as they haven't been reviewed yet)
+    const approvedTransactions = await ctx.db
       .query("transactions")
       .withIndex("by_scheme_and_status", (q) =>
         q.eq("schemeId", args.schemeId).eq("status", "approved")
       )
       .collect();
 
-    // Filter by date range (using invoiceDate or createdAt)
+    const paidTransactions = await ctx.db
+      .query("transactions")
+      .withIndex("by_scheme_and_status", (q) =>
+        q.eq("schemeId", args.schemeId).eq("status", "paid")
+      )
+      .collect();
+
+    const allTransactions = [...approvedTransactions, ...paidTransactions];
+
+    // Filter by date range (using transactionDate, invoiceDate, or createdAt)
     const transactions = allTransactions.filter((t) => {
-      const txDate = t.invoiceDate
-        ? new Date(t.invoiceDate).getTime()
-        : t.createdAt;
+      const txDate = t.transactionDate
+        ? t.transactionDate
+        : t.invoiceDate
+          ? new Date(t.invoiceDate).getTime()
+          : t.createdAt;
       return txDate >= args.startDate && txDate <= args.endDate;
     });
 

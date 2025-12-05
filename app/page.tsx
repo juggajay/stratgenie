@@ -84,10 +84,9 @@ function HeroSection() {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-cyan-500/20 via-cyan-500/5 to-transparent rounded-full blur-3xl" />
 
       <div className="relative max-w-5xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/20 text-slate-300 text-sm font-medium mb-8 animate-slide-up">
-          <Shield className="w-4 h-4 text-cyan-400" />
-          Built for NSW SSMA 2015 compliance
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-live-pulse" />
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-emerald-500/30 text-emerald-400 text-sm font-medium mb-8 animate-slide-up">
+          <Sparkles className="w-4 h-4" />
+          Save $1,500 – $9,000/year vs traditional strata management
         </div>
 
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-6 leading-[1.05] animate-slide-up" style={{ animationDelay: "0.1s" }}>
@@ -99,23 +98,29 @@ function HeroSection() {
           The AI-powered compliance copilot for self-managed NSW strata schemes. Stop worrying about deadlines, paperwork, and bylaws.
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8 animate-slide-up" style={{ animationDelay: "0.3s" }}>
+        <div className="flex flex-col items-center gap-3 mb-8 animate-slide-up" style={{ animationDelay: "0.3s" }}>
           <Link href="/sign-up">
-            <Button size="lg" className="group btn-glow bg-cyan-600 hover:bg-cyan-500 text-white text-lg px-8 py-6 rounded-full font-medium shadow-xl shadow-cyan-600/30 hover:shadow-2xl hover:-translate-y-1 transition-all animate-pulse-glow">
+            <Button size="lg" className="group btn-glow bg-cyan-600 hover:bg-cyan-500 text-white text-lg px-10 py-6 rounded-full font-medium shadow-xl shadow-cyan-600/30 hover:shadow-2xl hover:-translate-y-1 transition-all animate-pulse-glow">
               Start Free Trial
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </Link>
-          <a href="#demo" className="group flex items-center gap-2 text-slate-300 hover:text-white text-lg px-8 py-4 rounded-full font-medium glass border border-white/20 hover:border-white/40 transition-all">
-            <Play className="w-5 h-5 text-cyan-400" />
-            Watch Demo
+          <a href="#demo" className="group flex items-center gap-1.5 text-slate-400 hover:text-cyan-400 text-sm font-medium transition-colors">
+            <Play className="w-4 h-4" />
+            or watch a 2-min demo
           </a>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-slate-400 mb-16 animate-slide-up" style={{ animationDelay: "0.4s" }}>
-          <span className="flex items-center gap-2"><Check className="w-5 h-5 text-emerald-400" />14-day free trial</span>
-          <span className="flex items-center gap-2"><Check className="w-5 h-5 text-emerald-400" />No credit card required</span>
-          <span className="flex items-center gap-2"><Check className="w-5 h-5 text-emerald-400" />70% cheaper than agencies</span>
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-16 animate-slide-up" style={{ animationDelay: "0.4s" }}>
+          <span className="flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/20 text-slate-200 text-sm font-medium">
+            <Check className="w-4 h-4 text-emerald-400" />14-day free trial
+          </span>
+          <span className="flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/20 text-slate-200 text-sm font-medium">
+            <Check className="w-4 h-4 text-emerald-400" />No credit card required
+          </span>
+          <span className="flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/20 text-slate-200 text-sm font-medium">
+            <Check className="w-4 h-4 text-emerald-400" />From $90/month for 6 lots
+          </span>
         </div>
 
         {/* Hero Dashboard Preview */}
@@ -318,7 +323,7 @@ function AgentsSection() {
       name: "Secretary Agent",
       tagline: "Watches the calendar so you don't have to.",
       description: "Auto-drafts legally compliant AGM notices, generates agendas, tracks all statutory deadlines, and produces minutes ready for signing.",
-      features: ["Auto-calculate AGM due dates", "Generate compliant notices", "Green/Red compliance dashboard"],
+      features: ["Never miss an AGM deadline", "Create notices in 5 minutes", "Know instantly if you're compliant"],
       image: "/images/agents/hero-secretary.png",
       borderColor: "hover:border-cyan-500",
       hoverGlow: "hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]",
@@ -330,7 +335,7 @@ function AgentsSection() {
       name: "Treasurer Agent",
       tagline: "Throw away your spreadsheets.",
       description: "Drag & drop invoices. AI extracts vendor, amount, GST automatically. Validates ABN, separates funds, maintains full audit trail.",
-      features: ["AI-powered data extraction", "ABN & GST validation", "Admin/CWF fund separation"],
+      features: ["Process invoices in seconds", "Never miss a tax deduction", "Stay compliant with fund rules"],
       image: "/images/agents/hero-treasurer.png",
       borderColor: "hover:border-emerald-500",
       hoverGlow: "hover:shadow-[0_0_40px_rgba(16,185,129,0.4)]",
@@ -342,7 +347,7 @@ function AgentsSection() {
       name: "Guardian Agent",
       tagline: "Resolve disputes instantly.",
       description: "Ask bylaw questions in plain English. Get instant answers citing the exact clause. Learns your building's specific rules.",
-      features: ["Plain English answers", "Exact clause citations", "Custom bylaw support"],
+      features: ["Get answers anyone can understand", "Back up decisions with exact rules", "Uses your building's bylaws"],
       image: "/images/agents/hero-guardian.png",
       borderColor: "hover:border-purple-500",
       hoverGlow: "hover:shadow-[0_0_40px_rgba(139,92,246,0.4)]",
@@ -354,7 +359,7 @@ function AgentsSection() {
       name: "Postman Agent",
       tagline: "Calculate, generate, email — one click.",
       description: "Enter your budget. System calculates each lot's share based on unit entitlements. Emails professional PDF notices to all owners.",
-      features: ["Auto levy calculation", "Professional PDF notices", "One-click email to all owners"],
+      features: ["Calculate every lot's share instantly", "Send notices owners actually read", "Notify all owners in one click"],
       image: "/images/agents/hero-postman.png",
       borderColor: "hover:border-cyan-500",
       hoverGlow: "hover:shadow-[0_0_40px_rgba(245,158,11,0.4)]",
@@ -606,11 +611,23 @@ function ComparisonSection() {
 function SavingsCalculatorSection() {
   const [lots, setLots] = useState(6);
   const PRICE_PER_LOT = 14.99;
-  const MIN_MANAGER_COST = 2500;
+
+  // Traditional strata manager costs (industry estimates)
+  // Small schemes have minimum fees, larger schemes scale per-lot
+  const TRAD_MIN_COST = 2500; // Minimum annual fee
+  const TRAD_COST_PER_LOT_LOW = 350; // Low end per lot
+  const TRAD_COST_PER_LOT_HIGH = 600; // High end per lot
 
   const monthlyTotal = lots * PRICE_PER_LOT;
   const annualTotal = monthlyTotal * 12;
-  const minSavings = Math.max(0, MIN_MANAGER_COST - annualTotal);
+
+  // Calculate traditional manager cost range
+  const tradCostLow = Math.max(TRAD_MIN_COST, lots * TRAD_COST_PER_LOT_LOW);
+  const tradCostHigh = Math.max(TRAD_MIN_COST, lots * TRAD_COST_PER_LOT_HIGH);
+
+  // Calculate savings range
+  const savingsLow = Math.max(0, tradCostLow - annualTotal);
+  const savingsHigh = Math.max(0, tradCostHigh - annualTotal);
 
   return (
     <section className="py-20 md:py-28 px-6 bg-slate-950">
@@ -681,9 +698,13 @@ function SavingsCalculatorSection() {
                   <span className="text-slate-400">Annual with StrataGenie</span>
                   <span className="text-xl font-semibold text-white">${Math.round(annualTotal).toLocaleString()}</span>
                 </div>
+                <div className="flex justify-between items-center py-3 border-b border-white/10">
+                  <span className="text-slate-400">Traditional manager (est.)</span>
+                  <span className="text-xl font-semibold text-slate-400">${Math.round(tradCostLow).toLocaleString()}–${Math.round(tradCostHigh).toLocaleString()}</span>
+                </div>
                 <div className="flex justify-between items-center py-3 bg-emerald-500/10 rounded-lg px-4 -mx-4 border border-emerald-500/30">
                   <span className="font-medium text-emerald-400">Your estimated savings</span>
-                  <span className="text-2xl font-bold text-emerald-400">${Math.round(minSavings).toLocaleString()}+</span>
+                  <span className="text-2xl font-bold text-emerald-400">${Math.round(savingsLow).toLocaleString()}–${Math.round(savingsHigh).toLocaleString()}</span>
                 </div>
               </div>
 
@@ -977,3 +998,4 @@ export default function LandingPage() {
     </main>
   );
 }
+
