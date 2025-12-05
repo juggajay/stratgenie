@@ -26,6 +26,8 @@ export function SchemeSelector({
   const setComplianceDates = useMutation(api.compliance.setSchemeComplianceDates);
 
   const [isCreating, setIsCreating] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [strataNumber, setStrataNumber] = useState("");
   const [lastAgmDate, setLastAgmDate] = useState("");
@@ -33,6 +35,9 @@ export function SchemeSelector({
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !strataNumber) return;
+
+    setIsSubmitting(true);
+    setError(null);
 
     try {
       const schemeId = await createScheme({ name, strataNumber });
@@ -49,8 +54,11 @@ export function SchemeSelector({
       setName("");
       setStrataNumber("");
       setLastAgmDate("");
-    } catch (error) {
-      console.error("Failed to create scheme:", error);
+    } catch (err) {
+      console.error("Failed to create scheme:", err);
+      setError(err instanceof Error ? err.message : "Failed to create scheme");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -174,14 +182,24 @@ export function SchemeSelector({
               </p>
             </div>
 
+            {error && (
+              <div className="p-3 rounded-lg bg-red-900/20 border border-red-500/30 text-red-400 text-sm">
+                {error}
+              </div>
+            )}
+
             <div className="flex gap-2">
-              <Button type="submit" className="flex-1">
-                Create
+              <Button type="submit" className="flex-1" disabled={isSubmitting}>
+                {isSubmitting ? "Creating..." : "Create"}
               </Button>
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => setIsCreating(false)}
+                onClick={() => {
+                  setIsCreating(false);
+                  setError(null);
+                }}
+                disabled={isSubmitting}
               >
                 Cancel
               </Button>
