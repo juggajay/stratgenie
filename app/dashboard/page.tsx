@@ -39,9 +39,9 @@ export default function DashboardPage() {
               <Image
                 src="/images/logo/logo-seablue-transparent-v3.png"
                 alt="StrataGenie"
-                width={180}
-                height={45}
-                className="h-11 w-auto"
+                width={200}
+                height={50}
+                className="h-14 w-auto"
                 priority
               />
             </div>

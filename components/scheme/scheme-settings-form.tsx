@@ -155,12 +155,9 @@ export function SchemeSettingsForm({
   };
 
   const defaultTrigger = (
-    <Button
-      variant="outline"
-      className="rounded-lg border-slate-300 text-slate-700"
-    >
+    <Button variant="outline">
       <Settings className="h-4 w-4 mr-2" />
-      Scheme Settings
+      Settings
     </Button>
   );
 
