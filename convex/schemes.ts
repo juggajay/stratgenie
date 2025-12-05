@@ -32,8 +32,13 @@ export const list = query({
 export const get = query({
   args: { id: v.id("schemes") },
   handler: async (ctx, args) => {
-    // Verify user has access to this scheme
-    await checkAccess(ctx, args.id);
+    // Try to verify user has access - return null if no access instead of throwing
+    try {
+      await checkAccess(ctx, args.id);
+    } catch {
+      // User doesn't have access to this scheme - return null gracefully
+      return null;
+    }
 
     return await ctx.db.get(args.id);
   },
