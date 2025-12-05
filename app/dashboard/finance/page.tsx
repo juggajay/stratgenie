@@ -37,6 +37,7 @@ import {
   FileText,
   Beaker,
   Loader2,
+  Trash2,
 } from "lucide-react";
 
 function FailedInvoicesSection({ schemeId }: { schemeId: Id<"schemes"> }) {
@@ -186,8 +187,10 @@ function ReportsTab({
 }) {
   const [reportDialogOpen, setReportDialogOpen] = useState(false);
   const [isSeeding, setIsSeeding] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [seedResult, setSeedResult] = useState<string | null>(null);
   const seedTestData = useMutation(api.finance.seedTestTransactions);
+  const deleteTestData = useMutation(api.finance.deleteTestTransactions);
 
   const handleSeedTestData = async () => {
     setIsSeeding(true);
@@ -199,6 +202,19 @@ function ReportsTab({
       setSeedResult(`Error: ${error instanceof Error ? error.message : "Failed to seed data"}`);
     } finally {
       setIsSeeding(false);
+    }
+  };
+
+  const handleDeleteTestData = async () => {
+    setIsDeleting(true);
+    setSeedResult(null);
+    try {
+      const result = await deleteTestData({ schemeId });
+      setSeedResult(`Deleted ${result.transactionsDeleted} test transactions.`);
+    } catch (error) {
+      setSeedResult(`Error: ${error instanceof Error ? error.message : "Failed to delete data"}`);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -268,10 +284,10 @@ function ReportsTab({
               Create sample transactions and opening balances for FY 2024-25 to test
               the financial reporting feature.
             </p>
-            <div className="mt-4 flex items-center gap-3">
+            <div className="mt-4 flex flex-wrap items-center gap-3">
               <Button
                 onClick={handleSeedTestData}
-                disabled={isSeeding}
+                disabled={isSeeding || isDeleting}
                 variant="outline"
                 className="rounded-lg border-amber-500/50 text-amber-400 hover:bg-amber-900/30"
               >
@@ -284,6 +300,24 @@ function ReportsTab({
                   <>
                     <Beaker className="h-4 w-4 mr-2" />
                     Seed Test Data
+                  </>
+                )}
+              </Button>
+              <Button
+                onClick={handleDeleteTestData}
+                disabled={isSeeding || isDeleting}
+                variant="outline"
+                className="rounded-lg border-red-500/50 text-red-400 hover:bg-red-900/30"
+              >
+                {isDeleting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Deleting...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete Test Data
                   </>
                 )}
               </Button>

@@ -862,3 +862,37 @@ export const seedTestTransactions = mutation({
     };
   },
 });
+
+/**
+ * Delete all test transactions (transactions without an invoiceId).
+ * This cleans up seeded test data while preserving real invoice-based transactions.
+ */
+export const deleteTestTransactions = mutation({
+  args: {
+    schemeId: v.id("schemes"),
+  },
+  handler: async (ctx, args) => {
+    // Verify user has admin role
+    await requireRole(ctx, args.schemeId, "admin");
+
+    // Get all transactions for this scheme that have no invoiceId (test data)
+    const transactions = await ctx.db
+      .query("transactions")
+      .withIndex("by_scheme", (q) => q.eq("schemeId", args.schemeId))
+      .collect();
+
+    let deleted = 0;
+    for (const tx of transactions) {
+      // Only delete transactions without an invoice (test data)
+      if (!tx.invoiceId) {
+        await ctx.db.delete(tx._id);
+        deleted++;
+      }
+    }
+
+    return {
+      success: true,
+      transactionsDeleted: deleted,
+    };
+  },
+});
