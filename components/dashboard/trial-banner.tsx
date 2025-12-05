@@ -25,28 +25,18 @@ export function TrialBanner({ schemeId }: TrialBannerProps) {
   const isUrgent = daysRemaining <= 3;
 
   return (
-    <div
-      className={`
-        relative px-4 py-2.5 text-sm
-        ${isUrgent
-          ? "bg-persimmon/10 border-b border-persimmon/30 text-persimmon"
-          : "bg-primary/5 border-b border-primary/20 text-primary"
-        }
-      `}
-    >
+    <div className="relative px-4 py-2.5 text-sm bg-slate-800/50 border-b border-white/10">
       <div className="max-w-5xl mx-auto flex items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          {isUrgent ? (
-            <Clock className="w-4 h-4 text-persimmon" />
-          ) : (
-            <Sparkles className="w-4 h-4 text-primary" />
-          )}
-          <span className="text-foreground">
+          <Sparkles className="w-4 h-4 text-cyan-400" />
+          <span className="text-slate-300">
             {isUrgent ? (
-              <strong className="text-persimmon">Only {daysRemaining} day{daysRemaining !== 1 ? "s" : ""} left in your trial!</strong>
+              <>
+                <strong className="text-white">Only {daysRemaining} day{daysRemaining !== 1 ? "s" : ""} left</strong> in your trial
+              </>
             ) : (
               <>
-                <strong className="text-primary">{daysRemaining} days</strong> remaining in your free trial
+                <strong className="text-white">{daysRemaining} days</strong> remaining in your free trial
               </>
             )}
           </span>
@@ -55,7 +45,6 @@ export function TrialBanner({ schemeId }: TrialBannerProps) {
           <Link href="/dashboard/billing">
             <Button
               size="sm"
-              variant={isUrgent ? "warning" : "default"}
               className="h-7 text-xs rounded-full px-3"
             >
               Upgrade Now
@@ -63,13 +52,7 @@ export function TrialBanner({ schemeId }: TrialBannerProps) {
           </Link>
           <button
             onClick={() => setIsDismissed(true)}
-            className={`
-              p-1 rounded-full transition-colors
-              ${isUrgent
-                ? "hover:bg-persimmon/20 text-persimmon"
-                : "hover:bg-primary/20 text-primary"
-              }
-            `}
+            className="p-1 rounded-full transition-colors hover:bg-white/10 text-slate-400 hover:text-white"
             aria-label="Dismiss"
           >
             <X className="w-4 h-4" />

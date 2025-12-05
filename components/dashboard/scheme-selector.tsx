@@ -80,21 +80,21 @@ export function SchemeSelector({
               <button
                 key={scheme._id}
                 onClick={() => onSchemeSelect(scheme._id)}
-                className={`w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
+                className={`w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-all ${
                   selectedSchemeId === scheme._id
-                    ? "border-primary bg-primary/5 shadow-sm"
-                    : "border-border hover:border-primary/50 hover:bg-secondary/50"
+                    ? "border-cyan-500/50 bg-cyan-500/5"
+                    : "border-white/10 hover:border-cyan-500/30 hover:bg-slate-800/50"
                 }`}
               >
                 <div className={`flex h-10 w-10 items-center justify-center rounded-lg transition-colors ${
                   selectedSchemeId === scheme._id
-                    ? "bg-primary/10"
-                    : "bg-secondary"
+                    ? "bg-cyan-500/10"
+                    : "bg-slate-800/50"
                 }`}>
                   <Building2 className={`h-5 w-5 transition-colors ${
                     selectedSchemeId === scheme._id
-                      ? "text-primary"
-                      : "text-muted-foreground"
+                      ? "text-cyan-400"
+                      : "text-slate-400"
                   }`} />
                 </div>
                 <div className="min-w-0 flex-1">
@@ -132,7 +132,7 @@ export function SchemeSelector({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. 123 Example Street"
-                className="w-full px-3 py-2 text-sm border border-input rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+                className="w-full px-3 py-2 text-sm border border-white/10 rounded-lg bg-slate-800/80 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50"
                 required
               />
             </div>
@@ -150,7 +150,7 @@ export function SchemeSelector({
                 value={strataNumber}
                 onChange={(e) => setStrataNumber(e.target.value)}
                 placeholder="e.g. SP12345"
-                className="w-full px-3 py-2 text-sm border border-input rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+                className="w-full px-3 py-2 text-sm border border-white/10 rounded-lg bg-slate-800/80 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50"
                 required
               />
             </div>
@@ -167,7 +167,7 @@ export function SchemeSelector({
                 type="date"
                 value={lastAgmDate}
                 onChange={(e) => setLastAgmDate(e.target.value)}
-                className="w-full px-3 py-2 text-sm border border-input rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+                className="w-full px-3 py-2 text-sm border border-white/10 rounded-lg bg-slate-800/80 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50"
               />
               <p className="text-xs text-muted-foreground">
                 Used to calculate your next AGM due date.

@@ -68,79 +68,79 @@
   --radius: 0.75rem;
 
   /* ═══════════════════════════════════════════════════════════════
-     SYDNEY SUNDAY THEME
-     Warm, trustworthy palette evoking financial security
-     and Sydney property heritage
+     DARK MINIMAL THEME
+     Clean, professional dark theme with cyan accents
+     Stripped-down version of Cyber-Magic for daily use
      ═══════════════════════════════════════════════════════════════ */
 
-  /* Sydney Sunday Palette - Core Colors */
-  --ocean-blue: #1E3A5F;
-  --ocean-blue-light: #2D4A6F;
-  --sandstone: #B8A990;
-  --sandstone-light: #D4C8B8;
-  --cream: #F7F5F0;
-  --cream-dark: #EDE8E0;
-  --mint: #7BC4A8;
-  --persimmon: #D4704A;
-  --charcoal: #2D3436;
-  --warm-grey: #6C7A7D;
+  /* Legacy color references (for compatibility) */
+  --ocean-blue: #06B6D4;
+  --ocean-blue-light: #22D3EE;
+  --sandstone: #334155;
+  --sandstone-light: rgba(255, 255, 255, 0.1);
+  --cream: #0F172A;
+  --cream-dark: #1E293B;
+  --mint: #10B981;
+  --persimmon: #F59E0B;
+  --charcoal: #F8FAFC;
+  --warm-grey: #94A3B8;
 
   /* Agent Identity Colors */
-  --secretary: #4A5568;      /* Slate Blue - Governance/Formal */
+  --secretary: #06B6D4;      /* Cyan - Governance/Formal */
   --treasurer: #10B981;      /* Emerald - Finance/Precise */
-  --guardian: #C45C3A;       /* Terracotta - Compliance/Alert */
+  --guardian: #F59E0B;       /* Amber - Compliance/Alert */
 
-  /* Surface - Warm cream background */
-  --background: #F7F5F0;
-  --foreground: #2D3436;
+  /* Surface - Dark navy background */
+  --background: #0F172A;
+  --foreground: #F8FAFC;
 
-  /* Card - White with subtle warmth */
-  --card: #FFFFFF;
-  --card-foreground: #2D3436;
+  /* Card - Dark slate */
+  --card: #1E293B;
+  --card-foreground: #F8FAFC;
 
-  --popover: #FFFFFF;
-  --popover-foreground: #2D3436;
+  --popover: #1E293B;
+  --popover-foreground: #F8FAFC;
 
-  /* Primary - Ocean Blue (trust/banking) */
-  --primary: #1E3A5F;
-  --primary-foreground: #FFFFFF;
+  /* Primary - Cyan */
+  --primary: #06B6D4;
+  --primary-foreground: #0F172A;
 
-  /* Secondary - Sandstone (Sydney architecture) */
-  --secondary: #EDE8E0;
-  --secondary-foreground: #2D3436;
+  /* Secondary - Slate */
+  --secondary: #334155;
+  --secondary-foreground: #E2E8F0;
 
-  /* Muted - Warm grey tones */
-  --muted: #EDE8E0;
-  --muted-foreground: #6C7A7D;
+  /* Muted - Darker slate */
+  --muted: #334155;
+  --muted-foreground: #94A3B8;
 
-  /* Accent - Ocean Blue Light */
-  --accent: #2D4A6F;
-  --accent-foreground: #FFFFFF;
+  /* Accent - Darker cyan */
+  --accent: #0891B2;
+  --accent-foreground: #F8FAFC;
 
-  /* Destructive - Softened red */
-  --destructive: #DC2626;
+  /* Destructive - Red */
+  --destructive: #EF4444;
 
-  /* Borders - Sandstone light */
-  --border: #D4C8B8;
-  --input: #D4C8B8;
-  --ring: #1E3A5F;
+  /* Borders - Subtle white */
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.1);
+  --ring: #06B6D4;
 
-  /* Chart colors - Sydney Sunday palette */
-  --chart-1: #1E3A5F;
-  --chart-2: #7BC4A8;
-  --chart-3: #D4704A;
-  --chart-4: #B8A990;
-  --chart-5: #4A5568;
+  /* Chart colors - Dark minimal palette */
+  --chart-1: #06B6D4;
+  --chart-2: #10B981;
+  --chart-3: #F59E0B;
+  --chart-4: #8B5CF6;
+  --chart-5: #EC4899;
 
-  /* Sidebar - Subtle cream */
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #2D3436;
-  --sidebar-primary: #1E3A5F;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #EDE8E0;
-  --sidebar-accent-foreground: #2D3436;
-  --sidebar-border: #D4C8B8;
-  --sidebar-ring: #1E3A5F;
+  /* Sidebar - Dark slate */
+  --sidebar: #1E293B;
+  --sidebar-foreground: #F8FAFC;
+  --sidebar-primary: #06B6D4;
+  --sidebar-primary-foreground: #0F172A;
+  --sidebar-accent: #334155;
+  --sidebar-accent-foreground: #F8FAFC;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: #06B6D4;
 
   /* Typography */
   --font-display: 'Merriweather', Georgia, serif;
@@ -261,42 +261,29 @@
 
 @layer utilities {
   /* ═══════════════════════════════════════════════════════════════
-     PAPER & CARD EFFECTS (Sydney Sunday style)
+     PAPER & CARD EFFECTS (Dark Minimal style)
      ═══════════════════════════════════════════════════════════════ */
   .paper {
-    background: #FFFFFF;
-    border: 1px solid var(--sandstone-light);
+    background: #1E293B;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 0.75rem;
-    box-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.04),
-      0 4px 12px rgba(0, 0, 0, 0.03);
   }
 
   .paper-elevated {
-    background: #FFFFFF;
-    border: 1px solid var(--sandstone-light);
+    background: #1E293B;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 0.75rem;
-    box-shadow:
-      0 4px 6px rgba(0, 0, 0, 0.04),
-      0 10px 24px rgba(0, 0, 0, 0.06);
   }
 
   .paper-interactive {
-    background: #FFFFFF;
-    border: 1px solid var(--sandstone-light);
+    background: #1E293B;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 0.75rem;
-    box-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.04),
-      0 4px 12px rgba(0, 0, 0, 0.03);
-    transition: all 0.2s ease;
+    transition: border-color 0.2s ease;
   }
 
   .paper-interactive:hover {
-    border-color: var(--ocean-blue);
-    box-shadow:
-      0 4px 12px rgba(30, 58, 95, 0.08),
-      0 8px 24px rgba(30, 58, 95, 0.04);
-    transform: translateY(-2px);
+    border-color: rgba(6, 182, 212, 0.5);
   }
 
   /* ═══════════════════════════════════════════════════════════════
@@ -339,73 +326,73 @@
     border-left: 4px solid var(--guardian);
   }
 
-  /* Agent badges */
+  /* Agent badges - Subtle tints with neutral text */
   .badge-secretary {
-    background: rgba(74, 85, 104, 0.1);
-    color: var(--secretary);
-    border: 1px solid rgba(74, 85, 104, 0.3);
+    background: rgba(6, 182, 212, 0.08);
+    color: #94A3B8;
+    border: 1px solid rgba(6, 182, 212, 0.15);
   }
 
   .badge-treasurer {
-    background: rgba(16, 185, 129, 0.1);
-    color: var(--treasurer);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    background: rgba(16, 185, 129, 0.08);
+    color: #94A3B8;
+    border: 1px solid rgba(16, 185, 129, 0.15);
   }
 
   .badge-guardian {
-    background: rgba(196, 92, 58, 0.1);
-    color: var(--guardian);
-    border: 1px solid rgba(196, 92, 58, 0.3);
+    background: rgba(245, 158, 11, 0.08);
+    color: #94A3B8;
+    border: 1px solid rgba(245, 158, 11, 0.15);
   }
 
   /* ═══════════════════════════════════════════════════════════════
-     STATUS INDICATORS (Sydney Sunday style)
+     STATUS INDICATORS (Dark Minimal style)
      ═══════════════════════════════════════════════════════════════ */
   .status-success {
-    background: rgba(123, 196, 168, 0.15);
-    color: #0D7A5F;
-    border: 1px solid rgba(123, 196, 168, 0.4);
+    background: rgba(16, 185, 129, 0.15);
+    color: #34D399;
+    border: 1px solid rgba(16, 185, 129, 0.3);
   }
 
   .status-warning {
-    background: rgba(212, 112, 74, 0.12);
-    color: #B85C3A;
-    border: 1px solid rgba(212, 112, 74, 0.35);
+    background: rgba(245, 158, 11, 0.15);
+    color: #FBBF24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
   }
 
   .status-danger {
-    background: rgba(220, 38, 38, 0.1);
-    color: #B91C1C;
-    border: 1px solid rgba(220, 38, 38, 0.3);
+    background: rgba(239, 68, 68, 0.15);
+    color: #F87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
   }
 
   .status-info {
-    background: rgba(30, 58, 95, 0.1);
-    color: var(--ocean-blue);
-    border: 1px solid rgba(30, 58, 95, 0.3);
+    background: rgba(6, 182, 212, 0.15);
+    color: #22D3EE;
+    border: 1px solid rgba(6, 182, 212, 0.3);
   }
 
   .status-neutral {
-    background: rgba(108, 122, 125, 0.1);
-    color: var(--warm-grey);
-    border: 1px solid rgba(108, 122, 125, 0.3);
+    background: rgba(148, 163, 184, 0.1);
+    color: #94A3B8;
+    border: 1px solid rgba(148, 163, 184, 0.3);
   }
 
   /* ═══════════════════════════════════════════════════════════════
      URGENCY INDICATORS
      ═══════════════════════════════════════════════════════════════ */
   .urgency-normal {
-    border-left: 4px solid var(--sandstone);
+    border-left: 4px solid rgba(6, 182, 212, 0.3);
   }
 
   .urgency-attention {
-    border-left: 4px solid var(--persimmon);
-    background: rgba(212, 112, 74, 0.03);
+    border-left: 4px solid rgba(245, 158, 11, 0.6);
+    background: rgba(245, 158, 11, 0.03);
   }
 
   .urgency-urgent {
-    border-left: 4px solid #DC2626;
-    background: rgba(220, 38, 38, 0.04);
+    border-left: 4px solid rgba(239, 68, 68, 0.6);
+    background: rgba(239, 68, 68, 0.03);
   }
 
   /* ═══════════════════════════════════════════════════════════════
@@ -617,52 +604,34 @@
   }
 }
 
-/* Light theme scrollbar */
+/* Dark theme scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--cream);
+  background: #0F172A;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--sandstone);
+  background: #334155;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--ocean-blue-light);
-}
-
-/* Dark mode scrollbar (for landing) */
-.dark ::-webkit-scrollbar-track {
-  background: #0F172A;
-}
-
-.dark ::-webkit-scrollbar-thumb {
   background: #06B6D4;
 }
 
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: #22D3EE;
-}
-
-/* Focus styles - Ocean Blue ring */
+/* Focus styles - Cyan ring */
 :focus-visible {
-  outline: 2px solid var(--ocean-blue);
+  outline: 2px solid #06B6D4;
   outline-offset: 2px;
 }
 
 /* Selection */
 ::selection {
-  background: rgba(30, 58, 95, 0.2);
-  color: var(--charcoal);
-}
-
-.dark ::selection {
   background: rgba(6, 182, 212, 0.3);
   color: #F8FAFC;
 }

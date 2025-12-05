@@ -3,27 +3,23 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        // Primary - Ocean Blue with subtle shadow
-        default: "bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg shadow-sm hover:shadow-ocean",
-        // Destructive
-        destructive: "bg-destructive hover:bg-destructive/90 text-white rounded-lg",
-        // Outline - Sandstone border
+        // Primary - Cyan (brand color)
+        default: "bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg shadow-sm",
+        // Destructive - Red for dangerous actions
+        destructive: "bg-red-600 hover:bg-red-500 text-white rounded-lg",
+        // Outline - Subtle border, ghost-like
         outline:
-          "border border-border bg-card hover:bg-secondary hover:border-primary text-foreground rounded-lg",
-        // Secondary - Cream background
-        secondary: "bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-lg",
-        // Ghost - No background
-        ghost: "hover:bg-secondary text-foreground rounded-lg",
-        // Link - Ocean Blue text
-        link: "text-primary underline-offset-4 hover:underline",
-        // Success - Mint accent
-        success: "bg-mint hover:bg-mint/90 text-white rounded-lg",
-        // Warning - Persimmon accent
-        warning: "bg-persimmon hover:bg-persimmon/90 text-white rounded-lg",
+          "border border-white/10 bg-transparent hover:bg-white/5 text-slate-300 hover:text-white rounded-lg",
+        // Secondary - Muted background
+        secondary: "bg-slate-700/50 hover:bg-slate-700 text-slate-300 rounded-lg",
+        // Ghost - No background, minimal
+        ghost: "hover:bg-white/5 text-slate-400 hover:text-white rounded-lg",
+        // Link - Cyan text
+        link: "text-cyan-400 underline-offset-4 hover:underline hover:text-cyan-300",
       },
       size: {
         default: "h-10 px-4 py-2",

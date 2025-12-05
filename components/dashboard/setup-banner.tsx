@@ -41,10 +41,10 @@ export function SetupBanner({ schemeId, onOpenSettings }: SetupBannerProps) {
   const missingText = missingItems.join(" and ");
 
   return (
-    <div className="mb-6 px-4 py-3 bg-persimmon/10 border border-persimmon/30 rounded-xl">
+    <div className="mb-6 px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl">
       <div className="flex items-start gap-3">
-        <div className="p-1.5 bg-persimmon/20 rounded-lg flex-shrink-0">
-          <AlertTriangle className="w-4 h-4 text-persimmon" />
+        <div className="p-1.5 bg-amber-500/10 rounded-lg flex-shrink-0">
+          <AlertTriangle className="w-4 h-4 text-amber-400" />
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium text-foreground">
@@ -57,7 +57,6 @@ export function SetupBanner({ schemeId, onOpenSettings }: SetupBannerProps) {
         {onOpenSettings && (
           <Button
             size="sm"
-            variant="warning"
             onClick={onOpenSettings}
             className="flex-shrink-0"
           >

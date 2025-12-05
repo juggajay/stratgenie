@@ -110,10 +110,10 @@ export function ActionFeedCard({
             className={cn(
               "flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center",
               urgency === "urgent"
-                ? "bg-red-100 text-red-600"
+                ? "bg-red-500/10 text-red-400"
                 : urgency === "attention"
-                ? "bg-amber-100 text-amber-600"
-                : "bg-secondary text-foreground"
+                ? "bg-amber-500/10 text-amber-400"
+                : "bg-slate-700/50 text-slate-400"
             )}
           >
             <TypeIcon className="h-5 w-5" />
@@ -195,8 +195,8 @@ export function ActionFeedCard({
 export function ActionFeedEmpty() {
   return (
     <div className="empty-state">
-      <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-mint/20 flex items-center justify-center">
-        <CheckCircle2 className="h-8 w-8 text-mint" />
+      <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-500/10 flex items-center justify-center">
+        <CheckCircle2 className="h-8 w-8 text-emerald-400" />
       </div>
       <h3 className="font-display text-xl font-bold text-foreground mb-2">
         All caught up!

@@ -4,6 +4,7 @@ export const dynamic = "force-dynamic";
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSelectedScheme } from "@/hooks/use-selected-scheme";
 import { SchemeSelector } from "@/components/dashboard/scheme-selector";
 import { ComplianceCard } from "@/components/dashboard/compliance-card";
@@ -30,16 +31,21 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header - Sydney Sunday warm theme */}
-      <header className="bg-card border-b border-border sticky top-0 z-10">
+      {/* Header - Refined dark theme */}
+      <header className="bg-slate-900/80 backdrop-blur-sm border-b border-white/10 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
-              <span className="text-xl font-bold tracking-tight text-foreground font-display">
-                StrataGenie
-              </span>
+              <Image
+                src="/images/logo/logo-seablue-transparent-v3.png"
+                alt="StrataGenie"
+                width={180}
+                height={45}
+                className="h-11 w-auto"
+                priority
+              />
             </div>
-            <div className="h-6 w-px bg-border" />
+            <div className="h-6 w-px bg-white/10" />
             <div>
               <h1 className="text-lg font-display font-bold tracking-tight text-foreground">
                 Dashboard
@@ -141,8 +147,8 @@ export default function DashboardPage() {
                 <TaskList schemeId={selectedSchemeId} />
               </>
             ) : (
-              <div className="paper p-8 text-center">
-                <p className="text-muted-foreground">
+              <div className="rounded-xl border border-white/10 bg-slate-900/80 p-8 text-center">
+                <p className="text-slate-400">
                   Select a scheme to view compliance status
                 </p>
               </div>
@@ -151,8 +157,8 @@ export default function DashboardPage() {
         </div>
 
         {/* Disclaimer */}
-        <footer className="mt-12 pt-6 border-t border-border">
-          <p className="text-xs text-muted-foreground text-center">
+        <footer className="mt-12 pt-6 border-t border-white/10">
+          <p className="text-xs text-slate-500 text-center">
             This tool provides administrative guidance only, not legal advice.
             Always verify compliance requirements with NSW Fair Trading.
           </p>
