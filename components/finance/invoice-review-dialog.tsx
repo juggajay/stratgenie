@@ -34,13 +34,21 @@ interface InvoiceReviewDialogProps {
 
 const CATEGORIES = [
   { value: "repairs", label: "Repairs & Maintenance" },
+  { value: "repairs_maintenance", label: "Repairs (Capital)" },
   { value: "insurance", label: "Insurance" },
   { value: "utilities", label: "Utilities" },
   { value: "admin", label: "Administration" },
   { value: "cleaning", label: "Cleaning" },
   { value: "gardening", label: "Gardening" },
   { value: "legal", label: "Legal" },
+  { value: "management_fees", label: "Management Fees" },
+  { value: "major_works", label: "Major Works (Capital)" },
   { value: "other", label: "Other" },
+] as const;
+
+const FUNDS = [
+  { value: "admin", label: "Administrative Fund" },
+  { value: "capital_works", label: "Capital Works Fund" },
 ] as const;
 
 // Helper functions for cent/dollar conversion
@@ -74,6 +82,7 @@ export function InvoiceReviewDialog({
   const [gst, setGst] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState<string>("");
+  const [fund, setFund] = useState<string>("");
 
   const invoice = useQuery(
     api.finance.getInvoice,
@@ -99,6 +108,7 @@ export function InvoiceReviewDialog({
       setGst(centsToDollars(transaction.gst));
       setDescription(transaction.description || "");
       setCategory(transaction.category || "");
+      setFund(transaction.fund || "");
     }
   }, [transaction]);
 
@@ -117,6 +127,7 @@ export function InvoiceReviewDialog({
         gst: dollarsToCents(gst),
         description: description || "Invoice expense",
         category: category as typeof CATEGORIES[number]["value"] | undefined,
+        fund: fund as typeof FUNDS[number]["value"] | undefined,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to update");
@@ -141,6 +152,7 @@ export function InvoiceReviewDialog({
         gst: dollarsToCents(gst),
         description: description || "Invoice expense",
         category: category as typeof CATEGORIES[number]["value"] | undefined,
+        fund: fund as typeof FUNDS[number]["value"] | undefined,
       });
 
       // Then approve
@@ -372,6 +384,29 @@ export function InvoiceReviewDialog({
                     </Select>
                   </div>
 
+                  {/* Fund */}
+                  <div className="space-y-1.5">
+                    <Label htmlFor="fund">
+                      Fund
+                    </Label>
+                    <Select
+                      value={fund}
+                      onValueChange={setFund}
+                      disabled={!isDraft}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a fund" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {FUNDS.map((f) => (
+                          <SelectItem key={f.value} value={f.value}>
+                            {f.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
                   {/* Description */}
                   <div className="space-y-1.5">
                     <Label htmlFor="description">
@@ -441,44 +476,34 @@ export function InvoiceReviewDialog({
           </div>
 
           <div className="flex gap-3 w-full sm:w-auto justify-end">
-            <Button
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
-              {isDraft ? "Cancel" : "Close"}
-            </Button>
+            {!isDraft && (
+              <Button
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+              >
+                Close
+              </Button>
+            )}
 
             {isDraft && (
-              <>
-                <Button
-                  variant="outline"
-                  onClick={handleUpdate}
-                  disabled={isUpdating}
-                >
-                  {isUpdating ? (
+              <Button
+                variant="success"
+                onClick={handleApprove}
+                disabled={isApproving || !amount}
+                className="min-w-[140px]"
+              >
+                {isApproving ? (
+                  <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  ) : null}
-                  Save Changes
-                </Button>
-
-                <Button
-                  variant="success"
-                  onClick={handleApprove}
-                  disabled={isApproving || !amount}
-                >
-                  {isApproving ? (
-                    <>
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Approving...
-                    </>
-                  ) : (
-                    <>
-                      <Check className="h-4 w-4 mr-2" />
-                      Approve
-                    </>
-                  )}
-                </Button>
-              </>
+                    Approving...
+                  </>
+                ) : (
+                  <>
+                    <Check className="h-4 w-4 mr-2" />
+                    Approve Invoice
+                  </>
+                )}
+              </Button>
             )}
 
             {isApproved && (

@@ -473,15 +473,22 @@ export const updateTransaction = mutation({
     category: v.optional(
       v.union(
         v.literal("repairs"),
+        v.literal("repairs_maintenance"),
         v.literal("insurance"),
         v.literal("utilities"),
         v.literal("admin"),
         v.literal("cleaning"),
         v.literal("gardening"),
         v.literal("legal"),
-        v.literal("other")
+        v.literal("management_fees"),
+        v.literal("major_works"),
+        v.literal("other"),
+        v.literal("levy_income"),
+        v.literal("interest"),
+        v.literal("other_income")
       )
     ),
+    fund: v.optional(v.union(v.literal("admin"), v.literal("capital_works"))),
   },
   handler: async (ctx, args) => {
     const transaction = await ctx.db.get(args.transactionId);
@@ -503,6 +510,7 @@ export const updateTransaction = mutation({
     if (args.vendorName !== undefined) updates.vendorName = args.vendorName;
     if (args.invoiceDate !== undefined) updates.invoiceDate = args.invoiceDate;
     if (args.category !== undefined) updates.category = args.category;
+    if (args.fund !== undefined) updates.fund = args.fund;
 
     if (Object.keys(updates).length > 0) {
       await ctx.db.patch(args.transactionId, updates);
