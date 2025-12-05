@@ -1,1001 +1,473 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import "./landing-styles.css";
-import {
-  ArrowRight,
-  Calendar,
-  Shield,
-  Check,
-  Mail,
-  Scale,
-  ClipboardList,
-  Clock,
-  Zap,
-  Sparkles,
-  Users,
-  ChevronDown,
-  Building2,
-  Lock,
-  Globe,
-  Star,
-  FileText,
-  X,
-  Play,
-} from "lucide-react";
+import "./landing-v2-styles.css";
 
-function Navbar() {
-  return (
-    <nav className="absolute top-0 left-0 right-0 z-50 bg-transparent">
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between relative">
-        <Link href="/" className="flex items-center -ml-2">
-          <Image
-            src="/images/logo/logo-seablue-transparent-v3.png"
-            alt="StrataGenie"
-            width={400}
-            height={100}
-            className="h-28 md:h-32 w-auto object-contain object-left"
-          />
-        </Link>
-        <div className="hidden md:flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
-          <a href="#features" className="text-slate-300 hover:text-white hover:bg-white/10 px-4 py-2 rounded-full transition-all font-medium text-sm">Features</a>
-          <a href="#pricing" className="text-slate-300 hover:text-white hover:bg-white/10 px-4 py-2 rounded-full transition-all font-medium text-sm">Pricing</a>
-          <a href="#faq" className="text-slate-300 hover:text-white hover:bg-white/10 px-4 py-2 rounded-full transition-all font-medium text-sm">FAQ</a>
-        </div>
-        <div className="flex items-center gap-3">
-          <Link href="/sign-in" className="hidden sm:block text-slate-300 hover:text-cyan-400 font-medium transition-colors">Login</Link>
-          <Link href="/sign-up">
-            <Button className="btn-glow bg-cyan-600 hover:bg-cyan-500 text-white px-5 py-2.5 rounded-full font-medium shadow-lg shadow-cyan-600/30 hover:shadow-xl hover:-translate-y-0.5 transition-all">
-              Start Free Trial
-            </Button>
-          </Link>
-        </div>
-      </div>
-    </nav>
-  );
-}
+// SVG Icons as components
+const CheckIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+    <polyline points="22 4 12 14.01 9 11.01"/>
+  </svg>
+);
 
-function HeroSection() {
-  return (
-    <section className="relative pt-32 pb-20 md:pt-44 md:pb-32 px-6 gradient-bg overflow-hidden min-h-screen flex items-center">
-      {/* Particles - more of them */}
-      <div className="particles">
-        <div className="particle animate-float" style={{ top: "10%", left: "10%", animationDelay: "0s", width: "6px", height: "6px" }} />
-        <div className="particle animate-float" style={{ top: "20%", left: "80%", animationDelay: "1s" }} />
-        <div className="particle animate-float" style={{ top: "60%", left: "20%", animationDelay: "2s", width: "8px", height: "8px" }} />
-        <div className="particle animate-float" style={{ top: "80%", left: "70%", animationDelay: "3s" }} />
-        <div className="particle animate-float" style={{ top: "40%", left: "90%", animationDelay: "4s" }} />
-        <div className="particle animate-float" style={{ top: "15%", left: "50%", animationDelay: "0.5s", width: "5px", height: "5px" }} />
-        <div className="particle animate-float" style={{ top: "70%", left: "15%", animationDelay: "1.5s" }} />
-        <div className="particle animate-float" style={{ top: "30%", left: "70%", animationDelay: "2.5s", width: "7px", height: "7px" }} />
-        <div className="particle animate-float" style={{ top: "85%", left: "40%", animationDelay: "3.5s" }} />
-        <div className="particle animate-float" style={{ top: "50%", left: "5%", animationDelay: "4.5s", width: "6px", height: "6px" }} />
-      </div>
+const ArrowRightIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="5" y1="12" x2="19" y2="12"/>
+    <polyline points="12 5 19 12 12 19"/>
+  </svg>
+);
 
-      {/* Enhanced gradient orbs - more vibrant */}
-      <div className="absolute top-10 left-0 w-96 h-96 bg-cyan-500/30 rounded-full blur-[120px] animate-float" />
-      <div className="absolute bottom-10 right-0 w-[500px] h-[500px] bg-sky-600/25 rounded-full blur-[150px] animate-float-delay" />
-      <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-cyan-400/20 rounded-full blur-[100px] animate-float-slow" />
+const CalendarIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+    <line x1="16" y1="2" x2="16" y2="6"/>
+    <line x1="8" y1="2" x2="8" y2="6"/>
+    <line x1="3" y1="10" x2="21" y2="10"/>
+  </svg>
+);
 
-      {/* Central spotlight effect */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-cyan-500/20 via-cyan-500/5 to-transparent rounded-full blur-3xl" />
+const FileIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+    <polyline points="14 2 14 8 20 8"/>
+  </svg>
+);
 
-      <div className="relative max-w-5xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-emerald-500/30 text-emerald-400 text-sm font-medium mb-8 animate-slide-up">
-          <Sparkles className="w-4 h-4" />
-          Save $1,500 – $9,000/year vs traditional strata management
-        </div>
+const DollarIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="12" y1="1" x2="12" y2="23"/>
+    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+  </svg>
+);
 
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-6 leading-[1.05] animate-slide-up" style={{ animationDelay: "0.1s" }}>
-          Your Strata Scheme,<br />
-          <span className="gradient-text-landing">On Autopilot.</span>
-        </h1>
+const MessageIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
+);
 
-        <p className="text-lg md:text-xl lg:text-2xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: "0.2s" }}>
-          The AI-powered compliance copilot for self-managed NSW strata schemes. Stop worrying about deadlines, paperwork, and bylaws.
-        </p>
+const ShieldIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+  </svg>
+);
 
-        <div className="flex flex-col items-center gap-3 mb-8 animate-slide-up" style={{ animationDelay: "0.3s" }}>
-          <Link href="/sign-up">
-            <Button size="lg" className="group btn-glow bg-cyan-600 hover:bg-cyan-500 text-white text-lg px-10 py-6 rounded-full font-medium shadow-xl shadow-cyan-600/30 hover:shadow-2xl hover:-translate-y-1 transition-all animate-pulse-glow">
-              Start Free Trial
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </Link>
-          <a href="#demo" className="group flex items-center gap-1.5 text-slate-400 hover:text-cyan-400 text-sm font-medium transition-colors">
-            <Play className="w-4 h-4" />
-            or watch a 2-min demo
-          </a>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-16 animate-slide-up" style={{ animationDelay: "0.4s" }}>
-          <span className="flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/20 text-slate-200 text-sm font-medium">
-            <Check className="w-4 h-4 text-emerald-400" />14-day free trial
-          </span>
-          <span className="flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/20 text-slate-200 text-sm font-medium">
-            <Check className="w-4 h-4 text-emerald-400" />No credit card required
-          </span>
-          <span className="flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/20 text-slate-200 text-sm font-medium">
-            <Check className="w-4 h-4 text-emerald-400" />From $90/month for 6 lots
-          </span>
-        </div>
-
-        {/* Hero Dashboard Preview */}
-        <div className="relative max-w-4xl mx-auto animate-scale-in" style={{ animationDelay: "0.5s" }}>
-          {/* Glow behind dashboard */}
-          <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/20 via-sky-500/20 to-cyan-500/20 rounded-3xl blur-2xl" />
-          <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/40 via-transparent to-cyan-500/40 rounded-2xl opacity-50" />
-          <div className="relative rounded-2xl glass border border-cyan-500/30 overflow-hidden shadow-2xl shadow-cyan-500/30">
-            <div className="flex items-center gap-2 px-4 py-3 bg-white/5 border-b border-white/10">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-400/80" />
-                <div className="w-3 h-3 rounded-full bg-cyan-400/80" />
-                <div className="w-3 h-3 rounded-full bg-green-400/80" />
-              </div>
-              <div className="flex-1 flex justify-center">
-                <div className="px-4 py-1 rounded-md bg-white/10 text-slate-400 text-xs border border-white/10">
-                  app.stratagenie.com.au/dashboard
-                </div>
-              </div>
-            </div>
-
-            <div className="p-6 md:p-8 bg-slate-900/50">
-              <div className="grid md:grid-cols-3 gap-4 mb-6">
-                <div className="glass rounded-xl p-5 border border-white/10 glow-cyan">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm font-medium text-slate-300">AGM Status</span>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">On Track</span>
-                  </div>
-                  <p className="text-2xl font-semibold text-white">127 days</p>
-                  <p className="text-xs text-slate-500 mt-1">until next AGM due</p>
-                </div>
-
-                <div className="glass rounded-xl p-5 border border-white/10 glow-purple">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm font-medium text-slate-300">Strata Hub</span>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Lodged</span>
-                  </div>
-                  <p className="text-2xl font-semibold text-white">Up to date</p>
-                  <p className="text-xs text-slate-500 mt-1">Last lodged: 12 Nov 2025</p>
-                </div>
-
-                <div className="glass rounded-xl p-5 border border-white/10 glow-amber">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm font-medium text-slate-300">Pending Tasks</span>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">3 items</span>
-                  </div>
-                  <p className="text-2xl font-semibold text-white">3 tasks</p>
-                  <p className="text-xs text-slate-500 mt-1">2 invoices, 1 notice</p>
-                </div>
-              </div>
-
-              <div className="glass rounded-xl border border-white/10">
-                <div className="px-5 py-4 border-b border-white/10">
-                  <h3 className="font-medium text-white">Recent Activity</h3>
-                </div>
-                <div className="divide-y divide-white/5">
-                  <div className="px-5 py-3 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-cyan-500/20 flex items-center justify-center">
-                      <FileText className="w-4 h-4 text-cyan-400" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-white">AGM Notice generated</p>
-                      <p className="text-xs text-slate-500">Secretary Agent • 2 hours ago</p>
-                    </div>
-                  </div>
-                  <div className="px-5 py-3 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                      <ClipboardList className="w-4 h-4 text-emerald-400" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-white">Invoice processed: Sydney Water $342.50</p>
-                      <p className="text-xs text-slate-500">Treasurer Agent • 5 hours ago</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Floating Elements */}
-          <div className="absolute -top-6 -right-6 hidden md:block animate-float">
-            <div className="glass rounded-xl p-4 shadow-xl border border-white/20">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                  <Check className="w-5 h-5 text-emerald-400" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-white">100% Compliant</p>
-                  <p className="text-xs text-slate-400">All requirements met</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="absolute -bottom-4 -left-4 hidden md:block animate-float-delay">
-            <div className="glass rounded-xl p-4 shadow-xl border border-white/20">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center">
-                  <Clock className="w-5 h-5 text-cyan-400" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-white">4 hrs saved</p>
-                  <p className="text-xs text-slate-400">This week</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function StatsSection() {
-  return (
-    <section className="py-16 px-6 bg-slate-950 border-b border-white/10">
-      <div className="max-w-6xl mx-auto">
-        <p className="text-center text-sm font-medium text-slate-500 mb-8">Trusted by NSW strata committees</p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div className="glass rounded-xl p-6 border border-white/10 hover:border-cyan-500/50 transition-colors">
-            <p className="text-3xl md:text-4xl font-bold gradient-text-landing">500+</p>
-            <p className="text-sm text-slate-400 mt-1">Schemes managed</p>
-          </div>
-          <div className="glass rounded-xl p-6 border border-white/10 hover:border-purple-500/50 transition-colors">
-            <p className="text-3xl md:text-4xl font-bold gradient-text-landing">15,000+</p>
-            <p className="text-sm text-slate-400 mt-1">Documents processed</p>
-          </div>
-          <div className="glass rounded-xl p-6 border border-white/10 hover:border-emerald-500/50 transition-colors">
-            <p className="text-3xl md:text-4xl font-bold gradient-text-landing">98%</p>
-            <p className="text-sm text-slate-400 mt-1">Compliance rate</p>
-          </div>
-          <div className="glass rounded-xl p-6 border border-white/10 hover:border-cyan-500/50 transition-colors">
-            <p className="text-3xl md:text-4xl font-bold gradient-text-gold">$2.4M</p>
-            <p className="text-sm text-slate-400 mt-1">Saved by users</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function HowItWorksSection() {
-  return (
-    <section className="py-20 md:py-28 px-6 bg-slate-950">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-cyan-500/30 text-cyan-400 text-sm font-medium mb-6">
-            <Zap className="w-4 h-4" />
-            Simple Setup
-          </div>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-4">
-            Up and running in minutes
-          </h2>
-          <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-            No complex onboarding. No IT department required. Just three simple steps.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="relative group">
-            <div className="glass rounded-2xl p-8 border border-white/10 h-full hover:border-cyan-500/50 transition-all hover:-translate-y-2">
-              <div className="w-12 h-12 rounded-full bg-cyan-600 text-white flex items-center justify-center text-xl font-semibold mb-6 glow-cyan">1</div>
-              <h3 className="text-xl font-semibold text-white mb-3">Sign up your scheme</h3>
-              <p className="text-slate-400 leading-relaxed">
-                Enter your scheme details — name, strata plan number, number of lots. Invite your committee members with one click.
-              </p>
-            </div>
-            <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-cyan-500 to-transparent" />
-          </div>
-
-          <div className="relative group">
-            <div className="glass rounded-2xl p-8 border border-white/10 h-full hover:border-purple-500/50 transition-all hover:-translate-y-2">
-              <div className="w-12 h-12 rounded-full bg-purple-600 text-white flex items-center justify-center text-xl font-semibold mb-6 glow-purple">2</div>
-              <h3 className="text-xl font-semibold text-white mb-3">Upload your documents</h3>
-              <p className="text-slate-400 leading-relaxed">
-                Drop in your bylaws, past AGM minutes, and any invoices. Our AI reads and organizes everything automatically.
-              </p>
-            </div>
-            <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-purple-500 to-transparent" />
-          </div>
-
-          <div className="relative group">
-            <div className="glass rounded-2xl p-8 border border-white/10 h-full hover:border-emerald-500/50 transition-all hover:-translate-y-2">
-              <div className="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xl font-semibold mb-6 glow-emerald">3</div>
-              <h3 className="text-xl font-semibold text-white mb-3">Let AI handle compliance</h3>
-              <p className="text-slate-400 leading-relaxed">
-                Receive alerts, generate documents, track deadlines. Your AI agents work 24/7 to keep you compliant.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function AgentsSection() {
-  const agents = [
-    {
-      name: "Secretary Agent",
-      tagline: "Watches the calendar so you don't have to.",
-      description: "Auto-drafts legally compliant AGM notices, generates agendas, tracks all statutory deadlines, and produces minutes ready for signing.",
-      features: ["Never miss an AGM deadline", "Create notices in 5 minutes", "Know instantly if you're compliant"],
-      image: "/images/agents/hero-secretary.png",
-      borderColor: "hover:border-cyan-500",
-      hoverGlow: "hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]",
-      textColor: "text-cyan-400",
-      checkColor: "text-cyan-400",
-      bgGlow: "bg-cyan-500",
-    },
-    {
-      name: "Treasurer Agent",
-      tagline: "Throw away your spreadsheets.",
-      description: "Drag & drop invoices. AI extracts vendor, amount, GST automatically. Validates ABN, separates funds, maintains full audit trail.",
-      features: ["Process invoices in seconds", "Never miss a tax deduction", "Stay compliant with fund rules"],
-      image: "/images/agents/hero-treasurer.png",
-      borderColor: "hover:border-emerald-500",
-      hoverGlow: "hover:shadow-[0_0_40px_rgba(16,185,129,0.4)]",
-      textColor: "text-emerald-400",
-      checkColor: "text-emerald-400",
-      bgGlow: "bg-emerald-500",
-    },
-    {
-      name: "Guardian Agent",
-      tagline: "Resolve disputes instantly.",
-      description: "Ask bylaw questions in plain English. Get instant answers citing the exact clause. Learns your building's specific rules.",
-      features: ["Get answers anyone can understand", "Back up decisions with exact rules", "Uses your building's bylaws"],
-      image: "/images/agents/hero-guardian.png",
-      borderColor: "hover:border-purple-500",
-      hoverGlow: "hover:shadow-[0_0_40px_rgba(139,92,246,0.4)]",
-      textColor: "text-purple-400",
-      checkColor: "text-purple-400",
-      bgGlow: "bg-purple-500",
-    },
-    {
-      name: "Postman Agent",
-      tagline: "Calculate, generate, email — one click.",
-      description: "Enter your budget. System calculates each lot's share based on unit entitlements. Emails professional PDF notices to all owners.",
-      features: ["Calculate every lot's share instantly", "Send notices owners actually read", "Notify all owners in one click"],
-      image: "/images/agents/hero-postman.png",
-      borderColor: "hover:border-cyan-500",
-      hoverGlow: "hover:shadow-[0_0_40px_rgba(245,158,11,0.4)]",
-      textColor: "text-cyan-400",
-      checkColor: "text-cyan-400",
-      bgGlow: "bg-cyan-500",
-    },
-  ];
-
-  return (
-    <section id="features" className="py-20 md:py-28 px-6 bg-slate-900">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-purple-500/30 text-purple-400 text-sm font-medium mb-6">
-            <Sparkles className="w-4 h-4" />
-            Meet Your AI Committee
-          </div>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-4">
-            Four agents. Zero missed deadlines.
-          </h2>
-          <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-            Each agent is purpose-built for a specific strata responsibility, working 24/7 to keep your scheme compliant.
-          </p>
-
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8">
-          {agents.map((agent) => (
-            <div
-              key={agent.name}
-              className={`group relative glass rounded-2xl border border-white/10 ${agent.borderColor} hover:-translate-y-3 transition-all duration-300 overflow-hidden ${agent.hoverGlow}`}
-            >
-              {/* Background glow */}
-              <div className={`absolute top-0 right-0 w-72 h-72 ${agent.bgGlow} rounded-full blur-3xl opacity-[0.08] -translate-y-1/2 translate-x-1/2 group-hover:opacity-30 transition-opacity duration-300`} />
-              <div className={`absolute bottom-0 left-0 w-48 h-48 ${agent.bgGlow} rounded-full blur-3xl opacity-0 translate-y-1/2 -translate-x-1/2 group-hover:opacity-20 transition-opacity duration-300`} />
-
-              <div className="relative flex flex-col md:flex-row">
-                {/* Hero Image - no box */}
-                <div className="relative w-full md:w-48 h-48 md:h-auto flex-shrink-0">
-                  <Image
-                    src={agent.image}
-                    alt={agent.name}
-                    fill
-                    className="object-contain object-center group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-
-                {/* Content */}
-                <div className="relative p-6 flex-1">
-                  <div className="flex items-center gap-3 mb-3">
-                    <h3 className="text-xl font-semibold text-white">{agent.name}</h3>
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-live-pulse" />
-                      <span className="text-xs text-emerald-400 font-medium">Online</span>
-                    </div>
-                  </div>
-                  <p className={`text-sm font-medium ${agent.textColor} mb-3`}>{agent.tagline}</p>
-                  <p className="text-slate-400 text-sm leading-relaxed mb-4">
-                    {agent.description}
-                  </p>
-                  <ul className="space-y-2 text-sm text-slate-300">
-                    {agent.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-2">
-                        <Check className={`w-4 h-4 ${agent.checkColor}`} />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function StrataHubSection() {
-  return (
-    <section className="py-20 md:py-28 px-6 bg-slate-950">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass border border-emerald-500/30 text-emerald-400 text-sm font-medium mb-4">
-              <Shield className="w-4 h-4" />
-              Strata Hub Companion
-            </div>
-            <h3 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">
-              Stay ahead of your 3-month reporting window
-            </h3>
-            <p className="text-lg text-slate-400 mb-6 leading-relaxed">
-              Never scramble before a Strata Hub deadline again. We track what&apos;s due, validate all required information, warn you about missing data, and prepare structured exports for seamless lodgement.
-            </p>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
-                </div>
-                <span className="text-slate-300">Track 3-month reporting windows automatically</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
-                </div>
-                <span className="text-slate-300">Validate all required fields before submission</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
-                </div>
-                <span className="text-slate-300">Generate JSON exports ready for lodgement</span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="relative">
-            <div className="rounded-2xl glass border border-emerald-500/30 p-8 shadow-xl glow-emerald">
-              <div className="glass rounded-xl border border-white/10 overflow-hidden">
-                <div className="px-4 py-3 bg-white/5 border-b border-white/10 flex items-center justify-between">
-                  <span className="text-sm font-medium text-white">Strata Hub Status</span>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Ready to Lodge</span>
-                </div>
-                <div className="p-4 space-y-3">
-                  <div className="flex items-center justify-between py-2 border-b border-white/5">
-                    <span className="text-sm text-slate-300">Scheme Details</span>
-                    <Check className="w-5 h-5 text-emerald-400" />
-                  </div>
-                  <div className="flex items-center justify-between py-2 border-b border-white/5">
-                    <span className="text-sm text-slate-300">Committee Members</span>
-                    <Check className="w-5 h-5 text-emerald-400" />
-                  </div>
-                  <div className="flex items-center justify-between py-2 border-b border-white/5">
-                    <span className="text-sm text-slate-300">Financial Summary</span>
-                    <Check className="w-5 h-5 text-emerald-400" />
-                  </div>
-                  <div className="flex items-center justify-between py-2">
-                    <span className="text-sm text-slate-300">Insurance Details</span>
-                    <Check className="w-5 h-5 text-emerald-400" />
-                  </div>
-                </div>
-                <div className="px-4 py-3 bg-white/5 border-t border-white/10">
-                  <button className="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors shadow-lg shadow-emerald-600/30">
-                    Export for Strata Hub
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-emerald-500/20 rounded-full blur-3xl" />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ComparisonSection() {
-  return (
-    <section className="py-20 md:py-28 px-6 bg-slate-900">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-4">
-            StrataGenie vs Traditional Management
-          </h2>
-          <p className="text-lg text-slate-400">
-            See why hundreds of NSW schemes are making the switch.
-          </p>
-        </div>
-
-        <div className="glass rounded-2xl border border-white/10 shadow-xl overflow-hidden">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-white/10">
-                <th className="text-left py-4 px-6 text-sm font-semibold text-white">Feature</th>
-                <th className="text-center py-4 px-6 bg-cyan-500/10">
-                  <div className="text-sm font-semibold text-cyan-400">StrataGenie</div>
-                </th>
-                <th className="text-center py-4 px-6 text-sm font-semibold text-slate-400">Traditional Manager</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-white/5">
-                <td className="py-4 px-6 text-sm text-slate-300">Annual Cost (6 lots)</td>
-                <td className="text-center py-4 px-6 bg-cyan-500/10">
-                  <span className="text-lg font-semibold text-cyan-400">$1,079</span>
-                </td>
-                <td className="text-center py-4 px-6 text-slate-400">$2,500 – $10,000</td>
-              </tr>
-              <tr className="border-b border-white/5">
-                <td className="py-4 px-6 text-sm text-slate-300">Setup Time</td>
-                <td className="text-center py-4 px-6 bg-cyan-500/10">
-                  <span className="font-medium text-cyan-400">Minutes</span>
-                </td>
-                <td className="text-center py-4 px-6 text-slate-400">Weeks</td>
-              </tr>
-              <tr className="border-b border-white/5">
-                <td className="py-4 px-6 text-sm text-slate-300">24/7 Availability</td>
-                <td className="text-center py-4 px-6 bg-cyan-500/10">
-                  <Check className="w-6 h-6 text-emerald-400 mx-auto" />
-                </td>
-                <td className="text-center py-4 px-6">
-                  <X className="w-6 h-6 text-slate-600 mx-auto" />
-                </td>
-              </tr>
-              <tr className="border-b border-white/5">
-                <td className="py-4 px-6 text-sm text-slate-300">Automated Compliance Tracking</td>
-                <td className="text-center py-4 px-6 bg-cyan-500/10">
-                  <Check className="w-6 h-6 text-emerald-400 mx-auto" />
-                </td>
-                <td className="text-center py-4 px-6">
-                  <span className="text-sm text-slate-500">Manual</span>
-                </td>
-              </tr>
-              <tr className="border-b border-white/5">
-                <td className="py-4 px-6 text-sm text-slate-300">Strata Hub Export</td>
-                <td className="text-center py-4 px-6 bg-cyan-500/10">
-                  <Check className="w-6 h-6 text-emerald-400 mx-auto" />
-                </td>
-                <td className="text-center py-4 px-6">
-                  <span className="text-sm text-slate-500">Varies</span>
-                </td>
-              </tr>
-              <tr className="border-b border-white/5">
-                <td className="py-4 px-6 text-sm text-slate-300">AI Document Generation</td>
-                <td className="text-center py-4 px-6 bg-cyan-500/10">
-                  <Check className="w-6 h-6 text-emerald-400 mx-auto" />
-                </td>
-                <td className="text-center py-4 px-6">
-                  <X className="w-6 h-6 text-slate-600 mx-auto" />
-                </td>
-              </tr>
-              <tr>
-                <td className="py-4 px-6 text-sm text-slate-300">You Stay in Control</td>
-                <td className="text-center py-4 px-6 bg-cyan-500/10">
-                  <Check className="w-6 h-6 text-emerald-400 mx-auto" />
-                </td>
-                <td className="text-center py-4 px-6">
-                  <X className="w-6 h-6 text-slate-600 mx-auto" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function SavingsCalculatorSection() {
-  const [lots, setLots] = useState(6);
-  const PRICE_PER_LOT = 14.99;
-
-  // Traditional strata manager costs (industry estimates)
-  // Small schemes have minimum fees, larger schemes scale per-lot
-  const TRAD_MIN_COST = 2500; // Minimum annual fee
-  const TRAD_COST_PER_LOT_LOW = 350; // Low end per lot
-  const TRAD_COST_PER_LOT_HIGH = 600; // High end per lot
-
-  const monthlyTotal = lots * PRICE_PER_LOT;
-  const annualTotal = monthlyTotal * 12;
-
-  // Calculate traditional manager cost range
-  const tradCostLow = Math.max(TRAD_MIN_COST, lots * TRAD_COST_PER_LOT_LOW);
-  const tradCostHigh = Math.max(TRAD_MIN_COST, lots * TRAD_COST_PER_LOT_HIGH);
-
-  // Calculate savings range
-  const savingsLow = Math.max(0, tradCostLow - annualTotal);
-  const savingsHigh = Math.max(0, tradCostHigh - annualTotal);
-
-  return (
-    <section className="py-20 md:py-28 px-6 bg-slate-950">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-6">
-              Save thousands by staying self-managed
-            </h2>
-            <div className="space-y-5 text-lg text-slate-400 mb-8">
-              <p>
-                Traditional strata management for small schemes costs <strong className="text-white">$2,500–$10,000 per year</strong>.
-              </p>
-              <p>
-                <strong className="text-white">67% of Australian strata schemes</strong> have 1–5 lots. Many want to self-manage but worry about compliance.
-              </p>
-              <p>
-                StrataGenie costs a fraction of a full manager while giving you the compliance &quot;brain&quot; you need.
-              </p>
-            </div>
-
-            <div className="glass rounded-2xl p-6 border border-white/10">
-              <p className="text-sm font-semibold text-white mb-4">Example: 6-lot building</p>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Monthly cost</span>
-                  <span className="font-medium text-white">$14.99 × 6 = $89.94</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Annual cost</span>
-                  <span className="font-medium text-white">$1,079</span>
-                </div>
-                <div className="flex justify-between pt-3 border-t border-white/10">
-                  <span className="font-semibold text-emerald-400">Estimated savings</span>
-                  <span className="font-bold text-emerald-400">$1,500–$8,900/year</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div className="glass rounded-2xl border border-white/10 shadow-xl p-8 glow-cyan">
-              <h3 className="text-xl font-semibold text-white mb-6">Calculate your savings</h3>
-
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-slate-300 mb-2">Number of lots</label>
-                <input
-                  type="range"
-                  min="2"
-                  max="50"
-                  value={lots}
-                  onChange={(e) => setLots(parseInt(e.target.value))}
-                  className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
-                />
-                <div className="flex justify-between text-xs text-slate-500 mt-1">
-                  <span>2</span>
-                  <span className="text-lg font-semibold text-white">{lots}</span>
-                  <span>50</span>
-                </div>
-              </div>
-
-              <div className="space-y-4 mb-6">
-                <div className="flex justify-between items-center py-3 border-b border-white/10">
-                  <span className="text-slate-400">Monthly with StrataGenie</span>
-                  <span className="text-xl font-semibold text-white">${monthlyTotal.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between items-center py-3 border-b border-white/10">
-                  <span className="text-slate-400">Annual with StrataGenie</span>
-                  <span className="text-xl font-semibold text-white">${Math.round(annualTotal).toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between items-center py-3 border-b border-white/10">
-                  <span className="text-slate-400">Traditional manager (est.)</span>
-                  <span className="text-xl font-semibold text-slate-400">${Math.round(tradCostLow).toLocaleString()}–${Math.round(tradCostHigh).toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between items-center py-3 bg-emerald-500/10 rounded-lg px-4 -mx-4 border border-emerald-500/30">
-                  <span className="font-medium text-emerald-400">Your estimated savings</span>
-                  <span className="text-2xl font-bold text-emerald-400">${Math.round(savingsLow).toLocaleString()}–${Math.round(savingsHigh).toLocaleString()}</span>
-                </div>
-              </div>
-
-              <Link href="/sign-up" className="block w-full bg-cyan-600 hover:bg-cyan-500 text-white text-center py-3 px-6 rounded-full font-medium shadow-lg shadow-cyan-600/30 hover:shadow-xl transition-all">
-                Start Saving Today
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function PricingSection() {
-  const features = ["All 4 AI Agents", "Strata Hub Export", "Unlimited Documents", "Email Notifications", "Priority Support"];
-
-  return (
-    <section id="pricing" className="py-20 md:py-28 px-6 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900">
-      <div className="max-w-3xl mx-auto text-center">
-        <p className="text-cyan-400 font-medium mb-4">Simple, transparent pricing</p>
-
-        <div className="mb-6">
-          <span className="text-7xl md:text-8xl font-bold gradient-text-landing tracking-tight">$14.99</span>
-          <span className="text-slate-400 text-2xl ml-2">/lot/month</span>
-        </div>
-
-        <p className="text-slate-400 text-xl mb-10 max-w-md mx-auto">
-          All features included. No setup fees. No contracts. Cancel anytime.
-        </p>
-
-        <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-slate-300 mb-12">
-          {features.map((f) => (
-            <span key={f} className="flex items-center gap-2">
-              <Check className="w-5 h-5 text-emerald-400" />
-              {f}
-            </span>
-          ))}
-        </div>
-
-        <Link href="/sign-up" className="inline-flex items-center gap-2 btn-glow bg-white hover:bg-slate-100 text-slate-900 text-lg px-10 py-4 rounded-full font-medium shadow-2xl hover:-translate-y-1 transition-all">
-          Start 14-Day Free Trial
-          <ArrowRight className="w-5 h-5" />
-        </Link>
-        <p className="mt-4 text-slate-500 text-sm">No credit card required</p>
-      </div>
-    </section>
-  );
-}
-
-function TestimonialsSection() {
-  const testimonials = [
-    {
-      quote: "We finally stopped worrying about missing deadlines. StrataGenie sends us reminders months in advance and even drafts the documents we need. Game changer for our small scheme.",
-      name: "Sarah Mitchell",
-      role: "Secretary • Bondi 8-lot scheme",
-      initials: "SM",
-      color: "blue",
-    },
-    {
-      quote: "For small buildings like ours, hiring a strata manager never made sense — the cost was insane. StrataGenie is the perfect middle ground. Professional compliance at a fraction of the price.",
-      name: "Jennifer Lee",
-      role: "Treasurer • 4-lot duplex, Manly",
-      initials: "JL",
-      color: "emerald",
-    },
-    {
-      quote: "The Strata Hub export feature alone saves us hours every year. Everything is pre-validated and ready to lodge. No more scrambling before deadlines or worrying we missed something.",
-      name: "Michael Torres",
-      role: "Secretary • Surry Hills complex",
-      initials: "MT",
-      color: "purple",
-    },
-    {
-      quote: "StrataGenie handles all the admin so our committee can focus on real issues like maintenance and improvements. The Guardian Agent has settled so many bylaw disputes for us instantly.",
-      name: "David Kim",
-      role: "Chair • Parramatta townhouses",
-      initials: "DK",
-      color: "amber",
-    },
-  ];
-
-  const colorMap: Record<string, string> = {
-    blue: "bg-cyan-500/20 text-cyan-400",
-    emerald: "bg-emerald-500/20 text-emerald-400",
-    purple: "bg-purple-500/20 text-purple-400",
-    amber: "bg-cyan-500/20 text-cyan-400",
-  };
-
-  return (
-    <section className="py-20 md:py-28 px-6 bg-slate-950">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/20 text-slate-300 text-sm font-medium mb-6">
-            <Users className="w-4 h-4" />
-            Trusted by NSW committees
-          </div>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-4">
-            What our users say
-          </h2>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          {testimonials.map((t) => (
-            <div key={t.name} className="glass rounded-2xl border border-white/10 p-8 hover:border-white/20 hover:-translate-y-1 transition-all duration-300">
-              <div className="flex gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 text-cyan-400 fill-amber-400" />
-                ))}
-              </div>
-              <p className="text-slate-300 leading-relaxed mb-6">&quot;{t.quote}&quot;</p>
-              <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-full ${colorMap[t.color]} flex items-center justify-center font-semibold`}>
-                  {t.initials}
-                </div>
-                <div>
-                  <p className="font-medium text-white">{t.name}</p>
-                  <p className="text-sm text-slate-500">{t.role}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function FAQSection() {
-  const faqs = [
-    {
-      question: "Is StrataGenie compatible with Strata Hub?",
-      answer: "Yes! StrataGenie is specifically designed to work with the NSW Strata Hub. We track your reporting windows, validate all required fields according to the latest specifications, and generate JSON exports that are ready for lodgement.",
-    },
-    {
-      question: "Do we still need a strata manager?",
-      answer: "That depends on your scheme. Many small schemes (2-20 lots) successfully self-manage with StrataGenie as their compliance assistant. For larger or more complex schemes, StrataGenie can complement a professional manager by handling routine compliance tasks.",
-    },
-    {
-      question: "What if our committee is tiny (2 lots)?",
-      answer: "Two-lot schemes are perfect for StrataGenie! You still have the same compliance obligations as larger schemes but likely don't want to pay thousands for a strata manager. At $14.99 per lot per month, that's under $30/month for complete compliance coverage.",
-    },
-    {
-      question: "Who owns our data?",
-      answer: "You do. Your scheme data belongs to your owners corporation. You can export all your data at any time, and if you cancel your subscription, we provide a complete data export. We never sell or share your data with third parties.",
-    },
-    {
-      question: "How secure is the platform?",
-      answer: "Security is paramount. All data is encrypted in transit and at rest. We use Australian-based cloud infrastructure, implement strict access controls, and maintain regular security audits.",
-    },
-    {
-      question: "How does billing work?",
-      answer: "Billing is simple: $14.99 per lot per month, billed annually. You get a 14-day free trial to test everything with no credit card required. After the trial, you'll be invoiced for the annual amount.",
-    },
-  ];
-
-  return (
-    <section id="faq" className="py-20 md:py-28 px-6 bg-slate-900">
-      <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">
-            Frequently asked questions
-          </h2>
-          <p className="text-lg text-slate-400">
-            Everything you need to know about StrataGenie
-          </p>
-        </div>
-
-        <div className="glass rounded-2xl border border-white/10 shadow-sm divide-y divide-white/10">
-          {faqs.map((faq) => (
-            <details key={faq.question} className="group">
-              <summary className="flex items-center justify-between cursor-pointer py-5 px-6">
-                <span className="font-medium text-white pr-6">{faq.question}</span>
-                <ChevronDown className="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform flex-shrink-0" />
-              </summary>
-              <div className="px-6 pb-5 text-slate-400 leading-relaxed">
-                {faq.answer}
-              </div>
-            </details>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function FinalCTASection() {
-  return (
-    <section className="py-20 md:py-28 px-6 relative overflow-hidden">
-      {/* Gradient background - Teal + Gold */}
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-600 via-cyan-700 to-sky-500" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent" />
-
-      <div className="relative max-w-3xl mx-auto text-center">
-        <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-6">
-          Ready to simplify your strata compliance?
-        </h2>
-        <p className="text-cyan-100 text-lg md:text-xl mb-10 max-w-2xl mx-auto">
-          Join hundreds of NSW committees who&apos;ve automated their compliance with StrataGenie. Start your free trial today.
-        </p>
-        <Link href="/sign-up" className="inline-flex items-center gap-2 btn-glow bg-white hover:bg-slate-50 text-cyan-700 text-lg px-10 py-4 rounded-full font-semibold shadow-2xl hover:-translate-y-1 transition-all">
-          Start Your 14-Day Free Trial
-          <ArrowRight className="w-5 h-5" />
-        </Link>
-        <p className="mt-5 text-cyan-100 text-sm">
-          No credit card required • Free for 14 days • Cancel anytime
-        </p>
-      </div>
-    </section>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="py-16 px-6 bg-slate-950 border-t border-white/10">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-4 gap-10 mb-10">
-          <div className="md:col-span-2">
-            <div className="mb-5">
-              <Image
-                src="/images/logo/logo-seablue-transparent-v3.png"
-                alt="StrataGenie"
-                width={400}
-                height={100}
-                className="h-20 md:h-24 w-auto object-contain"
-              />
-            </div>
-            <p className="text-slate-400 leading-relaxed max-w-sm">
-              The AI-powered compliance copilot for self-managed strata schemes in NSW. Built specifically for the Strata Schemes Management Act 2015.
-            </p>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-white mb-4">Product</h4>
-            <ul className="space-y-3">
-              <li><a href="#features" className="text-slate-400 hover:text-white transition-colors">Features</a></li>
-              <li><a href="#pricing" className="text-slate-400 hover:text-white transition-colors">Pricing</a></li>
-              <li><Link href="/sign-up" className="text-slate-400 hover:text-white transition-colors">Free Trial</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-white mb-4">Legal</h4>
-            <ul className="space-y-3">
-              <li><Link href="/privacy" className="text-slate-400 hover:text-white transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="text-slate-400 hover:text-white transition-colors">Terms of Service</Link></li>
-              <li><a href="mailto:hello@stratagenie.app" className="text-slate-400 hover:text-white transition-colors">Contact</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="pt-10 border-t border-white/10">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-slate-500 text-sm">© 2025 StrataGenie. All rights reserved.</p>
-            <div className="flex items-center gap-6">
-              <span className="flex items-center gap-2 text-slate-500 text-xs">
-                <Globe className="w-4 h-4" />
-                Australian Owned
-              </span>
-              <span className="flex items-center gap-2 text-slate-500 text-xs">
-                <Lock className="w-4 h-4" />
-                Secure & Encrypted
-              </span>
-            </div>
-          </div>
-          <p className="text-slate-600 text-xs text-center md:text-left mt-4 max-w-2xl">
-            This tool provides administrative guidance only, not legal advice. Always verify compliance requirements with NSW Fair Trading.
-          </p>
-        </div>
-      </div>
-    </footer>
-  );
-}
+const SimpleCheckIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>
+);
 
 export default function LandingPage() {
   return (
-    <main className="font-sans antialiased bg-slate-950 text-white landing-page">
-      <Navbar />
-      <HeroSection />
-      <StatsSection />
-      <HowItWorksSection />
-      <AgentsSection />
-      <StrataHubSection />
-      <ComparisonSection />
-      <SavingsCalculatorSection />
-      <PricingSection />
-      <TestimonialsSection />
-      <FAQSection />
-      <FinalCTASection />
-      <Footer />
+    <main className="landing-v2">
+      {/* HEADER */}
+      <header className="header">
+        <div className="container">
+          <div className="header-inner">
+            <Link href="/" className="logo-link">
+              <span className="logo-text">Strata<span>Genie</span></span>
+            </Link>
+            <Link href="/sign-in" className="header-cta">Sign In</Link>
+          </div>
+        </div>
+      </header>
+
+      {/* SECTION A: THE HOOK */}
+      <section className="hero">
+        <div className="hero-decor hero-decor-1"></div>
+        <div className="hero-decor hero-decor-2"></div>
+
+        <div className="container">
+          <div className="hero-grid">
+            <div className="hero-text">
+              {/* Pre-headline: Call out the audience */}
+              <div className="pre-headline animate-fade-up">
+                For Self-Managed Strata Committees
+              </div>
+
+              {/* H1: Dream Outcome */}
+              <h1 className="animate-fade-up delay-1">
+                Self-Manage With <em>Confidence</em>, Not Anxiety
+              </h1>
+
+              {/* Sub-headline */}
+              <p className="hero-sub animate-fade-up delay-2">
+                You chose to self-manage. Now get the backup you deserve. StrataGenie tracks every deadline, answers every bylaw question, and makes sure you <strong>never miss a compliance requirement</strong>. So you can finally stop worrying.
+              </p>
+
+              {/* CTA Group */}
+              <div className="cta-group animate-fade-up delay-3">
+                <a href="#offer" className="cta-primary">
+                  See How It Works
+                  <ArrowRightIcon />
+                </a>
+                <Link href="/sign-up" className="cta-secondary">
+                  Start Free Trial
+                </Link>
+              </div>
+
+              {/* Trust indicators */}
+              <div className="trust-row animate-fade-up delay-4">
+                <div className="trust-item">
+                  <CheckIcon />
+                  No credit card required
+                </div>
+                <div className="trust-item">
+                  <CheckIcon />
+                  Setup in 5 minutes
+                </div>
+                <div className="trust-item">
+                  <CheckIcon />
+                  Cancel anytime
+                </div>
+              </div>
+            </div>
+
+            {/* Hero Visual: Product UI */}
+            <div className="hero-visual">
+              <div className="float-card top-left">
+                <div className="float-value accent">0</div>
+                <div className="float-label">Missed Deadlines</div>
+              </div>
+
+              <div className="dashboard-card">
+                <div className="dashboard-header">
+                  <span className="dashboard-title">Compliance Status</span>
+                  <span className="status-badge">
+                    <CheckIcon />
+                    All Clear
+                  </span>
+                </div>
+
+                <div className="compliance-list">
+                  <div className="compliance-row">
+                    <div className="compliance-left">
+                      <div className="compliance-icon active">
+                        <CalendarIcon />
+                      </div>
+                      <div>
+                        <div className="compliance-name">Annual General Meeting</div>
+                        <div className="compliance-date">March 15, 2026</div>
+                      </div>
+                    </div>
+                    <span className="compliance-status upcoming">Upcoming</span>
+                  </div>
+
+                  <div className="compliance-row">
+                    <div className="compliance-left">
+                      <div className="compliance-icon">
+                        <FileIcon />
+                      </div>
+                      <div>
+                        <div className="compliance-name">Strata Hub Report</div>
+                        <div className="compliance-date">June 15, 2026</div>
+                      </div>
+                    </div>
+                    <span className="compliance-status soon">Due Soon</span>
+                  </div>
+
+                  <div className="compliance-row">
+                    <div className="compliance-left">
+                      <div className="compliance-icon">
+                        <DollarIcon />
+                      </div>
+                      <div>
+                        <div className="compliance-name">Financial Year End</div>
+                        <div className="compliance-date">December 31, 2025</div>
+                      </div>
+                    </div>
+                    <span className="compliance-status done">Complete</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="float-card bottom-right">
+                <div className="float-value">Instant</div>
+                <div className="float-label accent">Expert Answers</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Social Proof Bar */}
+      <section className="social-proof-bar">
+        <div className="container">
+          <div className="proof-flex">
+            <div className="proof-stat">
+              <div className="proof-number">500+</div>
+              <div className="proof-label">Schemes Using StrataGenie</div>
+            </div>
+            <div className="proof-divider"></div>
+            <div className="proof-stat">
+              <div className="proof-number">$180K</div>
+              <div className="proof-label">Fines Prevented</div>
+            </div>
+            <div className="proof-divider"></div>
+            <div className="proof-stat">
+              <div className="proof-number">4.9/5</div>
+              <div className="proof-label">Committee Satisfaction</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION B: THE ARGUMENT */}
+      <section className="argument">
+        <div className="container">
+
+          {/* Problem Section */}
+          <div className="problem-section">
+            <span className="section-label">The Hard Truth</span>
+            <h2 className="section-headline">
+              Self-managing is <em>lonely</em>. And that&apos;s the problem.
+            </h2>
+            <p className="problem-description">
+              You made the right choice to self-manage. But now you&apos;re on your own—Googling at midnight, second-guessing every decision, and hoping you haven&apos;t missed something that could cost your building thousands.
+            </p>
+
+            <div className="problem-grid">
+              <div className="problem-card">
+                <div className="problem-number">01</div>
+                <h3>No One to Ask</h3>
+                <p>&ldquo;Can they install that? Is this bylaw enforceable? When is the AGM actually due?&rdquo; You&apos;re making decisions alone with no expert to call when you&apos;re unsure.</p>
+              </div>
+
+              <div className="problem-card">
+                <div className="problem-number">02</div>
+                <h3>Constant Second-Guessing</h3>
+                <p>Did you file that form correctly? Is the Strata Hub Report due in 3 months or 4? You&apos;re always worried you&apos;ve forgotten something critical.</p>
+              </div>
+
+              <div className="problem-card">
+                <div className="problem-number">03</div>
+                <h3>Fear of the Invisible Mistake</h3>
+                <p>The Strata Schemes Management Act has 271 sections. You can&apos;t know them all. What if there&apos;s a deadline you don&apos;t even know exists?</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Solution Section */}
+          <div className="solution-section">
+            <div className="solution-content">
+              <span className="section-label">Your Backup Team</span>
+              <h3 className="solution-headline">
+                Like having a compliance expert on call. 24/7.
+              </h3>
+              <p className="solution-description">
+                StrataGenie is the safety net self-managed committees deserve. We watch every deadline so you don&apos;t have to remember. We answer bylaw questions in seconds so you never feel unsure. You&apos;re not alone anymore.
+              </p>
+
+              <div className="benefit-list">
+                <div className="benefit-item">
+                  <div className="benefit-icon">
+                    <CheckIcon />
+                  </div>
+                  <div className="benefit-text">
+                    <h4>Never Miss a Deadline Again</h4>
+                    <p>AGM, Strata Hub, AFSS—all tracked automatically with advance reminders</p>
+                  </div>
+                </div>
+
+                <div className="benefit-item">
+                  <div className="benefit-icon">
+                    <MessageIcon />
+                  </div>
+                  <div className="benefit-text">
+                    <h4>Ask Anything, Anytime</h4>
+                    <p>Guardian AI answers bylaw questions instantly with citations from your actual documents</p>
+                  </div>
+                </div>
+
+                <div className="benefit-item">
+                  <div className="benefit-icon">
+                    <ShieldIcon />
+                  </div>
+                  <div className="benefit-text">
+                    <h4>Know You&apos;re Covered</h4>
+                    <p>Every compliance requirement tracked. Nothing slips through the cracks.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="solution-visual">
+              <div className="feature-card">
+                <div className="feature-header">
+                  <div className="feature-badge">
+                    <MessageIcon />
+                  </div>
+                  <div>
+                    <div className="feature-title">Guardian AI</div>
+                    <div className="feature-subtitle">Your bylaw expert on demand</div>
+                  </div>
+                </div>
+
+                <div className="chat-bubbles">
+                  <div className="chat-bubble user">
+                    Can residents install air conditioning on their balcony?
+                  </div>
+                  <div className="chat-bubble ai">
+                    According to By-law 7.3, owners may install air conditioning units on balconies subject to committee approval. The unit must not exceed 65 decibels and must match the building&apos;s color scheme. Submit Form B-2 to the committee at least 14 days before installation.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* SECTION C: THE TRUST */}
+      <section className="trust-section">
+        <div className="container">
+          <div className="trust-header">
+            <span className="section-label">You&apos;re Not Alone</span>
+            <h2 className="section-headline" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+              500+ committees stopped <em>worrying</em> and started knowing
+            </h2>
+          </div>
+
+          {/* Featured Testimonial */}
+          <div className="testimonial-featured">
+            <p className="testimonial-quote">
+              &ldquo;Before StrataGenie, I was Googling strata law at 11pm and still not sure I was right. Now I just ask Guardian AI and get an answer in seconds—<em>with the exact bylaw reference</em>. Last month it reminded me about our Strata Hub report I&apos;d completely forgotten. I finally feel like I know what I&apos;m doing.&rdquo;
+            </p>
+            <div className="testimonial-author">
+              <div className="author-avatar">SM</div>
+              <div className="author-info">
+                <h4>Sarah Mitchell</h4>
+                <p>Secretary, Harbourview Apartments (32 units) — Self-managed since 2021</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Metrics Grid */}
+          <div className="metrics-grid">
+            <div className="metric-card">
+              <div className="metric-value">500+</div>
+              <div className="metric-label">Self-Managed Schemes</div>
+              <div className="metric-description">Trust StrataGenie as their compliance safety net</div>
+            </div>
+
+            <div className="metric-card">
+              <div className="metric-value">0</div>
+              <div className="metric-label">Compliance Fines</div>
+              <div className="metric-description">Across all active schemes. Not one. Ever.</div>
+            </div>
+
+            <div className="metric-card">
+              <div className="metric-value">30 sec</div>
+              <div className="metric-label">Average Answer Time</div>
+              <div className="metric-description">For bylaw questions via Guardian AI</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION D: THE CLOSER */}
+      <section className="closer" id="offer">
+        <div className="container">
+          <div className="closer-grid">
+
+            {/* Offer Recap */}
+            <div className="offer-card">
+              <span className="offer-badge">Early Bird Offer</span>
+              <h3 className="offer-title">Start Your Free 14-Day Trial</h3>
+              <p className="offer-subtitle">Full access. No credit card. Cancel anytime.</p>
+
+              <ul className="offer-list">
+                <li>
+                  <SimpleCheckIcon />
+                  Automatic AGM & Strata Hub deadline tracking
+                </li>
+                <li>
+                  <SimpleCheckIcon />
+                  AI-powered invoice processing
+                </li>
+                <li>
+                  <SimpleCheckIcon />
+                  Guardian AI for instant bylaw Q&A
+                </li>
+                <li>
+                  <SimpleCheckIcon />
+                  Levy calculator & strata roll management
+                </li>
+                <li>
+                  <SimpleCheckIcon />
+                  Compliance document vault
+                </li>
+              </ul>
+
+              <div className="price-row">
+                <span className="price-current">$14.99</span>
+                <span className="price-period">/ month per lot</span>
+              </div>
+
+              <Link href="/sign-up" className="offer-cta">
+                Start Free Trial
+                <ArrowRightIcon />
+              </Link>
+
+              {/* Guarantee */}
+              <div className="guarantee-box">
+                <div className="guarantee-text">
+                  <strong>30-Day Money-Back Guarantee</strong>
+                  <span>If StrataGenie doesn&apos;t save you time, full refund. No questions.</span>
+                </div>
+              </div>
+            </div>
+
+            {/* FAQ */}
+            <div className="faq-section">
+              <h3 className="faq-title">Common Questions</h3>
+
+              <div className="faq-list">
+                <div className="faq-item">
+                  <div className="faq-question">We&apos;ve been self-managing for years. Do we really need this?</div>
+                  <p className="faq-answer">If you&apos;ve never worried about missing a deadline at 2am, no. But most self-managed committees tell us the anxiety never fully goes away—until they have a system watching their back. StrataGenie gives you certainty.</p>
+                </div>
+
+                <div className="faq-item">
+                  <div className="faq-question">How does Guardian AI actually work?</div>
+                  <p className="faq-answer">Upload your bylaws once. Then ask questions in plain English like &ldquo;Can residents have dogs?&rdquo; Guardian AI reads your actual documents and gives you the answer with the exact clause reference. No more Googling or guessing.</p>
+                </div>
+
+                <div className="faq-item">
+                  <div className="faq-question">What if there&apos;s a deadline I don&apos;t even know about?</div>
+                  <p className="faq-answer">That&apos;s the point. StrataGenie knows every compliance requirement in the Act—AGM, Strata Hub Reports, AFSS, insurance, all of it. We track what you don&apos;t know you&apos;re missing.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="final-cta">
+        <div className="container">
+          <h2>Stop worrying. <em>Start knowing.</em></h2>
+          <p>Join 500+ self-managed committees who finally have the backup they deserve.</p>
+
+          <Link href="/sign-up" className="cta-primary">
+            Start My Free Trial
+            <ArrowRightIcon />
+          </Link>
+
+          <div className="final-trust">
+            <ShieldIcon />
+            No credit card required. No commitment. No risk.
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="container">
+          <p>&copy; 2025 StrataGenie. Built for Australian strata committees.</p>
+        </div>
+      </footer>
     </main>
   );
 }
-
