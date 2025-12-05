@@ -126,8 +126,8 @@ export function InvoiceReviewDialog({
         amount: dollarsToCents(amount),
         gst: dollarsToCents(gst),
         description: description || "Invoice expense",
-        category: category as typeof CATEGORIES[number]["value"] | undefined,
-        fund: fund as typeof FUNDS[number]["value"] | undefined,
+        category: category ? (category as typeof CATEGORIES[number]["value"]) : undefined,
+        fund: fund ? (fund as typeof FUNDS[number]["value"]) : undefined,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to update");
@@ -151,8 +151,8 @@ export function InvoiceReviewDialog({
         amount: dollarsToCents(amount),
         gst: dollarsToCents(gst),
         description: description || "Invoice expense",
-        category: category as typeof CATEGORIES[number]["value"] | undefined,
-        fund: fund as typeof FUNDS[number]["value"] | undefined,
+        category: category ? (category as typeof CATEGORIES[number]["value"]) : undefined,
+        fund: fund ? (fund as typeof FUNDS[number]["value"]) : undefined,
       });
 
       // Then approve
