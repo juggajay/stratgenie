@@ -66,24 +66,6 @@ export function LevyGeneratorDialog({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Preview data - no longer used as LevyPreviewTable fetches directly
-  // Keeping minimal state for backward compatibility
-  const [previewData, setPreviewData] = useState<{
-    success: boolean;
-    preview: Array<{
-      lotId: string;
-      lotNumber: string;
-      ownerName: string;
-      unitEntitlement: number;
-      percentageShare: number;
-      amount: bigint;
-    }>;
-    totalEntitlement: number;
-    budgetCents: bigint;
-    sumCents: bigint;
-    balanced: boolean;
-  } | null>(null);
-
   const totalEntitlement = useQuery(api.lots.getTotalUnitEntitlement, { schemeId });
   const createLevyRun = useMutation(api.levies.createLevyRun);
 
@@ -95,7 +77,6 @@ export function LevyGeneratorDialog({
     setDueDate("");
     setPeriodStart("");
     setPeriodEnd("");
-    setPreviewData(null);
     setError(null);
   };
 
@@ -226,7 +207,7 @@ export function LevyGeneratorDialog({
                   Total Budget
                 </Label>
                 <div className="col-span-3 relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
                   <Input
                     id="totalAmount"
                     type="number"
@@ -262,7 +243,7 @@ export function LevyGeneratorDialog({
                     onChange={(e) => setPeriodStart(e.target.value)}
                     className="flex-1"
                   />
-                  <span className="flex items-center text-slate-400">to</span>
+                  <span className="flex items-center text-muted-foreground">to</span>
                   <Input
                     type="date"
                     value={periodEnd}
@@ -287,9 +268,9 @@ export function LevyGeneratorDialog({
             </div>
 
             {totalEntitlement && totalEntitlement.lotCount > 0 && (
-              <div className="text-sm text-slate-500 bg-slate-50 p-3 rounded-md">
-                <span className="font-medium">{totalEntitlement.lotCount}</span> lots with{" "}
-                <span className="font-medium">{totalEntitlement.total}</span> total unit entitlements
+              <div className="text-sm text-muted-foreground bg-secondary p-3 rounded-md">
+                <span className="font-medium text-foreground">{totalEntitlement.lotCount}</span> lots with{" "}
+                <span className="font-medium text-foreground">{totalEntitlement.total}</span> total unit entitlements
               </div>
             )}
 
@@ -323,27 +304,27 @@ export function LevyGeneratorDialog({
 
             <div className="py-4">
               {/* Summary */}
-              <div className="mb-4 p-4 bg-indigo-50 rounded-lg">
+              <div className="mb-4 p-4 bg-[#FFF0EB] rounded-lg border border-[#FFCDB8]">
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-indigo-600">Fund Type:</span>{" "}
-                    <span className="font-medium">
+                    <span className="text-[#FF6B35]">Fund Type:</span>{" "}
+                    <span className="font-medium text-foreground">
                       {fundType === "admin" ? "Admin Fund" : "Capital Works Fund"}
                     </span>
                   </div>
                   <div>
-                    <span className="text-indigo-600">Period:</span>{" "}
-                    <span className="font-medium">{periodLabel}</span>
+                    <span className="text-[#FF6B35]">Period:</span>{" "}
+                    <span className="font-medium text-foreground">{periodLabel}</span>
                   </div>
                   <div>
-                    <span className="text-indigo-600">Total Budget:</span>{" "}
-                    <span className="font-bold text-lg">
+                    <span className="text-[#FF6B35]">Total Budget:</span>{" "}
+                    <span className="font-bold text-lg text-foreground">
                       {formatCurrency(parseFloat(totalAmountDollars) * 100)}
                     </span>
                   </div>
                   <div>
-                    <span className="text-indigo-600">Due Date:</span>{" "}
-                    <span className="font-medium">
+                    <span className="text-[#FF6B35]">Due Date:</span>{" "}
+                    <span className="font-medium text-foreground">
                       {new Date(dueDate).toLocaleDateString("en-AU")}
                     </span>
                   </div>
@@ -390,13 +371,13 @@ export function LevyGeneratorDialog({
             </DialogHeader>
 
             <div className="py-8 text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4">
-                <Check className="h-8 w-8 text-green-600" />
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-50 mb-4">
+                <Check className="h-8 w-8 text-emerald-600" />
               </div>
-              <p className="text-lg font-medium text-slate-900">
+              <p className="text-lg font-medium text-foreground">
                 {formatCurrency(parseFloat(totalAmountDollars) * 100)} {periodLabel}
               </p>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-muted-foreground">
                 {fundType === "admin" ? "Admin Fund" : "Capital Works Fund"} levies generated
               </p>
             </div>
@@ -427,7 +408,7 @@ function LevyPreviewTable({
   if (!preview) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -459,9 +440,9 @@ function LevyPreviewTable({
             {preview.preview.map((item) => (
               <TableRow key={item.lotId}>
                 <TableCell className="font-medium">{item.lotNumber}</TableCell>
-                <TableCell className="text-slate-600">{item.ownerName}</TableCell>
+                <TableCell className="text-foreground">{item.ownerName}</TableCell>
                 <TableCell className="text-right font-mono">{item.unitEntitlement}</TableCell>
-                <TableCell className="text-right font-mono text-slate-500">
+                <TableCell className="text-right font-mono text-muted-foreground">
                   {item.percentageShare.toFixed(2)}%
                 </TableCell>
                 <TableCell className="text-right font-mono font-medium">

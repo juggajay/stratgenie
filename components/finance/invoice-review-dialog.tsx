@@ -71,7 +71,6 @@ export function InvoiceReviewDialog({
   onApproved,
 }: InvoiceReviewDialogProps) {
   const [isApproving, setIsApproving] = useState(false);
-  const [isUpdating, setIsUpdating] = useState(false);
   const [isMarkingPaid, setIsMarkingPaid] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -111,30 +110,6 @@ export function InvoiceReviewDialog({
       setFund(transaction.fund || "");
     }
   }, [transaction]);
-
-  const handleUpdate = async () => {
-    if (!transactionId) return;
-
-    setIsUpdating(true);
-    setError(null);
-
-    try {
-      await updateTransaction({
-        transactionId,
-        vendorName: vendorName || undefined,
-        invoiceDate: invoiceDate || undefined,
-        amount: dollarsToCents(amount),
-        gst: dollarsToCents(gst),
-        description: description || "Invoice expense",
-        category: category ? (category as typeof CATEGORIES[number]["value"]) : undefined,
-        fund: fund ? (fund as typeof FUNDS[number]["value"]) : undefined,
-      });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to update");
-    } finally {
-      setIsUpdating(false);
-    }
-  };
 
   const handleApprove = async () => {
     if (!transactionId) return;
@@ -221,7 +196,7 @@ export function InvoiceReviewDialog({
             </div>
             {transaction && (
               <span
-                className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${
+                className={`inline-flex items-center gap-1 px-2.5 py-1 rounded text-[10px] font-semibold uppercase tracking-wide ${
                   transaction.status === "draft"
                     ? "status-warning"
                     : transaction.status === "approved"

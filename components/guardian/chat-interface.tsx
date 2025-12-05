@@ -64,14 +64,14 @@ export function ChatInterface({ schemeId }: ChatInterfaceProps) {
         id: `guardian-${Date.now()}`,
         role: "guardian",
         content: result.success
-          ? result.answer
-          : result.message || "I encountered an error processing your question.",
+          ? (result.answer ?? "No answer provided.")
+          : (result.message || "I encountered an error processing your question."),
         citations: result.success ? result.citations : undefined,
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, guardianMessage]);
-    } catch (error) {
+    } catch {
       const errorMessage: Message = {
         id: `guardian-${Date.now()}`,
         role: "guardian",

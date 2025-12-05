@@ -75,7 +75,9 @@ export function InvoiceUploadZone({ schemeId, onUploadComplete }: InvoiceUploadZ
       });
 
       setStatus("success");
-      onUploadComplete?.(invoiceId);
+      if (invoiceId) {
+        onUploadComplete?.(invoiceId);
+      }
 
       // Reset after a short delay
       setTimeout(() => {

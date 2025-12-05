@@ -67,8 +67,9 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
       >
         <SheetHeader className="px-4 py-4 border-b border-border">
           <div className="flex items-center justify-between">
-            <SheetTitle className="text-xl font-bold tracking-tight font-display text-primary">
-              StrataGenie
+            <SheetTitle className="text-[26px] font-medium tracking-tight font-display" style={{ letterSpacing: '-0.5px' }}>
+              <span className="text-[#1a1a2e]">Strata</span>
+              <span className="text-[#FF6B35]">Genie</span>
             </SheetTitle>
             <button
               onClick={() => onOpenChange(false)}

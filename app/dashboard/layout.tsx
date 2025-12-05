@@ -70,7 +70,7 @@ export default function DashboardLayout({
     const syncUser = async () => {
       try {
         await storeUser();
-      } catch (e) {
+      } catch {
         // User might not be authenticated - redirect to home
         console.log("User sync failed - may not be authenticated");
       }

@@ -2,16 +2,16 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  glow?: "cyan" | "emerald" | "amber" | "purple" | "none";
+  glow?: "coral" | "emerald" | "amber" | "purple" | "none";
 }
 
 const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
   ({ className, glow = "none", ...props }, ref) => {
     const glowClasses = {
-      cyan: "hover:shadow-[0_0_30px_oklch(0.70_0.15_195_/_0.3)]",
-      emerald: "hover:shadow-[0_0_30px_oklch(0.65_0.18_160_/_0.3)]",
-      amber: "hover:shadow-[0_0_30px_oklch(0.75_0.16_85_/_0.3)]",
-      purple: "hover:shadow-[0_0_30px_oklch(0.60_0.20_300_/_0.3)]",
+      coral: "hover:shadow-[0_4px_20px_rgba(255,107,53,0.15)] hover:border-[#FF6B35]/30",
+      emerald: "hover:shadow-[0_4px_20px_rgba(34,197,94,0.15)] hover:border-emerald-500/30",
+      amber: "hover:shadow-[0_4px_20px_rgba(245,158,11,0.15)] hover:border-amber-500/30",
+      purple: "hover:shadow-[0_4px_20px_rgba(99,102,241,0.15)] hover:border-indigo-500/30",
       none: "",
     };
 
@@ -19,7 +19,7 @@ const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
       <div
         ref={ref}
         className={cn(
-          "rounded-2xl bg-slate-900/80 backdrop-blur-xl border border-white/10 transition-all duration-300",
+          "rounded-2xl bg-white border border-[#E8E4DE] shadow-sm transition-all duration-300",
           glowClasses[glow],
           className
         )}
@@ -48,7 +48,7 @@ const GlassCardTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h3
     ref={ref}
-    className={cn("text-lg font-semibold tracking-tight text-white", className)}
+    className={cn("text-lg font-semibold tracking-tight text-[#1a1a2e]", className)}
     {...props}
   />
 ));
@@ -60,7 +60,7 @@ const GlassCardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm text-slate-400", className)}
+    className={cn("text-sm text-[#6b6b8a]", className)}
     {...props}
   />
 ));

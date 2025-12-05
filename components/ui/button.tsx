@@ -3,23 +3,27 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FDFBF7] disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        // Primary - Cyan (brand color)
-        default: "bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg shadow-sm",
+        // Primary - Coral (brand color)
+        default: "bg-[#FF6B35] hover:bg-[#E85A2A] text-white rounded-lg shadow-sm hover:shadow-md",
         // Destructive - Red for dangerous actions
         destructive: "bg-red-600 hover:bg-red-500 text-white rounded-lg",
-        // Outline - Subtle border, ghost-like
+        // Outline - Warm border
         outline:
-          "border border-white/10 bg-transparent hover:bg-white/5 text-slate-300 hover:text-white rounded-lg",
+          "border border-[#E8E4DE] bg-white hover:bg-[#F8F5F0] text-[#3d3d5c] hover:text-[#1a1a2e] rounded-lg",
         // Secondary - Muted background
-        secondary: "bg-slate-700/50 hover:bg-slate-700 text-slate-300 rounded-lg",
+        secondary: "bg-[#F8F5F0] hover:bg-[#E8E4DE] text-[#3d3d5c] rounded-lg",
         // Ghost - No background, minimal
-        ghost: "hover:bg-white/5 text-slate-400 hover:text-white rounded-lg",
-        // Link - Cyan text
-        link: "text-cyan-400 underline-offset-4 hover:underline hover:text-cyan-300",
+        ghost: "hover:bg-[#F8F5F0] text-[#6b6b8a] hover:text-[#1a1a2e] rounded-lg",
+        // Link - Coral text
+        link: "text-[#FF6B35] underline-offset-4 hover:underline hover:text-[#E85A2A]",
+        // Success - Green for positive actions
+        success: "bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow-sm",
+        // Warning - Amber for caution
+        warning: "bg-amber-500 hover:bg-amber-400 text-white rounded-lg shadow-sm",
       },
       size: {
         default: "h-10 px-4 py-2",

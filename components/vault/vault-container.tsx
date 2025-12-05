@@ -27,7 +27,6 @@ import {
   AlertCircle,
   Upload,
 } from "lucide-react";
-import { SUBMISSION_LINKS } from "@/lib/compliance-links";
 
 interface VaultDocument {
   _id: Id<"documents">;

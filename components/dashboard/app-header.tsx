@@ -51,8 +51,9 @@ export function AppHeader({
 
             {/* Branding */}
             <Link href="/dashboard" className="flex items-center gap-2 group">
-              <span className="text-xl font-bold tracking-tight font-display text-primary">
-                StrataGenie
+              <span className="text-[26px] font-medium tracking-tight font-display" style={{ letterSpacing: '-0.5px' }}>
+                <span className="text-[#1a1a2e]">Strata</span>
+                <span className="text-[#FF6B35]">Genie</span>
               </span>
             </Link>
 

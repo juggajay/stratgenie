@@ -43,7 +43,7 @@ export default function OnboardingPage() {
     const syncUser = async () => {
       try {
         await storeUser();
-      } catch (e) {
+      } catch {
         // User might not be authenticated yet
         console.log("User sync pending auth");
       }
@@ -111,19 +111,19 @@ export default function OnboardingPage() {
   // Loading state while checking user
   if (currentUser === undefined) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-slate-600">Loading...</p>
+          <Loader2 className="w-8 h-8 animate-spin text-[#FF6B35] mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
-      <header className="px-6 py-4 border-b border-slate-200 bg-white">
+      <header className="px-6 py-4 border-b border-[#E8E4DE] bg-white">
         <div className="max-w-xl mx-auto">
           <Logo className="h-8 w-auto" />
         </div>
@@ -139,10 +139,10 @@ export default function OnboardingPage() {
                 key={s}
                 className={`w-3 h-3 rounded-full transition-colors ${
                   s === step
-                    ? "bg-blue-600"
+                    ? "bg-[#FF6B35]"
                     : s < step
-                    ? "bg-blue-400"
-                    : "bg-slate-200"
+                    ? "bg-[#FFCDB8]"
+                    : "bg-[#E8E4DE]"
                 }`}
               />
             ))}
@@ -150,21 +150,21 @@ export default function OnboardingPage() {
 
           {/* Step 1: Strata Plan Number */}
           {step === 1 && (
-            <Card className="border-slate-200 shadow-sm">
+            <Card className="border-[#E8E4DE] shadow-sm">
               <CardHeader className="text-center pb-2">
-                <div className="w-14 h-14 rounded-xl bg-blue-100 flex items-center justify-center mx-auto mb-4">
-                  <Building2 className="w-7 h-7 text-blue-600" />
+                <div className="w-14 h-14 rounded-xl bg-[#FFF0EB] flex items-center justify-center mx-auto mb-4">
+                  <Building2 className="w-7 h-7 text-[#FF6B35]" />
                 </div>
-                <CardTitle className="text-2xl font-semibold text-slate-900">
+                <CardTitle className="text-2xl font-semibold text-foreground">
                   Welcome to StrataGenie
                 </CardTitle>
-                <CardDescription className="text-slate-600">
+                <CardDescription className="text-muted-foreground">
                   Let&apos;s set up your first strata scheme
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-4 space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="strataNumber" className="text-sm font-medium text-slate-700">
+                  <Label htmlFor="strataNumber" className="text-sm font-medium text-foreground">
                     What is your Strata Plan Number? <span className="text-red-500">*</span>
                   </Label>
                   <Input
@@ -172,24 +172,24 @@ export default function OnboardingPage() {
                     placeholder="e.g., SP12345"
                     value={formData.strataNumber}
                     onChange={handleInputChange("strataNumber")}
-                    className="text-lg py-5 rounded-lg border-slate-300"
+                    className="text-lg py-5 rounded-lg"
                     autoFocus
                   />
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-muted-foreground">
                     You can find this on your strata levy notice or title documents
                   </p>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="address" className="text-sm font-medium text-slate-700">
-                    Scheme Address <span className="text-slate-400">(optional)</span>
+                  <Label htmlFor="address" className="text-sm font-medium text-foreground">
+                    Scheme Address <span className="text-muted-foreground">(optional)</span>
                   </Label>
                   <Input
                     id="address"
                     placeholder="e.g., 123 Example Street, Sydney"
                     value={formData.address}
                     onChange={handleInputChange("address")}
-                    className="rounded-lg border-slate-300"
+                    className="rounded-lg"
                   />
                 </div>
 
@@ -201,7 +201,7 @@ export default function OnboardingPage() {
 
                 <Button
                   onClick={handleNext}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-lg"
+                  className="w-full py-5 rounded-lg"
                 >
                   Continue
                   <ArrowRight className="w-4 h-4 ml-2" />
@@ -212,22 +212,22 @@ export default function OnboardingPage() {
 
           {/* Step 2: Lot Count (optional) */}
           {step === 2 && (
-            <Card className="border-slate-200 shadow-sm">
+            <Card className="border-[#E8E4DE] shadow-sm">
               <CardHeader className="text-center pb-2">
-                <div className="w-14 h-14 rounded-xl bg-emerald-100 flex items-center justify-center mx-auto mb-4">
+                <div className="w-14 h-14 rounded-xl bg-emerald-50 flex items-center justify-center mx-auto mb-4">
                   <Users className="w-7 h-7 text-emerald-600" />
                 </div>
-                <CardTitle className="text-2xl font-semibold text-slate-900">
+                <CardTitle className="text-2xl font-semibold text-foreground">
                   About Your Scheme
                 </CardTitle>
-                <CardDescription className="text-slate-600">
+                <CardDescription className="text-muted-foreground">
                   This helps us calculate levies correctly (you can add this later)
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-4 space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="lotCount" className="text-sm font-medium text-slate-700">
-                    How many lots are in your scheme? <span className="text-slate-400">(optional)</span>
+                  <Label htmlFor="lotCount" className="text-sm font-medium text-foreground">
+                    How many lots are in your scheme? <span className="text-muted-foreground">(optional)</span>
                   </Label>
                   <Input
                     id="lotCount"
@@ -236,20 +236,20 @@ export default function OnboardingPage() {
                     placeholder="e.g., 6"
                     value={formData.lotCount}
                     onChange={handleInputChange("lotCount")}
-                    className="text-lg py-5 rounded-lg border-slate-300"
+                    className="text-lg py-5 rounded-lg"
                     autoFocus
                   />
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-muted-foreground">
                     Include all lots in the strata plan (apartments, units, townhouses)
                   </p>
                 </div>
 
                 {/* Trial notice */}
-                <div className="bg-blue-50 rounded-xl p-4 border border-blue-100">
-                  <p className="text-sm text-blue-800">
-                    <strong>Your 14-day free trial starts now.</strong>
+                <div className="bg-[#FFF0EB] rounded-xl p-4 border border-[#FFCDB8]">
+                  <p className="text-sm text-[#3d3d5c]">
+                    <strong className="text-[#1a1a2e]">Your 14-day free trial starts now.</strong>
                     <br />
-                    <span className="text-blue-700">
+                    <span className="text-[#6b6b8a]">
                       Full access to all features. No credit card required.
                     </span>
                   </p>
@@ -265,7 +265,7 @@ export default function OnboardingPage() {
                   <Button
                     onClick={() => handleSubmit(false)}
                     disabled={isSubmitting || !formData.lotCount}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-lg"
+                    className="w-full py-5 rounded-lg"
                   >
                     {isSubmitting ? (
                       <>
@@ -285,7 +285,7 @@ export default function OnboardingPage() {
                       variant="outline"
                       onClick={handleBack}
                       disabled={isSubmitting}
-                      className="flex-1 py-5 rounded-lg border-slate-300"
+                      className="flex-1 py-5 rounded-lg"
                     >
                       <ArrowLeft className="w-4 h-4 mr-2" />
                       Back
@@ -294,7 +294,7 @@ export default function OnboardingPage() {
                       variant="ghost"
                       onClick={() => handleSubmit(true)}
                       disabled={isSubmitting}
-                      className="flex-1 py-5 rounded-lg text-slate-600 hover:text-slate-900"
+                      className="flex-1 py-5 rounded-lg"
                     >
                       <SkipForward className="w-4 h-4 mr-2" />
                       Skip for now
@@ -308,8 +308,8 @@ export default function OnboardingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="px-6 py-4 border-t border-slate-200 bg-white">
-        <p className="text-xs text-slate-500 text-center">
+      <footer className="px-6 py-4 border-t border-[#E8E4DE] bg-white">
+        <p className="text-xs text-muted-foreground text-center">
           By continuing, you agree to our Terms of Service and Privacy Policy.
         </p>
       </footer>

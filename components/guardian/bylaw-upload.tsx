@@ -5,7 +5,7 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Upload, FileText, Loader2, CheckCircle2, XCircle, BookOpen } from "lucide-react";
+import { Upload, Loader2, CheckCircle2, XCircle, BookOpen } from "lucide-react";
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB for bylaws (can be longer)
 

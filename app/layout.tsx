@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, Merriweather } from "next/font/google";
+import { Plus_Jakarta_Sans, Newsreader } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 import { Toaster } from "sonner";
@@ -10,15 +10,16 @@ import "./globals.css";
 // Force dynamic rendering for all pages - required for Convex/Clerk
 export const dynamic = "force-dynamic";
 
-const dmSans = DM_Sans({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-body",
   display: "swap",
 });
 
-const merriweather = Merriweather({
+const newsreader = Newsreader({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
 });
@@ -132,7 +133,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" className={`${dmSans.variable} ${merriweather.variable}`}>
+      <html lang="en" className={`${plusJakartaSans.variable} ${newsreader.variable}`}>
         <body className="antialiased">
           <GoogleAnalytics />
           <ConvexClientProvider>{children}</ConvexClientProvider>

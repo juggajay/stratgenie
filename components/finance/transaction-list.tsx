@@ -68,7 +68,7 @@ function StatusPill({ status }: { status: "draft" | "approved" | "paid" }) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${config.pillClass}`}
+      className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide ${config.pillClass}`}
     >
       <Icon className="h-3 w-3" />
       {config.label}
@@ -104,7 +104,7 @@ export function TransactionList({
             )}
           </div>
           {transactions && transactions.length > 0 && (
-            <span className="text-xs font-medium text-muted-foreground bg-secondary px-2 py-1 rounded-full">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground bg-secondary px-2.5 py-1 rounded">
               {transactions.length} {transactions.length === 1 ? "item" : "items"}
             </span>
           )}
@@ -205,7 +205,7 @@ export function PendingTransactionsBadge({ schemeId }: { schemeId: Id<"schemes">
   if (!counts || counts.draft === 0) return null;
 
   return (
-    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 status-warning rounded-full">
+    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 status-warning rounded">
       <Clock className="h-4 w-4" />
       <span className="text-sm font-medium">
         {counts.draft} pending {counts.draft === 1 ? "invoice" : "invoices"}

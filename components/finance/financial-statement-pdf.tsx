@@ -31,6 +31,7 @@ export interface FinancialStatementData {
   adminFund: FundSummary;
   capitalWorksFund: FundSummary;
   generatedDate: string;
+  transactionCount?: number;
 }
 
 // ============================================================================
@@ -338,7 +339,7 @@ function BreakdownTable({ title, items, total }: BreakdownTableProps) {
         {items.map((item, index) => (
           <View
             key={item.category}
-            style={[styles.tableRow, index % 2 === 1 && styles.tableRowAlt]}
+            style={[styles.tableRow, index % 2 === 1 ? styles.tableRowAlt : {}]}
           >
             <Text style={[styles.tableCell, styles.col60]}>{item.category}</Text>
             <Text
@@ -367,10 +368,6 @@ function BreakdownTable({ title, items, total }: BreakdownTableProps) {
 export function FinancialStatementPDF({ data }: { data: FinancialStatementData }) {
   const totalOpeningBalance =
     data.adminFund.openingBalance + data.capitalWorksFund.openingBalance;
-  const totalIncome =
-    data.adminFund.totalIncome + data.capitalWorksFund.totalIncome;
-  const totalExpenditure =
-    data.adminFund.totalExpenditure + data.capitalWorksFund.totalExpenditure;
   const totalClosingBalance =
     data.adminFund.closingBalance + data.capitalWorksFund.closingBalance;
 

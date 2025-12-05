@@ -6,12 +6,12 @@ interface LogoProps {
 }
 
 export function Logo({ className = "h-8 w-auto", inverted = false }: LogoProps) {
-  const primaryColor = inverted ? "#FFFFFF" : "#2D4A6F";
-  const secondaryColor = inverted ? "#CCCCCC" : "#7A8FA6";
-  const buildingDark = inverted ? "#FFFFFF" : "#3D5A80";
-  const buildingMid = inverted ? "#DDDDDD" : "#4A6FA5";
-  const buildingLight = inverted ? "#EEEEEE" : "#6B8FBF";
-  const accentColor = inverted ? "#7CB3F0" : "#4A90D9";
+  const primaryColor = inverted ? "#FFFFFF" : "#1a1a2e";  // Navy for "Strata"
+  const secondaryColor = inverted ? "#FFCDB8" : "#FF6B35"; // Coral for "Genie"
+  const buildingDark = inverted ? "#FFFFFF" : "#1a1a2e";
+  const buildingMid = inverted ? "#DDDDDD" : "#3d3d5c";
+  const buildingLight = inverted ? "#EEEEEE" : "#6b6b8a";
+  const accentColor = inverted ? "#FFCDB8" : "#FF6B35";  // Coral accent
 
   return (
     <svg

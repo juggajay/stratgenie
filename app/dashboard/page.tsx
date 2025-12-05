@@ -31,8 +31,8 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header - Refined dark theme */}
-      <header className="bg-slate-900/80 backdrop-blur-sm border-b border-white/10 sticky top-0 z-10">
+      {/* Header - Light editorial theme */}
+      <header className="bg-white border-b border-[#E8E4DE] sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
@@ -45,7 +45,7 @@ export default function DashboardPage() {
                 priority
               />
             </div>
-            <div className="h-6 w-px bg-white/10" />
+            <div className="h-6 w-px bg-[#E8E4DE]" />
             <div>
               <h1 className="text-lg font-display font-bold tracking-tight text-foreground">
                 Dashboard
@@ -147,8 +147,8 @@ export default function DashboardPage() {
                 <TaskList schemeId={selectedSchemeId} />
               </>
             ) : (
-              <div className="rounded-xl border border-white/10 bg-slate-900/80 p-8 text-center">
-                <p className="text-slate-400">
+              <div className="rounded-xl border border-[#E8E4DE] bg-white p-8 text-center">
+                <p className="text-muted-foreground">
                   Select a scheme to view compliance status
                 </p>
               </div>
@@ -157,8 +157,8 @@ export default function DashboardPage() {
         </div>
 
         {/* Disclaimer */}
-        <footer className="mt-12 pt-6 border-t border-white/10">
-          <p className="text-xs text-slate-500 text-center">
+        <footer className="mt-12 pt-6 border-t border-[#E8E4DE]">
+          <p className="text-xs text-muted-foreground text-center">
             This tool provides administrative guidance only, not legal advice.
             Always verify compliance requirements with NSW Fair Trading.
           </p>
