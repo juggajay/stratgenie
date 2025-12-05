@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { query, mutation } from "./_generated/server";
+import { query, mutation, internalMutation } from "./_generated/server";
 import { checkAccess, requireRole, requireAuth } from "./lib/permissions";
 
 // 14 days in milliseconds
@@ -197,6 +197,36 @@ export const createFirstScheme = mutation({
     });
 
     return schemeId;
+  },
+});
+
+/**
+ * Delete orphan schemes (schemes with no user links).
+ * This cleans up schemes created by the old create mutation that didn't create userScheme links.
+ * Internal mutation - can be called from CLI or dashboard.
+ */
+export const deleteOrphanSchemes = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    // Get all schemes
+    const allSchemes = await ctx.db.query("schemes").collect();
+
+    let deleted = 0;
+    for (const scheme of allSchemes) {
+      // Check if this scheme has any user links
+      const userLink = await ctx.db
+        .query("userSchemes")
+        .withIndex("by_scheme", (q) => q.eq("schemeId", scheme._id))
+        .first();
+
+      if (!userLink) {
+        // No user links - this is an orphan scheme, delete it
+        await ctx.db.delete(scheme._id);
+        deleted++;
+      }
+    }
+
+    return { deleted, message: `Deleted ${deleted} orphan scheme(s)` };
   },
 });
 
