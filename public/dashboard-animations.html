@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Animations Preview - StrataGenie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --coral: #FF6B35;
+      --coral-hover: #E85A2A;
+      --coral-light: #FFF0EB;
+      --coral-border: #FFCDB8;
+      --navy: #1a1a2e;
+      --cream: #FDFBF7;
+      --cream-warm: #F8F5F0;
+      --border: #E8E4DE;
+      --muted: #6b6b8a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--cream);
+      color: var(--navy);
+      min-height: 100vh;
+    }
+
+    .font-display {
+      font-family: 'Newsreader', serif;
+    }
+
+    /* Header */
+    header {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-content {
+      max-width: 1024px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Newsreader', serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+
+    .logo span:last-child {
+      color: var(--coral);
+    }
+
+    .page-title {
+      font-family: 'Newsreader', serif;
+      font-size: 1.125rem;
+      font-weight: 700;
+      margin-left: 24px;
+      padding-left: 24px;
+      border-left: 1px solid var(--border);
+    }
+
+    /* Main content */
+    main {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    /* Replay button */
+    .replay-bar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .replay-btn {
+      background: var(--coral);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .replay-btn:hover {
+      background: var(--coral-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+    }
+
+    /* Grid layout */
+    .dashboard-grid {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: 300px 1fr;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Cards */
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card-accent {
+      border-left: 4px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .card-accent:hover {
+      border-left-color: var(--coral);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-header {
+      padding: 20px 20px 12px;
+    }
+
+    .card-title {
+      font-family: 'Newsreader', serif;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .card-description {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .card-content {
+      padding: 0 20px 20px;
+    }
+
+    /* Animation Keyframes */
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes gentlePulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 0 8px rgba(255, 107, 53, 0);
+      }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    /* Animation Classes */
+    .animate-fade-slide-in {
+      opacity: 0;
+      animation: fadeSlideIn 0.5s ease forwards;
+    }
+
+    .animate-slide-in-left {
+      opacity: 0;
+      animation: slideInLeft 0.4s ease forwards;
+    }
+
+    .animate-delay-1 { animation-delay: 0ms; }
+    .animate-delay-2 { animation-delay: 100ms; }
+    .animate-delay-3 { animation-delay: 200ms; }
+    .animate-delay-4 { animation-delay: 300ms; }
+    .animate-delay-5 { animation-delay: 400ms; }
+
+    .animate-attention-pulse {
+      animation: gentlePulse 2s ease-in-out infinite;
+    }
+
+    .animate-shimmer {
+      background: linear-gradient(
+        90deg,
+        #F8F5F0 25%,
+        #EDE9E3 50%,
+        #F8F5F0 75%
+      );
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    /* Scheme Item */
+    .scheme-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 8px;
+    }
+
+    .scheme-item:hover {
+      border-color: rgba(255, 107, 53, 0.3);
+      background: var(--cream-warm);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .scheme-item.selected {
+      border-color: var(--coral);
+      background: var(--coral-light);
+    }
+
+    .scheme-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: white;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .scheme-item:hover .scheme-icon,
+    .scheme-item.selected .scheme-icon {
+      background: var(--coral-light);
+      border-color: rgba(255, 107, 53, 0.3);
+    }
+
+    .scheme-icon svg {
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .scheme-item:hover .scheme-icon svg,
+    .scheme-item.selected .scheme-icon svg {
+      color: var(--coral);
+    }
+
+    .scheme-name {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .scheme-number {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* Compliance Item */
+    .compliance-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      border-radius: 12px;
+      background: var(--cream-warm);
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 12px;
+    }
+
+    .compliance-item:hover {
+      background: var(--coral-light);
+    }
+
+    .compliance-item.attention {
+      animation: gentlePulse 2s ease-in-out infinite;
+    }
+
+    .compliance-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: white;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .compliance-item:hover .compliance-icon {
+      background: var(--coral-light);
+      border-color: rgba(255, 107, 53, 0.3);
+    }
+
+    .compliance-title {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .compliance-date {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* Status Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .badge-success {
+      background: #ecfdf5;
+      color: #059669;
+      border: 1px solid #a7f3d0;
+    }
+
+    .badge-warning {
+      background: #fffbeb;
+      color: #d97706;
+      border: 1px solid #fde68a;
+    }
+
+    .badge-danger {
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+    }
+
+    .badge-info {
+      background: var(--coral-light);
+      color: var(--coral);
+      border: 1px solid var(--coral-border);
+    }
+
+    /* Task Row */
+    .task-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 16px;
+      align-items: center;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: var(--cream-warm);
+      border: 1px solid var(--border);
+      margin-bottom: 8px;
+      transition: all 0.2s;
+    }
+
+    .task-row:hover {
+      background: var(--coral-light);
+      border-color: var(--coral-border);
+    }
+
+    .task-name {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.875rem;
+    }
+
+    .task-due {
+      text-align: right;
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    .task-due.overdue {
+      color: #dc2626;
+      font-weight: 500;
+    }
+
+    .task-date {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--coral);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--coral-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--cream-warm);
+      color: var(--navy);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--border);
+    }
+
+    /* Shimmer Loading Skeleton */
+    .skeleton {
+      border-radius: 8px;
+      height: 16px;
+    }
+
+    .skeleton-lg {
+      height: 64px;
+    }
+
+    /* Loading section */
+    .loading-section {
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .loading-title {
+      font-family: 'Newsreader', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .loading-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .loading-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .loading-card {
+      padding: 20px;
+    }
+
+    .loading-card-title {
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 12px;
+      color: var(--muted);
+    }
+
+    /* Icons (simple SVG inline) */
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .icon-sm {
+      width: 16px;
+      height: 16px;
+    }
+
+    .icon-lg {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* Section titles */
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    /* Flex utilities */
+    .flex {
+      display: flex;
+    }
+
+    .items-center {
+      align-items: center;
+    }
+
+    .justify-between {
+      justify-content: space-between;
+    }
+
+    .gap-2 {
+      gap: 8px;
+    }
+
+    .flex-1 {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <div class="flex items-center">
+        <span class="logo">
+          <span>Strata</span><span>Genie</span>
+        </span>
+        <h1 class="page-title">Dashboard</h1>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary">Guardian</button>
+        <button class="btn btn-secondary">Finance</button>
+        <button class="btn btn-secondary">Vault</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main>
+    <!-- Replay Button -->
+    <div class="replay-bar">
+      <button class="replay-btn" onclick="replayAnimations()">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+        </svg>
+        Replay All Animations
+      </button>
+    </div>
+
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+      <!-- Left Column: Scheme Selector -->
+      <div id="left-column" class="animate-slide-in-left">
+        <div class="card card-accent">
+          <div class="card-header">
+            <h2 class="card-title">Your Schemes</h2>
+            <p class="card-description">Select a scheme to view compliance</p>
+          </div>
+          <div class="card-content">
+            <div class="scheme-item selected">
+              <div class="scheme-icon">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+              </div>
+              <div>
+                <p class="scheme-name">Pinecrest Apartments</p>
+                <p class="scheme-number">SP12345</p>
+              </div>
+            </div>
+            <div class="scheme-item">
+              <div class="scheme-icon">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+              </div>
+              <div>
+                <p class="scheme-name">Harbour View Towers</p>
+                <p class="scheme-number">SP67890</p>
+              </div>
+            </div>
+            <button class="btn btn-secondary" style="width: 100%; margin-top: 8px;">
+              + Add scheme
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Compliance + Tasks -->
+      <div class="right-column">
+        <!-- Compliance Card -->
+        <div id="compliance-card" class="card card-accent animate-fade-slide-in animate-delay-1" style="margin-bottom: 24px;">
+          <div class="card-header">
+            <h2 class="card-title">Compliance Status</h2>
+            <p class="card-description">Your current compliance overview</p>
+          </div>
+          <div class="card-content">
+            <!-- On Track Item -->
+            <div class="compliance-item">
+              <div class="compliance-icon">
+                <svg class="icon" fill="none" stroke="#059669" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <p class="compliance-title">Annual General Meeting</p>
+                <p class="compliance-date">Next due: 15 March 2026 (Due in 98 days)</p>
+              </div>
+              <span class="badge badge-success">
+                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                On track
+              </span>
+            </div>
+
+            <!-- Attention Item - PULSING -->
+            <div class="compliance-item attention">
+              <div class="compliance-icon">
+                <svg class="icon" fill="none" stroke="#d97706" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <p class="compliance-title">Strata Hub Reporting</p>
+                <p class="compliance-date">Next due: 20 January 2025 (Due in 14 days)</p>
+              </div>
+              <span class="badge badge-warning">
+                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Due soon
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Task List Card -->
+        <div id="task-card" class="card card-accent animate-fade-slide-in animate-delay-2">
+          <div class="card-header">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="card-title">Compliance Tasks</h2>
+                <p class="card-description">2 pending · 1 completed</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-content">
+            <!-- Table Header -->
+            <div style="display: grid; grid-template-columns: 1fr auto auto; gap: 16px; padding: 8px 16px; margin-bottom: 8px;">
+              <span class="section-label">Task</span>
+              <span class="section-label" style="text-align: right;">Due</span>
+              <span class="section-label" style="width: 100px; text-align: right;">Action</span>
+            </div>
+
+            <!-- Task Rows -->
+            <div class="task-row">
+              <div class="task-name">
+                <svg class="icon-sm" fill="none" stroke="#FF6B35" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Send AGM notice to owners
+              </div>
+              <div class="task-due">
+                <div>Due in 5 days</div>
+                <div class="task-date">10 Dec 2024</div>
+              </div>
+              <button class="btn btn-primary" style="width: 100px;">Generate</button>
+            </div>
+
+            <div class="task-row">
+              <div class="task-name">
+                <svg class="icon-sm" fill="none" stroke="var(--muted)" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" stroke-width="2"></circle>
+                </svg>
+                Prepare AGM agenda
+              </div>
+              <div class="task-due">
+                <div>Due in 12 days</div>
+                <div class="task-date">17 Dec 2024</div>
+              </div>
+              <button class="btn btn-primary" style="width: 100px;">Start</button>
+            </div>
+
+            <div class="task-row" style="opacity: 0.7;">
+              <div class="task-name">
+                <svg class="icon-sm" fill="none" stroke="#059669" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span style="text-decoration: line-through; color: var(--muted);">Review financial statements</span>
+              </div>
+              <div class="task-due">
+                <div style="color: var(--muted);">Completed</div>
+                <div class="task-date">1 Dec 2024</div>
+              </div>
+              <button class="btn btn-secondary" style="width: 100px;">Done</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading States Section -->
+    <div class="loading-section">
+      <h3 class="loading-title">Shimmer Loading States</h3>
+      <div class="loading-grid">
+        <!-- Scheme Selector Loading -->
+        <div class="card loading-card">
+          <p class="loading-card-title">Scheme Selector</p>
+          <div class="flex items-center gap-2" style="margin-bottom: 12px;">
+            <div class="skeleton animate-shimmer" style="width: 44px; height: 44px; border-radius: 10px;"></div>
+            <div class="skeleton animate-shimmer" style="width: 120px;"></div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="skeleton animate-shimmer" style="width: 44px; height: 44px; border-radius: 10px;"></div>
+            <div class="skeleton animate-shimmer" style="width: 100px;"></div>
+          </div>
+        </div>
+
+        <!-- Compliance Card Loading -->
+        <div class="card loading-card">
+          <p class="loading-card-title">Compliance Card</p>
+          <div style="margin-bottom: 12px;">
+            <div class="skeleton animate-shimmer" style="width: 40%; margin-bottom: 8px;"></div>
+            <div class="skeleton animate-shimmer" style="width: 60%;"></div>
+          </div>
+          <div class="skeleton skeleton-lg animate-shimmer" style="margin-bottom: 12px;"></div>
+          <div class="skeleton skeleton-lg animate-shimmer"></div>
+        </div>
+
+        <!-- Task List Loading -->
+        <div class="card loading-card">
+          <p class="loading-card-title">Task List</p>
+          <div class="skeleton animate-shimmer" style="height: 48px; margin-bottom: 8px;"></div>
+          <div class="skeleton animate-shimmer" style="height: 48px; margin-bottom: 8px;"></div>
+          <div class="skeleton animate-shimmer" style="height: 48px;"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function replayAnimations() {
+      const elements = [
+        { id: 'left-column', class: 'animate-slide-in-left' },
+        { id: 'compliance-card', class: 'animate-fade-slide-in animate-delay-1' },
+        { id: 'task-card', class: 'animate-fade-slide-in animate-delay-2' }
+      ];
+
+      // Remove animation classes
+      elements.forEach(el => {
+        const element = document.getElementById(el.id);
+        if (element) {
+          element.style.opacity = '0';
+          element.classList.remove('animate-slide-in-left', 'animate-fade-slide-in', 'animate-delay-1', 'animate-delay-2');
+        }
+      });
+
+      // Force reflow
+      void document.body.offsetHeight;
+
+      // Re-add animation classes after a brief delay
+      setTimeout(() => {
+        elements.forEach(el => {
+          const element = document.getElementById(el.id);
+          if (element) {
+            element.style.opacity = '';
+            el.class.split(' ').forEach(c => element.classList.add(c));
+          }
+        });
+      }, 50);
+    }
+  </script>
+</body>
+</html>

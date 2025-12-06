@@ -628,6 +628,129 @@
     padding: 3rem;
     text-align: center;
   }
+
+  /* ═══════════════════════════════════════════════════════════════
+     DASHBOARD ANIMATIONS
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* 1. Card Entry Animation - Fade in and slide up */
+  @keyframes fadeSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-fade-slide-in {
+    animation: fadeSlideIn 0.5s ease forwards;
+  }
+
+  .animate-slide-in-left {
+    animation: slideInLeft 0.4s ease forwards;
+  }
+
+  /* Stagger delays for cards */
+  .animate-delay-1 { animation-delay: 0ms; }
+  .animate-delay-2 { animation-delay: 100ms; }
+  .animate-delay-3 { animation-delay: 200ms; }
+  .animate-delay-4 { animation-delay: 300ms; }
+  .animate-delay-5 { animation-delay: 400ms; }
+
+  /* 2. Icon Box Pulse - For items needing attention */
+  @keyframes gentlePulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(255, 107, 53, 0);
+    }
+  }
+
+  .animate-attention-pulse {
+    animation: gentlePulse 2s ease-in-out infinite;
+  }
+
+  /* 3. Loading Shimmer */
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      #F8F5F0 25%,
+      #EDE9E3 50%,
+      #F8F5F0 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* 4. Enhanced hover for icon boxes */
+  .icon-box-hover {
+    transition: all 0.3s ease;
+  }
+
+  .group:hover .icon-box-hover {
+    background: #FFF0EB;
+    border-color: rgba(255, 107, 53, 0.3);
+    color: #FF6B35;
+  }
+
+  .group:hover .icon-box-hover svg {
+    transform: rotate(5deg);
+  }
+
+  .icon-box-hover svg {
+    transition: transform 0.3s ease;
+  }
+
+  /* 5. Button hover scale */
+  .btn-hover-scale {
+    transition: all 0.2s ease;
+  }
+
+  .btn-hover-scale:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+  }
+
+  /* State transition for task completion */
+  .task-transition {
+    transition: all 0.3s ease;
+  }
+
+  .task-transition.completed {
+    background: #ECFDF5;
+    border-color: #A7F3D0;
+  }
+
+  .task-transition.completed .task-icon {
+    background: #D1FAE5;
+    border-color: #6EE7B7;
+    color: #059669;
+  }
+
+  .task-transition.completed .task-title {
+    text-decoration: line-through;
+    color: #6b6b8a;
+  }
 }
 
 /* Light theme scrollbar */

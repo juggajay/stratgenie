@@ -401,7 +401,7 @@ export default function FinancePage() {
       <main className="max-w-5xl mx-auto px-6 py-8">
         <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
           {/* Left column: Scheme selector */}
-          <div>
+          <div className="animate-slide-in-left">
             <SchemeSelector
               selectedSchemeId={selectedSchemeId}
               onSchemeSelect={setSelectedSchemeId}
@@ -411,7 +411,7 @@ export default function FinancePage() {
           {/* Right column: Finance content */}
           <div className="space-y-6">
             {selectedSchemeId ? (
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full animate-fade-slide-in animate-delay-1">
                 <TabsList className="grid w-full grid-cols-3 mb-6">
                   <TabsTrigger value="expenses" className="gap-2">
                     <ArrowUpRight className="h-4 w-4" />
@@ -444,7 +444,7 @@ export default function FinancePage() {
                 </TabsContent>
               </Tabs>
             ) : (
-              <div className="rounded-xl border border-border bg-card p-8 text-center shadow-card">
+              <div className="rounded-xl border border-border bg-card p-8 text-center shadow-card animate-fade-slide-in animate-delay-1">
                 <Receipt className="h-12 w-12 mx-auto mb-4 text-muted-foreground/40" />
                 <p className="text-muted-foreground">
                   Select a scheme to manage finances

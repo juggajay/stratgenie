@@ -129,8 +129,11 @@ function ComplianceItem({
     ? "text-red-600"
     : "text-[#6b6b8a]";
 
+  // Add pulse animation for items needing attention
+  const needsAttention = status === "due_soon" || status === "overdue";
+
   return (
-    <div className="group flex items-center gap-4 p-4 rounded-xl bg-[#F8F5F0] hover:bg-[#FFF0EB] transition-all cursor-pointer">
+    <div className={`group flex items-center gap-4 p-4 rounded-xl bg-[#F8F5F0] hover:bg-[#FFF0EB] transition-all cursor-pointer ${needsAttention ? "animate-attention-pulse" : ""}`}>
       {/* Icon box with hover effect */}
       <div className="flex h-11 w-11 items-center justify-center rounded-[10px] border bg-white border-[#E8E4DE] group-hover:bg-[#FFF0EB] group-hover:border-[#FF6B35]/30 transition-all flex-shrink-0">
         {StatusIcon ? (

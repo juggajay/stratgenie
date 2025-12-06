@@ -114,7 +114,7 @@ export default function VaultPage() {
       {/* Main Content */}
       <main className="max-w-5xl mx-auto px-6 py-8 space-y-6">
         {/* Status Summary */}
-        <Card className="bg-card border-border">
+        <Card className="bg-card border-border animate-fade-slide-in animate-delay-1">
           <CardContent className="py-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -151,7 +151,7 @@ export default function VaultPage() {
         </Card>
 
         {/* Vault Containers */}
-        <div className="space-y-4">
+        <div className="space-y-4 animate-fade-slide-in animate-delay-2">
           <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
             Submission Destinations
           </h3>

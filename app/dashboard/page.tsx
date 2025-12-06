@@ -134,7 +134,7 @@ export default function DashboardPage() {
 
         <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
           {/* Left column: Scheme selector */}
-          <div>
+          <div className="animate-slide-in-left">
             <SchemeSelector
               selectedSchemeId={selectedSchemeId}
               onSchemeSelect={setSelectedSchemeId}
@@ -145,14 +145,18 @@ export default function DashboardPage() {
           <div className="space-y-6">
             {selectedSchemeId ? (
               <>
-                <ComplianceCard
-                  schemeId={selectedSchemeId}
-                  onOpenSettings={() => setSettingsOpen(true)}
-                />
-                <TaskList schemeId={selectedSchemeId} />
+                <div className="animate-fade-slide-in animate-delay-1">
+                  <ComplianceCard
+                    schemeId={selectedSchemeId}
+                    onOpenSettings={() => setSettingsOpen(true)}
+                  />
+                </div>
+                <div className="animate-fade-slide-in animate-delay-2">
+                  <TaskList schemeId={selectedSchemeId} />
+                </div>
               </>
             ) : (
-              <div className="rounded-xl border border-[#E8E4DE] bg-white p-8 text-center">
+              <div className="rounded-xl border border-[#E8E4DE] bg-white p-8 text-center animate-fade-slide-in animate-delay-1">
                 <p className="text-muted-foreground">
                   Select a scheme to view compliance status
                 </p>

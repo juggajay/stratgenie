@@ -22,7 +22,7 @@ function BylawStatus({ schemeId }: { schemeId: Id<"schemes"> }) {
     // Loading state
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="animate-pulse flex items-center gap-2 text-muted-foreground">
+        <div className="flex items-center gap-2 text-muted-foreground">
           <div className="h-5 w-5 rounded-full border-2 border-muted-foreground/30 border-t-transparent animate-spin" />
           Loading bylaws...
         </div>
@@ -134,7 +134,7 @@ export default function GuardianPage() {
       <main className="max-w-5xl mx-auto px-6 py-8">
         <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
           {/* Left column: Scheme selector */}
-          <div>
+          <div className="animate-slide-in-left">
             <SchemeSelector
               selectedSchemeId={selectedSchemeId}
               onSchemeSelect={setSelectedSchemeId}
@@ -142,7 +142,7 @@ export default function GuardianPage() {
           </div>
 
           {/* Right column: Guardian content */}
-          <div>
+          <div className="animate-fade-slide-in animate-delay-1">
             {selectedSchemeId ? (
               <BylawStatus schemeId={selectedSchemeId} />
             ) : (

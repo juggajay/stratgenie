@@ -19,6 +19,8 @@ Keep this managed block so 'openspec update' can refresh the instructions.
 
 ## UI & Design System - "Editorial" Light Theme
 
+> **Full Reference**: See `docs/DESIGN-SYSTEM.md` for comprehensive design system documentation including all colors, typography, components, animations, and code examples.
+
 When generating any UI (pages, components, layouts, forms, dashboards), Claude MUST follow these rules. These are not suggestions.
 
 ### 1. Overall Style
