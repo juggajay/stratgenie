@@ -80,8 +80,11 @@ export default function DashboardPage() {
               Dashboard
             </h1>
           </div>
-          {/* Desktop navigation - hidden on mobile */}
-          <div className="hidden lg:flex items-center gap-3">
+
+          {/* Right side - user menu always visible + desktop nav */}
+          <div className="flex items-center gap-3">
+            {/* Desktop navigation - hidden on mobile */}
+            <div className="hidden lg:flex items-center gap-3">
             <Link href="/dashboard/guardian">
               <Button
                 variant="outline"
@@ -139,8 +142,9 @@ export default function DashboardPage() {
                 onOpenChange={setSettingsOpen}
               />
             )}
+            </div>
 
-            {/* User menu with logout */}
+            {/* User menu with logout - always visible */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="icon" className="rounded-full">
