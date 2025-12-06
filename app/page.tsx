@@ -506,7 +506,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <Link href="/sign-up" className="calculator-cta">
+            <Link href={`/sign-up?lots=${lotCount}`} className="calculator-cta">
               Start Free 14-Day Trial
               <ArrowRightIcon />
             </Link>

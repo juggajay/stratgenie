@@ -1,8 +1,17 @@
+"use client";
+
 import { SignUp } from "@clerk/nextjs";
+import { useSearchParams } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 export default function SignUpPage() {
+  const searchParams = useSearchParams();
+  const lots = searchParams.get("lots");
+
+  // Build redirect URL with lots param if present
+  const redirectUrl = lots ? `/onboarding?lots=${lots}` : "/onboarding";
+
   return (
     <div className="min-h-screen bg-[#FDFBF7] flex flex-col items-center justify-center">
       {/* Logo */}
@@ -20,6 +29,7 @@ export default function SignUpPage() {
           },
         }}
         signInUrl="/sign-in"
+        forceRedirectUrl={redirectUrl}
       />
     </div>
   );

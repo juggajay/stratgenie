@@ -3,7 +3,7 @@
 export const dynamic = "force-dynamic";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
@@ -22,14 +22,18 @@ interface FormData {
 
 export default function OnboardingPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [step, setStep] = useState<Step>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Pre-fill lot count from URL params (from landing page pricing calculator)
+  const lotsFromUrl = searchParams.get("lots");
+
   const [formData, setFormData] = useState<FormData>({
     strataNumber: "",
     address: "",
-    lotCount: "",
+    lotCount: lotsFromUrl || "",
   });
 
   // Get current user to check if they have schemes
