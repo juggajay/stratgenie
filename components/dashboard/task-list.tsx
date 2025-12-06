@@ -292,8 +292,8 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
           )}
 
           <div className="overflow-hidden">
-            {/* Table header */}
-            <div className="grid grid-cols-[1fr_auto_auto] gap-4 px-3 py-2 border-b border-border">
+            {/* Table header - hidden on mobile */}
+            <div className="hidden sm:grid grid-cols-[1fr_auto_auto] gap-4 px-3 py-2 border-b border-border">
               <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                 Task
               </span>
@@ -305,8 +305,8 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
               </span>
             </div>
 
-            {/* Task rows */}
-            <div className="space-y-0">
+            {/* Task rows - stack on mobile, grid on desktop */}
+            <div className="space-y-2">
               {tasks.map((task) => {
                 const config = statusConfig[task.status];
                 const Icon = config.icon;
@@ -316,7 +316,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
                 return (
                   <div
                     key={task._id}
-                    className="grid grid-cols-[1fr_auto_auto] gap-4 px-4 py-3 rounded-lg bg-[#F8F5F0] hover:bg-[#FFF0EB] border border-[#E8E4DE] hover:border-[#FFCDB8] transition-all items-center mb-2 last:mb-0"
+                    className="flex flex-col sm:grid sm:grid-cols-[1fr_auto_auto] gap-2 sm:gap-4 px-3 sm:px-4 py-3 rounded-lg bg-[#F8F5F0] hover:bg-[#FFF0EB] border border-[#E8E4DE] hover:border-[#FFCDB8] transition-all sm:items-center"
                   >
                     {/* Task name + status icon */}
                     <div className="flex items-center gap-3 min-w-0">
@@ -334,25 +334,28 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
                       </span>
                     </div>
 
-                    {/* Due date */}
-                    <div className="text-right">
-                      <span
-                        className={`text-sm ${
-                          isOverdue
-                            ? "text-red-600 font-medium"
-                            : "text-muted-foreground"
-                        }`}
-                      >
-                        {formatRelativeDate(task.dueDate)}
-                      </span>
-                      <span className="block text-xs text-muted-foreground">
-                        {formatDate(task.dueDate)}
-                      </span>
-                    </div>
+                    {/* Due date + action row on mobile */}
+                    <div className="flex items-center justify-between sm:contents gap-2 pl-7 sm:pl-0">
+                      {/* Due date */}
+                      <div className="text-left sm:text-right">
+                        <span
+                          className={`text-xs sm:text-sm ${
+                            isOverdue
+                              ? "text-red-600 font-medium"
+                              : "text-muted-foreground"
+                          }`}
+                        >
+                          {formatRelativeDate(task.dueDate)}
+                        </span>
+                        <span className="hidden sm:block text-xs text-muted-foreground">
+                          {formatDate(task.dueDate)}
+                        </span>
+                      </div>
 
-                    {/* Actions */}
-                    <div className="w-28 text-right">
-                      {renderTaskAction(task)}
+                      {/* Actions */}
+                      <div className="w-auto sm:w-28 text-right">
+                        {renderTaskAction(task)}
+                      </div>
                     </div>
                   </div>
                 );

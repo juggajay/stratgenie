@@ -94,22 +94,33 @@ function BylawStatus({ schemeId }: { schemeId: Id<"schemes"> }) {
 
 export default function GuardianPage() {
   const { selectedSchemeId, setSelectedSchemeId } = useSelectedScheme();
+  const { setIsOpen: setMobileNavOpen } = useMobileNav();
 
   return (
     <div className="min-h-screen bg-warmth-pulse">
       {/* Header - Editorial Light Theme */}
       <header className="bg-white/90 backdrop-blur-xl border-b border-[#E8E4DE] sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-6 py-4">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4 sm:gap-6">
+              {/* Mobile hamburger menu */}
+              <button
+                onClick={() => setMobileNavOpen(true)}
+                className="lg:hidden p-2 -ml-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-lg transition-colors"
+                aria-label="Open navigation menu"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+
               <div className="flex items-center">
-                <span className="text-2xl font-display font-medium tracking-tight">
+                <span className="text-xl sm:text-2xl font-display font-medium tracking-tight">
                   <span className="text-foreground">Strata</span>
                   <span className="text-[#FF6B35]">Genie</span>
                 </span>
               </div>
-              <div className="h-6 w-px bg-[#E8E4DE]" />
-              <div className="flex items-center gap-2">
+              {/* Desktop breadcrumb - hidden on mobile */}
+              <div className="hidden sm:flex items-center gap-2">
+                <div className="h-6 w-px bg-[#E8E4DE]" />
                 <Link href="/dashboard">
                   <Button
                     variant="ghost"
@@ -129,11 +140,26 @@ export default function GuardianPage() {
             </div>
           </div>
         </div>
+
+        {/* Mobile page title - shown below header on small screens */}
+        <div className="sm:hidden px-4 pb-3 border-t border-[#E8E4DE] pt-2 bg-white/50">
+          <div className="flex items-center gap-2">
+            <Link href="/dashboard">
+              <Button variant="ghost" size="sm" className="p-2 -ml-2">
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+            </Link>
+            <h1 className="text-base font-display font-bold tracking-tight text-foreground flex items-center gap-2">
+              <Shield className="h-4 w-4 text-[#FF6B35]" />
+              Guardian
+            </h1>
+          </div>
+        </div>
       </header>
 
       {/* Main content */}
-      <main className="max-w-5xl mx-auto px-6 py-8">
-        <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <div className="grid gap-4 sm:gap-6 lg:grid-cols-[280px_1fr]">
           {/* Left column: Scheme selector */}
           <div className="animate-slide-in-left">
             <SchemeSelector

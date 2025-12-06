@@ -281,13 +281,13 @@
     background: linear-gradient(
       135deg,
       #FDFBF7 0%,
-      #FBF8F3 25%,
-      #FAF6EF 50%,
-      #FBF8F3 75%,
+      #FFF6F2 25%,
+      #FFEFEA 50%,
+      #FFF6F2 75%,
       #FDFBF7 100%
     );
     background-size: 400% 400%;
-    animation: warmthPulse 20s ease-in-out infinite;
+    animation: warmthPulse 12s ease-in-out infinite;
   }
 
   /* ═══════════════════════════════════════════════════════════════
@@ -772,6 +772,54 @@
   .task-transition.completed .task-title {
     text-decoration: line-through;
     color: #6b6b8a;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     MOBILE-FIRST UTILITIES
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* Touch-friendly tap targets */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .touch-target-lg {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* Safe area padding for notched devices */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0);
+  }
+
+  /* Mobile container override */
+  @media (max-width: 640px) {
+    .mobile-container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    .mobile-card {
+      border-radius: 12px;
+      padding: 16px;
+    }
+  }
+
+  /* Improved touch states for mobile */
+  @media (hover: none) and (pointer: coarse) {
+    .btn-glow:active {
+      transform: scale(0.98);
+    }
+
+    .hover-lift:active {
+      transform: translateY(0);
+    }
   }
 }
 

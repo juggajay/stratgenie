@@ -8,6 +8,7 @@ import {
   Shield,
   Settings,
   CreditCard,
+  Archive,
   X,
 } from "lucide-react";
 import {
@@ -41,6 +42,12 @@ const navItems = [
     label: "Guardian",
     icon: Shield,
     description: "Bylaw Q&A",
+  },
+  {
+    href: "/dashboard/vault",
+    label: "Vault",
+    icon: Archive,
+    description: "Compliance documents",
   },
   {
     href: "/dashboard/billing",
