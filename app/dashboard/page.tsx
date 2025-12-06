@@ -22,7 +22,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Receipt, Shield, Building, Archive, Settings } from "lucide-react";
+import { Receipt, Shield, Building, Archive } from "lucide-react";
 
 export default function DashboardPage() {
   // All existing state and logic preserved exactly
@@ -112,20 +112,11 @@ export default function DashboardPage() {
               </Sheet>
             )}
             {selectedSchemeId && (
-              <>
-                <Button
-                  variant="outline"
-                  onClick={() => setSettingsOpen(true)}
-                >
-                  <Settings className="h-4 w-4 mr-2" />
-                  Settings
-                </Button>
-                <SchemeSettingsForm
-                  schemeId={selectedSchemeId}
-                  open={settingsOpen}
-                  onOpenChange={setSettingsOpen}
-                />
-              </>
+              <SchemeSettingsForm
+                schemeId={selectedSchemeId}
+                open={settingsOpen}
+                onOpenChange={setSettingsOpen}
+              />
             )}
           </div>
         </div>
