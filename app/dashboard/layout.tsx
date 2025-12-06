@@ -4,7 +4,8 @@ import { createContext, useContext, useEffect, useState, useCallback } from "rea
 import { useRouter } from "next/navigation";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Loader2 } from "lucide-react";
+import { Loader2, LogOut } from "lucide-react";
+import { SignOutButton } from "@clerk/nextjs";
 import { TrialBanner } from "@/components/dashboard/trial-banner";
 import { MobileNav } from "@/components/dashboard/mobile-nav";
 import { CaptureFab } from "@/components/dashboard/capture-fab";
@@ -129,6 +130,14 @@ export default function DashboardLayout({
 
         {/* Mobile capture FAB - always visible on mobile */}
         <CaptureFab onCapture={handleCapture} />
+
+        {/* Fixed logout button - bottom left */}
+        <SignOutButton redirectUrl="/">
+          <button className="fixed bottom-6 left-6 z-50 flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-[#E8E4DE] shadow-lg hover:shadow-xl hover:border-[#FF6B35]/30 transition-all text-sm font-medium text-[#1a1a2e] hover:text-[#FF6B35]">
+            <LogOut className="h-4 w-4" />
+            <span className="hidden sm:inline">Sign out</span>
+          </button>
+        </SignOutButton>
       </CaptureContext.Provider>
     </MobileNavContext.Provider>
   );
