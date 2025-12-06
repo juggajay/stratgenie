@@ -108,7 +108,7 @@ export default function LandingPage() {
                 <Link href="/sign-in" onClick={() => setMobileMenuOpen(false)}>
                   Sign In
                 </Link>
-                <Link href="/sign-up" onClick={() => setMobileMenuOpen(false)}>
+                <Link href="/pricing" onClick={() => setMobileMenuOpen(false)}>
                   Start Free Trial
                 </Link>
               </nav>
@@ -142,7 +142,7 @@ export default function LandingPage() {
 
               {/* CTA Group */}
               <div className="cta-group animate-fade-up delay-3">
-                <Link href="/sign-up" className="cta-primary">
+                <Link href="/pricing" className="cta-primary">
                   Start Free Trial
                   <ArrowRightIcon />
                 </Link>
@@ -449,7 +449,7 @@ export default function LandingPage() {
                 <span className="price-period">/ month per lot</span>
               </div>
 
-              <Link href="/sign-up" className="offer-cta">
+              <Link href="/pricing" className="offer-cta">
                 Start Free Trial
                 <ArrowRightIcon />
               </Link>
@@ -495,7 +495,7 @@ export default function LandingPage() {
           <h2>Stop worrying. <em>Start knowing.</em></h2>
           <p>Join 500+ self-managed committees who finally have the backup they deserve.</p>
 
-          <Link href="/sign-up" className="cta-primary">
+          <Link href="/pricing" className="cta-primary">
             Start My Free Trial
             <ArrowRightIcon />
           </Link>

@@ -19,7 +19,7 @@ export function Navbar() {
               Login
             </Button>
           </Link>
-          <Link href="/sign-up">
+          <Link href="/pricing">
             <Button className="bg-[#FF6B35] hover:bg-[#E85A2A] text-white rounded-lg px-6 shadow-sm">
               Start Free Trial
             </Button>

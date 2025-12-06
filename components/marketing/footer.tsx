@@ -38,8 +38,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/sign-up" className="text-[#9595ad] hover:text-[#FF6B35] transition-colors">
-                  Free Trial
+                <Link href="/pricing" className="text-[#9595ad] hover:text-[#FF6B35] transition-colors">
+                  Pricing
                 </Link>
               </li>
             </ul>
