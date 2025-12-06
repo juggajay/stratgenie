@@ -142,13 +142,13 @@ export default function LandingPage() {
 
               {/* CTA Group */}
               <div className="cta-group animate-fade-up delay-3">
-                <a href="#offer" className="cta-primary">
-                  See How It Works
-                  <ArrowRightIcon />
-                </a>
-                <Link href="/sign-up" className="cta-secondary">
+                <Link href="/sign-up" className="cta-primary">
                   Start Free Trial
+                  <ArrowRightIcon />
                 </Link>
+                <a href="#offer" className="cta-secondary">
+                  See How It Works
+                </a>
               </div>
 
               {/* Trust indicators */}

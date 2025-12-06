@@ -1232,10 +1232,6 @@
     gap: 60px;
   }
 
-  .landing-v2 .hero-visual {
-    order: -1;
-  }
-
   .landing-v2 .float-card {
     display: none;
   }
