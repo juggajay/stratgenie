@@ -181,6 +181,11 @@
 }
 
 /* Keyframe Animations */
+@keyframes warmthPulse {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
 @keyframes float {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
   50% { transform: translateY(-20px) rotate(2deg); }
@@ -268,6 +273,23 @@
 }
 
 @layer utilities {
+  /* ═══════════════════════════════════════════════════════════════
+     AMBIENT BACKGROUND - Warmth Pulse
+     Subtle animated gradient that shifts between warm cream tones
+     ═══════════════════════════════════════════════════════════════ */
+  .bg-warmth-pulse {
+    background: linear-gradient(
+      135deg,
+      #FDFBF7 0%,
+      #FBF8F3 25%,
+      #FAF6EF 50%,
+      #FBF8F3 75%,
+      #FDFBF7 100%
+    );
+    background-size: 400% 400%;
+    animation: warmthPulse 20s ease-in-out infinite;
+  }
+
   /* ═══════════════════════════════════════════════════════════════
      PAPER & CARD EFFECTS (Light Editorial style)
      ═══════════════════════════════════════════════════════════════ */

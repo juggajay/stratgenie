@@ -22,13 +22,15 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Receipt, Shield, Building, Archive } from "lucide-react";
+import { Receipt, Shield, Building, Archive, Menu } from "lucide-react";
+import { useMobileNav } from "./layout";
 
 export default function DashboardPage() {
   // All existing state and logic preserved exactly
   const { selectedSchemeId, setSelectedSchemeId } = useSelectedScheme();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [strataRollOpen, setStrataRollOpen] = useState(false);
+  const { setIsOpen: setMobileNavOpen } = useMobileNav();
 
   // Fetch schemes to validate selected scheme exists
   const schemes = useQuery(api.schemes.list);
@@ -44,23 +46,33 @@ export default function DashboardPage() {
   }, [schemes, selectedSchemeId, setSelectedSchemeId]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-warmth-pulse">
       {/* Header - Light editorial theme with frosted glass */}
       <header className="bg-white/90 backdrop-blur-xl border-b border-[#E8E4DE] sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-6">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-4 sm:gap-6">
+            {/* Mobile hamburger menu */}
+            <button
+              onClick={() => setMobileNavOpen(true)}
+              className="lg:hidden p-2 -ml-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-lg transition-colors"
+              aria-label="Open navigation menu"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+
             <div className="flex items-center">
-              <span className="text-2xl font-display font-medium tracking-tight">
+              <span className="text-xl sm:text-2xl font-display font-medium tracking-tight">
                 <span className="text-foreground">Strata</span>
                 <span className="text-[#FF6B35]">Genie</span>
               </span>
             </div>
-            <div className="h-6 w-px bg-[#E8E4DE]" />
-            <h1 className="text-lg font-display font-bold tracking-tight text-foreground">
+            <div className="hidden sm:block h-6 w-px bg-[#E8E4DE]" />
+            <h1 className="hidden sm:block text-lg font-display font-bold tracking-tight text-foreground">
               Dashboard
             </h1>
           </div>
-          <div className="flex items-center gap-3">
+          {/* Desktop navigation - hidden on mobile */}
+          <div className="hidden lg:flex items-center gap-3">
             <Link href="/dashboard/guardian">
               <Button
                 variant="outline"
@@ -120,10 +132,17 @@ export default function DashboardPage() {
             )}
           </div>
         </div>
+
+        {/* Mobile page title - shown below header on small screens */}
+        <div className="sm:hidden px-4 pb-3 border-t border-[#E8E4DE] pt-2 bg-white/50">
+          <h1 className="text-base font-display font-bold tracking-tight text-foreground">
+            Dashboard
+          </h1>
+        </div>
       </header>
 
       {/* Main content */}
-      <main className="max-w-5xl mx-auto px-6 py-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Setup incomplete banner - logic preserved */}
         {selectedSchemeId && (
           <SetupBanner

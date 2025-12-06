@@ -26,7 +26,7 @@ export default function VaultPage() {
 
   if (!selectedSchemeId) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-warmth-pulse">
         <div className="max-w-5xl mx-auto px-6 py-8">
           <Card className="bg-card border-border">
             <CardContent className="py-12 text-center">
@@ -78,7 +78,7 @@ export default function VaultPage() {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-warmth-pulse">
       {/* Header - Editorial Light Theme */}
       <header className="bg-white/90 backdrop-blur-xl border-b border-[#E8E4DE] sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">

@@ -1313,3 +1313,377 @@
     padding: 32px 24px;
   }
 }
+
+/* ==================== MOBILE MENU ==================== */
+.landing-v2 .desktop-only {
+  display: inline-flex;
+}
+
+.landing-v2 .mobile-menu-btn {
+  display: none;
+  padding: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-body);
+  transition: color 0.2s ease;
+}
+
+.landing-v2 .mobile-menu-btn:hover {
+  color: var(--accent);
+}
+
+.landing-v2 .mobile-menu-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.landing-v2 .mobile-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--bg-cream);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 16px 24px;
+  z-index: 100;
+}
+
+.landing-v2 .mobile-menu-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.landing-v2 .mobile-menu-nav a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 16px;
+  background: var(--bg-warm);
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-body);
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.2s ease;
+  min-height: 48px;
+}
+
+.landing-v2 .mobile-menu-nav a:last-child {
+  background: var(--accent);
+  color: white;
+}
+
+.landing-v2 .mobile-menu-nav a:hover {
+  transform: translateY(-2px);
+}
+
+/* Show mobile menu button, hide desktop CTA on mobile */
+@media (max-width: 768px) {
+  .landing-v2 .desktop-only {
+    display: none;
+  }
+
+  .landing-v2 .mobile-menu-btn {
+    display: flex;
+  }
+}
+
+/* ==================== SMALL PHONES (<480px) ==================== */
+@media (max-width: 480px) {
+  .landing-v2 {
+    --section-gap: 60px;
+  }
+
+  .landing-v2 .container {
+    padding: 0 16px;
+  }
+
+  .landing-v2 .hero {
+    padding: 100px 0 40px;
+  }
+
+  .landing-v2 .hero h1 {
+    font-size: 28px;
+    line-height: 1.15;
+  }
+
+  .landing-v2 .hero-sub {
+    font-size: 16px;
+    margin-bottom: 24px;
+  }
+
+  .landing-v2 .pre-headline {
+    font-size: 11px;
+    padding: 6px 12px;
+    margin-bottom: 16px;
+  }
+
+  .landing-v2 .logo-text {
+    font-size: 22px;
+  }
+
+  /* Touch-friendly buttons (min 48px height) */
+  .landing-v2 .cta-primary,
+  .landing-v2 .cta-secondary {
+    min-height: 52px;
+    padding: 14px 24px;
+    font-size: 15px;
+  }
+
+  .landing-v2 .cta-group {
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .landing-v2 .trust-row {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .landing-v2 .trust-item {
+    font-size: 13px;
+  }
+
+  /* Dashboard card on mobile */
+  .landing-v2 .dashboard-card {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .landing-v2 .compliance-row {
+    padding: 12px 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .landing-v2 .compliance-left {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .landing-v2 .compliance-name {
+    font-size: 14px;
+  }
+
+  .landing-v2 .compliance-date {
+    font-size: 12px;
+  }
+
+  .landing-v2 .compliance-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .landing-v2 .compliance-status {
+    font-size: 9px;
+  }
+
+  /* Social proof */
+  .landing-v2 .social-proof-bar {
+    padding: 32px 0;
+  }
+
+  .landing-v2 .proof-flex {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .landing-v2 .proof-number {
+    font-size: 32px;
+  }
+
+  .landing-v2 .proof-label {
+    font-size: 12px;
+  }
+
+  /* Section headlines */
+  .landing-v2 .section-headline {
+    font-size: 26px;
+  }
+
+  .landing-v2 .problem-description {
+    font-size: 15px;
+  }
+
+  /* Problem cards */
+  .landing-v2 .problem-card {
+    padding: 24px;
+  }
+
+  .landing-v2 .problem-number {
+    font-size: 36px;
+  }
+
+  .landing-v2 .problem-card h3 {
+    font-size: 18px;
+  }
+
+  .landing-v2 .problem-card p {
+    font-size: 14px;
+  }
+
+  /* Solution section */
+  .landing-v2 .solution-headline {
+    font-size: 24px;
+  }
+
+  .landing-v2 .solution-description {
+    font-size: 15px;
+  }
+
+  .landing-v2 .benefit-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .landing-v2 .benefit-text h4 {
+    font-size: 15px;
+  }
+
+  .landing-v2 .benefit-text p {
+    font-size: 13px;
+  }
+
+  /* Chat feature */
+  .landing-v2 .feature-card {
+    padding: 20px;
+  }
+
+  .landing-v2 .chat-bubble {
+    font-size: 14px;
+    padding: 12px 14px;
+  }
+
+  /* Testimonial */
+  .landing-v2 .testimonial-featured {
+    padding: 24px 20px;
+  }
+
+  .landing-v2 .testimonial-quote {
+    font-size: 17px;
+  }
+
+  .landing-v2 .author-avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+  }
+
+  .landing-v2 .author-info h4 {
+    font-size: 15px;
+  }
+
+  .landing-v2 .author-info p {
+    font-size: 12px;
+  }
+
+  /* Metrics */
+  .landing-v2 .metric-card {
+    padding: 24px;
+  }
+
+  .landing-v2 .metric-value {
+    font-size: 36px;
+  }
+
+  .landing-v2 .metric-label {
+    font-size: 14px;
+  }
+
+  .landing-v2 .metric-description {
+    font-size: 12px;
+  }
+
+  /* Offer card */
+  .landing-v2 .offer-card {
+    padding: 24px 20px;
+  }
+
+  .landing-v2 .offer-title {
+    font-size: 24px;
+  }
+
+  .landing-v2 .offer-list li {
+    font-size: 14px;
+    padding: 12px 0;
+  }
+
+  .landing-v2 .price-current {
+    font-size: 40px;
+  }
+
+  .landing-v2 .price-period {
+    font-size: 14px;
+  }
+
+  .landing-v2 .offer-cta {
+    min-height: 52px;
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+
+  /* FAQ */
+  .landing-v2 .faq-title {
+    font-size: 22px;
+  }
+
+  .landing-v2 .faq-item {
+    padding: 18px;
+  }
+
+  .landing-v2 .faq-question {
+    font-size: 14px;
+  }
+
+  .landing-v2 .faq-answer {
+    font-size: 13px;
+  }
+
+  /* Final CTA */
+  .landing-v2 .final-cta {
+    padding: 60px 0;
+  }
+
+  .landing-v2 .final-cta h2 {
+    font-size: 26px;
+  }
+
+  .landing-v2 .final-cta p {
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+
+  .landing-v2 .final-trust {
+    font-size: 12px;
+  }
+
+  /* Mobile menu smaller padding */
+  .landing-v2 .mobile-menu {
+    padding: 12px 16px;
+  }
+}
+
+/* ==================== PHONES (481-640px) ==================== */
+@media (min-width: 481px) and (max-width: 640px) {
+  .landing-v2 .container {
+    padding: 0 20px;
+  }
+
+  .landing-v2 .hero h1 {
+    font-size: 32px;
+  }
+
+  .landing-v2 .problem-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .landing-v2 .proof-flex {
+    gap: 40px;
+  }
+}

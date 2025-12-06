@@ -38,7 +38,9 @@ import {
   Beaker,
   Loader2,
   Trash2,
+  Menu,
 } from "lucide-react";
+import { useMobileNav } from "../layout";
 
 function FailedInvoicesSection({ schemeId }: { schemeId: Id<"schemes"> }) {
   const invoices = useQuery(api.finance.listInvoicesForScheme, { schemeId });
@@ -342,6 +344,7 @@ function ReportsTab({
 export default function FinancePage() {
   const { selectedSchemeId, setSelectedSchemeId } = useSelectedScheme();
   const [activeTab, setActiveTab] = useState("expenses");
+  const { setIsOpen: setMobileNavOpen } = useMobileNav();
 
   // Review dialog state
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
@@ -359,20 +362,30 @@ export default function FinancePage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-warmth-pulse">
       {/* Header - Editorial Light Theme */}
       <header className="bg-white/90 backdrop-blur-xl border-b border-[#E8E4DE] sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-6 py-4">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4 sm:gap-6">
+              {/* Mobile hamburger menu */}
+              <button
+                onClick={() => setMobileNavOpen(true)}
+                className="lg:hidden p-2 -ml-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-lg transition-colors"
+                aria-label="Open navigation menu"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+
               <div className="flex items-center">
-                <span className="text-2xl font-display font-medium tracking-tight">
+                <span className="text-xl sm:text-2xl font-display font-medium tracking-tight">
                   <span className="text-foreground">Strata</span>
                   <span className="text-[#FF6B35]">Genie</span>
                 </span>
               </div>
-              <div className="h-6 w-px bg-[#E8E4DE]" />
-              <div className="flex items-center gap-2">
+              {/* Desktop breadcrumb - hidden on mobile */}
+              <div className="hidden sm:flex items-center gap-2">
+                <div className="h-6 w-px bg-[#E8E4DE]" />
                 <Link href="/dashboard">
                   <Button
                     variant="ghost"
@@ -395,11 +408,26 @@ export default function FinancePage() {
             )}
           </div>
         </div>
+
+        {/* Mobile page title - shown below header on small screens */}
+        <div className="sm:hidden px-4 pb-3 border-t border-[#E8E4DE] pt-2 bg-white/50">
+          <div className="flex items-center gap-2">
+            <Link href="/dashboard">
+              <Button variant="ghost" size="sm" className="p-2 -ml-2">
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+            </Link>
+            <h1 className="text-base font-display font-bold tracking-tight text-foreground flex items-center gap-2">
+              <Receipt className="h-4 w-4 text-[#FF6B35]" />
+              Finance
+            </h1>
+          </div>
+        </div>
       </header>
 
       {/* Main content */}
-      <main className="max-w-5xl mx-auto px-6 py-8">
-        <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <div className="grid gap-4 sm:gap-6 lg:grid-cols-[280px_1fr]">
           {/* Left column: Scheme selector */}
           <div className="animate-slide-in-left">
             <SchemeSelector
@@ -412,17 +440,19 @@ export default function FinancePage() {
           <div className="space-y-6">
             {selectedSchemeId ? (
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full animate-fade-slide-in animate-delay-1">
-                <TabsList className="grid w-full grid-cols-3 mb-6">
-                  <TabsTrigger value="expenses" className="gap-2">
-                    <ArrowUpRight className="h-4 w-4" />
-                    Expenses
+                <TabsList className="grid w-full grid-cols-3 mb-4 sm:mb-6 h-auto">
+                  <TabsTrigger value="expenses" className="gap-1 sm:gap-2 text-xs sm:text-sm py-2.5">
+                    <ArrowUpRight className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <span className="hidden sm:inline">Expenses</span>
+                    <span className="sm:hidden">Out</span>
                   </TabsTrigger>
-                  <TabsTrigger value="income" className="gap-2">
-                    <ArrowDownRight className="h-4 w-4" />
-                    Income / Levies
+                  <TabsTrigger value="income" className="gap-1 sm:gap-2 text-xs sm:text-sm py-2.5">
+                    <ArrowDownRight className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <span className="hidden sm:inline">Income / Levies</span>
+                    <span className="sm:hidden">In</span>
                   </TabsTrigger>
-                  <TabsTrigger value="reports" className="gap-2">
-                    <FileText className="h-4 w-4" />
+                  <TabsTrigger value="reports" className="gap-1 sm:gap-2 text-xs sm:text-sm py-2.5">
+                    <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
                     Reports
                   </TabsTrigger>
                 </TabsList>

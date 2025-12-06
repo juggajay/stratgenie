@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import "./landing-v2-styles.css";
 
@@ -57,7 +60,24 @@ const SimpleCheckIcon = () => (
   </svg>
 );
 
+const MenuIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="3" y1="12" x2="21" y2="12"/>
+    <line x1="3" y1="6" x2="21" y2="6"/>
+    <line x1="3" y1="18" x2="21" y2="18"/>
+  </svg>
+);
+
+const CloseIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"/>
+    <line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+);
+
 export default function LandingPage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <main className="landing-v2">
       {/* HEADER */}
@@ -67,8 +87,33 @@ export default function LandingPage() {
             <Link href="/" className="logo-link">
               <span className="logo-text">Strata<span>Genie</span></span>
             </Link>
-            <Link href="/sign-in" className="header-cta">Sign In</Link>
+
+            {/* Desktop: Sign In link */}
+            <Link href="/sign-in" className="header-cta desktop-only">Sign In</Link>
+
+            {/* Mobile: Hamburger menu */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="mobile-menu-btn"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
+            </button>
           </div>
+
+          {/* Mobile menu overlay */}
+          {mobileMenuOpen && (
+            <div className="mobile-menu">
+              <nav className="mobile-menu-nav">
+                <Link href="/sign-in" onClick={() => setMobileMenuOpen(false)}>
+                  Sign In
+                </Link>
+                <Link href="/sign-up" onClick={() => setMobileMenuOpen(false)}>
+                  Start Free Trial
+                </Link>
+              </nav>
+            </div>
+          )}
         </div>
       </header>
 

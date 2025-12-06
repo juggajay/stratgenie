@@ -12,7 +12,8 @@ import { SchemeSelector } from "@/components/dashboard/scheme-selector";
 import { BylawUpload } from "@/components/guardian/bylaw-upload";
 import { ChatInterface } from "@/components/guardian/chat-interface";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Shield, FileText, RefreshCw } from "lucide-react";
+import { ArrowLeft, Shield, FileText, RefreshCw, Menu } from "lucide-react";
+import { useMobileNav } from "../layout";
 
 function BylawStatus({ schemeId }: { schemeId: Id<"schemes"> }) {
   const bylaw = useQuery(api.guardian.getActiveBylaw, { schemeId });
@@ -95,7 +96,7 @@ export default function GuardianPage() {
   const { selectedSchemeId, setSelectedSchemeId } = useSelectedScheme();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-warmth-pulse">
       {/* Header - Editorial Light Theme */}
       <header className="bg-white/90 backdrop-blur-xl border-b border-[#E8E4DE] sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 py-4">
