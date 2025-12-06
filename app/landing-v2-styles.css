@@ -1272,32 +1272,19 @@
   flex-shrink: 0;
 }
 
-/* Tier card as button */
-.landing-v2 button.tier-card {
+/* Clickable tier card */
+.landing-v2 .tier-card.clickable {
   cursor: pointer;
-  text-align: left;
-  width: 100%;
-  font-family: inherit;
-  display: flex;
-  flex-direction: column;
-  appearance: none;
-  -webkit-appearance: none;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
+  user-select: none;
 }
 
-.landing-v2 button.tier-card:focus {
+.landing-v2 .tier-card.clickable:focus {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
-.landing-v2 button.tier-card:hover {
-  cursor: pointer;
-}
-
-/* Ensure children don't block button clicks */
-.landing-v2 button.tier-card * {
-  pointer-events: none;
+.landing-v2 .tier-card.clickable:active {
+  transform: scale(0.98);
 }
 
 .landing-v2 .tier-select-cta {

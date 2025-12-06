@@ -521,11 +521,18 @@ export default function LandingPage() {
               const tierLotCount = index === 0 ? 6 : index === 1 ? 25 : 75;
 
               return (
-                <button
+                <div
                   key={tier.name}
-                  type="button"
+                  role="button"
+                  tabIndex={0}
                   onClick={() => setLotCount(tierLotCount)}
-                  className={`tier-card ${isActive ? 'active' : ''}`}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setLotCount(tierLotCount);
+                    }
+                  }}
+                  className={`tier-card clickable ${isActive ? 'active' : ''}`}
                 >
                   {isActive && <span className="current-tier-badge">Selected</span>}
                   <div className="tier-range">{tierLotRange}</div>
@@ -547,7 +554,7 @@ export default function LandingPage() {
                   <span className="tier-select-cta">
                     {isActive ? 'Currently Selected' : 'Select This Plan'}
                   </span>
-                </button>
+                </div>
               );
             })}
           </div>
