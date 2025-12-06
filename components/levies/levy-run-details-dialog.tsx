@@ -354,7 +354,7 @@ export function LevyRunDetailsDialog({
     const html = generateLevyNoticeHTML(
       invoice as Parameters<typeof generateLevyNoticeHTML>[0],
       levyRunData,
-      "Strata Scheme" // TODO: Get actual scheme name
+      levyRunData.schemeName
     );
 
     const newWindow = window.open("", "_blank");

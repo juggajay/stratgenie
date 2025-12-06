@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { calculatePercentageShare } from "./lib/financialMath";
+import { checkAccess, requireRole } from "./lib/permissions";
 
 // ============================================================================
 // Queries
@@ -15,6 +16,8 @@ export const listLotsForScheme = query({
     schemeId: v.id("schemes"),
   },
   handler: async (ctx, args) => {
+    await checkAccess(ctx, args.schemeId);
+
     const lots = await ctx.db
       .query("lots")
       .withIndex("by_scheme", (q) => q.eq("schemeId", args.schemeId))
@@ -49,7 +52,12 @@ export const getLot = query({
     lotId: v.id("lots"),
   },
   handler: async (ctx, args) => {
-    return await ctx.db.get(args.lotId);
+    const lot = await ctx.db.get(args.lotId);
+    if (!lot) return null;
+
+    await checkAccess(ctx, lot.schemeId);
+
+    return lot;
   },
 });
 
@@ -61,6 +69,8 @@ export const getTotalUnitEntitlement = query({
     schemeId: v.id("schemes"),
   },
   handler: async (ctx, args) => {
+    await checkAccess(ctx, args.schemeId);
+
     const lots = await ctx.db
       .query("lots")
       .withIndex("by_scheme", (q) => q.eq("schemeId", args.schemeId))
@@ -83,6 +93,8 @@ export const checkLotNumberExists = query({
     excludeLotId: v.optional(v.id("lots")),
   },
   handler: async (ctx, args) => {
+    await checkAccess(ctx, args.schemeId);
+
     const existing = await ctx.db
       .query("lots")
       .withIndex("by_scheme_and_lot", (q) =>
@@ -116,6 +128,8 @@ export const createLot = mutation({
     ownerAddress: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    await requireRole(ctx, args.schemeId, "member");
+
     // Validate scheme exists
     const scheme = await ctx.db.get(args.schemeId);
     if (!scheme) {
@@ -180,6 +194,8 @@ export const updateLot = mutation({
       throw new Error("Lot not found");
     }
 
+    await requireRole(ctx, lot.schemeId, "member");
+
     // If changing lot number, check for duplicates
     if (args.lotNumber && args.lotNumber.trim() !== lot.lotNumber) {
       const existing = await ctx.db
@@ -240,6 +256,8 @@ export const deleteLot = mutation({
     if (!lot) {
       throw new Error("Lot not found");
     }
+
+    await requireRole(ctx, lot.schemeId, "member");
 
     // Check for existing levy invoices
     const invoices = await ctx.db

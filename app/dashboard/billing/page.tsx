@@ -180,7 +180,7 @@ export default function BillingPage() {
               <div className="flex-1">
                 <p className="font-medium text-foreground">Checkout canceled</p>
                 <p className="text-sm text-muted-foreground">
-                  No worries! You can subscribe whenever you're ready.
+                  No worries! You can subscribe whenever you&apos;re ready.
                 </p>
               </div>
               <button
@@ -468,7 +468,7 @@ export default function BillingPage() {
               <p className="text-sm text-muted-foreground">
                 You pay based on the number of lots in your scheme. As you grow, you
                 automatically move into better pricing tiers. All lots are charged at your
-                tier's rate.
+                tier&apos;s rate.
               </p>
             </div>
             <div className="border-b border-[#E8E4DE] pb-4">
@@ -476,14 +476,14 @@ export default function BillingPage() {
                 What happens if I add more lots?
               </h4>
               <p className="text-sm text-muted-foreground">
-                If adding lots moves you to a new tier, you'll get the better rate on ALL
-                lots immediately. We'll prorate the difference on your next invoice.
+                If adding lots moves you to a new tier, you&apos;ll get the better rate on ALL
+                lots immediately. We&apos;ll prorate the difference on your next invoice.
               </p>
             </div>
             <div>
               <h4 className="font-medium text-foreground mb-2">Can I cancel anytime?</h4>
               <p className="text-sm text-muted-foreground">
-                Yes! No contracts, no lock-ins. Cancel anytime and you'll retain access
+                Yes! No contracts, no lock-ins. Cancel anytime and you&apos;ll retain access
                 until the end of your billing period.
               </p>
             </div>

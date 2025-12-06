@@ -64,6 +64,7 @@ export function DocumentPreviewDialog({
     if (lots && lots.length > 0 && selectedLotIds.size === 0) {
       setSelectedLotIds(new Set(lots.map((lot) => lot._id)));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lots]);
 
   const isFinalized = document?.status === "final";

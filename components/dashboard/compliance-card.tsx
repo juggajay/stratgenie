@@ -99,11 +99,6 @@ function ComplianceItem({
   status,
   nextDueDate,
   needsSetup,
-  onGenerateChecklist,
-  isGenerating,
-  hasExistingTasks,
-  onViewChecklist,
-  onOpenSettings,
   icon: IconComponent,
 }: {
   title: string;
@@ -159,7 +154,8 @@ function ComplianceItem({
   );
 }
 
-function ComplianceSection({
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function _ComplianceSection({
   title,
   status,
   nextDueDate,

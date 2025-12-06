@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { generateAgmNoticeHtml, AgmNoticeData } from "./templates/agm_notice";
+import { checkAccess, requireRole } from "./lib/permissions";
 
 /**
  * Get a scheme by ID.
@@ -10,6 +11,7 @@ export const getScheme = query({
     schemeId: v.id("schemes"),
   },
   handler: async (ctx, args) => {
+    await checkAccess(ctx, args.schemeId);
     return await ctx.db.get(args.schemeId);
   },
 });
@@ -24,6 +26,8 @@ export const generateAgmNotice = mutation({
     schemeId: v.id("schemes"),
   },
   handler: async (ctx, args) => {
+    await requireRole(ctx, args.schemeId, "member");
+
     // Fetch scheme details
     const scheme = await ctx.db.get(args.schemeId);
     if (!scheme) {
@@ -132,6 +136,8 @@ export const listDocumentsForScheme = query({
     schemeId: v.id("schemes"),
   },
   handler: async (ctx, args) => {
+    await checkAccess(ctx, args.schemeId);
+
     const documents = await ctx.db
       .query("documents")
       .withIndex("by_scheme", (q) => q.eq("schemeId", args.schemeId))
@@ -155,6 +161,8 @@ export const getDocumentsByType = query({
     ),
   },
   handler: async (ctx, args) => {
+    await checkAccess(ctx, args.schemeId);
+
     const documents = await ctx.db
       .query("documents")
       .withIndex("by_scheme_and_type", (q) =>
@@ -181,6 +189,8 @@ export const finalizeDocument = mutation({
       throw new Error("Document not found");
     }
 
+    await requireRole(ctx, document.schemeId, "member");
+
     if (document.status === "final") {
       throw new Error("Document is already finalized");
     }
@@ -198,8 +208,11 @@ export const finalizeDocument = mutation({
  * Generate upload URL for vault documents (CH-0011).
  */
 export const generateVaultUploadUrl = mutation({
-  args: {},
-  handler: async (ctx) => {
+  args: {
+    schemeId: v.id("schemes"),
+  },
+  handler: async (ctx, args) => {
+    await requireRole(ctx, args.schemeId, "member");
     return await ctx.storage.generateUploadUrl();
   },
 });
@@ -222,6 +235,8 @@ export const createVaultDocument = mutation({
     title: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    await requireRole(ctx, args.schemeId, "member");
+
     // Determine document type from vault category
     const typeMap: Record<string, "fire_safety" | "insurance" | "financial_report" | "agm_notice"> = {
       fire_safety: "fire_safety",
@@ -261,6 +276,8 @@ export const getVaultDocuments = query({
     schemeId: v.id("schemes"),
   },
   handler: async (ctx, args) => {
+    await checkAccess(ctx, args.schemeId);
+
     const documents = await ctx.db
       .query("documents")
       .withIndex("by_scheme", (q) => q.eq("schemeId", args.schemeId))
@@ -308,6 +325,8 @@ export const createDocument = mutation({
     ),
   },
   handler: async (ctx, args) => {
+    await requireRole(ctx, args.schemeId, "member");
+
     const documentId = await ctx.db.insert("documents", {
       schemeId: args.schemeId,
       type: args.type,
@@ -337,6 +356,8 @@ export const markDocumentSubmitted = mutation({
       throw new Error("Document not found");
     }
 
+    await requireRole(ctx, document.schemeId, "member");
+
     await ctx.db.patch(args.documentId, {
       submissionStatus: "submitted",
       submittedAt: Date.now(),
@@ -362,6 +383,8 @@ export const updateSchemeMeetingDetails = mutation({
     lotCount: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
+    await requireRole(ctx, args.schemeId, "member");
+
     const scheme = await ctx.db.get(args.schemeId);
     if (!scheme) {
       throw new Error("Scheme not found");

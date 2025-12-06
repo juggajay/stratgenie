@@ -116,10 +116,14 @@ export const getLevyRunWithInvoices = query({
       });
     });
 
+    // Get scheme name for display
+    const scheme = await ctx.db.get(levyRun.schemeId);
+
     return {
       ...levyRun,
       invoices: sortedInvoices,
       totalEntitlement,
+      schemeName: scheme?.name || "Strata Scheme",
     };
   },
 });

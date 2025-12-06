@@ -1,5 +1,6 @@
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
+import { checkAccess, requireRole } from "./lib/permissions";
 
 // Compliance status thresholds (in milliseconds)
 const DAYS_MS = 24 * 60 * 60 * 1000;
@@ -69,6 +70,8 @@ export function calculateStrataHubDueDate(agmDate: number): number {
 export const getSchemeComplianceStatus = query({
   args: { schemeId: v.id("schemes") },
   handler: async (ctx, args) => {
+    await checkAccess(ctx, args.schemeId);
+
     const scheme = await ctx.db.get(args.schemeId);
     if (!scheme) {
       // Return null instead of throwing - handles stale localStorage references
@@ -104,6 +107,8 @@ export const getSchemeComplianceStatus = query({
 export const listComplianceTasksForScheme = query({
   args: { schemeId: v.id("schemes") },
   handler: async (ctx, args) => {
+    await checkAccess(ctx, args.schemeId);
+
     const tasks = await ctx.db
       .query("complianceTasks")
       .withIndex("by_scheme", (q) => q.eq("schemeId", args.schemeId))
@@ -122,6 +127,8 @@ export const setSchemeComplianceDates = mutation({
     lastStrataHubReportDate: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
+    await requireRole(ctx, args.schemeId, "member");
+
     const scheme = await ctx.db.get(args.schemeId);
     if (!scheme) {
       throw new Error("Scheme not found");
@@ -198,6 +205,8 @@ export const setSchemeComplianceDates = mutation({
 export const generateAgmChecklist = mutation({
   args: { schemeId: v.id("schemes") },
   handler: async (ctx, args) => {
+    await requireRole(ctx, args.schemeId, "member");
+
     const scheme = await ctx.db.get(args.schemeId);
     if (!scheme) {
       throw new Error("Scheme not found");
@@ -266,6 +275,8 @@ export const updateComplianceTaskStatus = mutation({
     if (!task) {
       throw new Error("Task not found");
     }
+
+    await requireRole(ctx, task.schemeId, "member");
 
     const updates: Record<string, unknown> = {
       status: args.status,

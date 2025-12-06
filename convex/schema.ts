@@ -283,7 +283,8 @@ export default defineSchema({
 
   // Strata Hub Reporter - AI document analysis for public users (CH-0009)
   strataHubReports: defineTable({
-    sessionId: v.string(), // Browser session ID for anonymous access
+    sessionId: v.string(), // Browser session ID for backward compatibility
+    userId: v.optional(v.id("users")), // SECURITY: User who created this report (optional for backward compatibility)
     status: v.union(
       v.literal("processing"),
       v.literal("completed"),
@@ -308,6 +309,7 @@ export default defineSchema({
     completedAt: v.optional(v.number()),
   })
     .index("by_session", ["sessionId"])
+    .index("by_user", ["userId"])
     .index("by_status", ["status"]),
 
   // Marketing leads from free tools (SEO)

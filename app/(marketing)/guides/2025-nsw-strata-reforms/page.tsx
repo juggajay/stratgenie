@@ -101,10 +101,10 @@ const colorClasses = {
     light: "bg-emerald-50",
   },
   blue: {
-    bg: "bg-blue-100",
-    text: "text-blue-600",
-    border: "border-blue-200",
-    light: "bg-blue-50",
+    bg: "bg-[#FFF0EB]",
+    text: "text-[#FF6B35]",
+    border: "border-[#FFCDB8]",
+    light: "bg-[#FFF0EB]",
   },
   amber: {
     bg: "bg-amber-100",
@@ -314,8 +314,8 @@ export default function StrataReforms2025Page() {
                     key={i}
                     className="flex items-start gap-3 p-3 bg-[#F8F5F0] rounded-lg"
                   >
-                    <div className="w-6 h-6 border-2 border-slate-300 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-xs text-slate-400">{i + 1}</span>
+                    <div className="w-6 h-6 border-2 border-[#E8E4DE] rounded flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-xs text-muted-foreground">{i + 1}</span>
                     </div>
                     <div className="flex-1">
                       <p className="text-sm text-[#3d3d5c]">{item.task}</p>

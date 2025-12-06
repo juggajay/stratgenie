@@ -1,5 +1,6 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { requireAuth } from "./lib/permissions";
 
 /**
  * Capture a new lead from marketing tools
@@ -72,6 +73,8 @@ export const getBySource = query({
     ),
   },
   handler: async (ctx, args) => {
+    await requireAuth(ctx);
+
     return await ctx.db
       .query("leads")
       .withIndex("by_source", (q) => q.eq("source", args.source))
@@ -85,6 +88,8 @@ export const getBySource = query({
 export const getAll = query({
   args: {},
   handler: async (ctx) => {
+    await requireAuth(ctx);
+
     return await ctx.db.query("leads").collect();
   },
 });

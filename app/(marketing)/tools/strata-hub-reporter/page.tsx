@@ -445,14 +445,14 @@ export default function StrataHubReporterPage() {
         {step === "processing" && (
           <div className="max-w-2xl mx-auto">
             {/* Dark premium container */}
-            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-8 shadow-2xl border border-white/10">
+            <div className="bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#1a1a2e] rounded-3xl p-8 shadow-2xl border border-white/10">
 
               {/* Header with status */}
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <div className="relative">
-                    <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
-                      <Loader2 className="w-5 h-5 text-blue-400 animate-spin" />
+                    <div className="w-10 h-10 rounded-full bg-[#FF6B35]/20 flex items-center justify-center">
+                      <Loader2 className="w-5 h-5 text-[#FF6B35] animate-spin" />
                     </div>
                     {analysisReady && (
                       <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center">
@@ -464,19 +464,19 @@ export default function StrataHubReporterPage() {
                     <p className="text-sm font-medium text-white">
                       {analysisReady ? "Analysis complete!" : "Analyzing document..."}
                     </p>
-                    <p className="text-xs text-slate-400">{fileName}</p>
+                    <p className="text-xs text-[#F8F5F0]/60">{fileName}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-xs text-slate-500 uppercase tracking-wide">Agent {agentIndex + 1} of 4</p>
+                  <p className="text-xs text-[#6b6b8a] uppercase tracking-wide">Agent {agentIndex + 1} of 4</p>
                 </div>
               </div>
 
               {/* Progress bar */}
               <div className="mb-8">
-                <div className="h-1 bg-slate-700 rounded-full overflow-hidden">
+                <div className="h-1 bg-[#3d3d5c] rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-cyan-500 via-emerald-500 to-purple-500 transition-all duration-500 ease-out"
+                    className="h-full bg-gradient-to-r from-[#FF6B35] via-emerald-500 to-violet-500 transition-all duration-500 ease-out"
                     style={{ width: `${((agentIndex + 1) / agentStory.length) * 100}%` }}
                   />
                 </div>
@@ -487,7 +487,7 @@ export default function StrataHubReporterPage() {
                 <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-2">
                   Meet Your Team
                 </h2>
-                <p className="text-slate-400 text-sm">
+                <p className="text-[#F8F5F0]/70 text-sm">
                   Four specialized agents, working 24/7 for your scheme
                 </p>
               </div>
@@ -512,17 +512,17 @@ export default function StrataHubReporterPage() {
                   {/* Agent Story Content */}
                   <div className="flex-1 p-6 md:p-8">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${agentStory[agentIndex].textColor} bg-slate-100`}>
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${agentStory[agentIndex].textColor} bg-[#F8F5F0]`}>
                         {agentStory[agentIndex].step}
                       </span>
                     </div>
                     <h3 className={`text-2xl md:text-3xl font-bold mb-2 ${agentStory[agentIndex].textColor}`}>
                       {agentStory[agentIndex].name}
                     </h3>
-                    <p className="text-lg font-semibold text-slate-800 mb-3">
+                    <p className="text-lg font-semibold text-[#1a1a2e] mb-3">
                       {agentStory[agentIndex].headline}
                     </p>
-                    <p className="text-slate-600 leading-relaxed text-sm md:text-base">
+                    <p className="text-[#3d3d5c] leading-relaxed text-sm md:text-base">
                       {agentStory[agentIndex].story}
                     </p>
                   </div>
@@ -538,14 +538,14 @@ export default function StrataHubReporterPage() {
                       idx === agentIndex
                         ? `bg-gradient-to-br ${agent.bgGradient} border-2 ${agent.borderColor} scale-110 shadow-lg`
                         : idx < agentIndex
-                        ? "bg-slate-700 border border-slate-600"
-                        : "bg-slate-800 border border-slate-700"
+                        ? "bg-[#3d3d5c] border border-[#6b6b8a]"
+                        : "bg-[#1a1a2e] border border-[#3d3d5c]"
                     }`}
                   >
                     {idx < agentIndex ? (
                       <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                     ) : (
-                      <span className={`text-xs font-bold ${idx === agentIndex ? agentStory[idx].textColor : "text-slate-500"}`}>
+                      <span className={`text-xs font-bold ${idx === agentIndex ? agentStory[idx].textColor : "text-[#6b6b8a]"}`}>
                         {idx + 1}
                       </span>
                     )}
@@ -561,7 +561,7 @@ export default function StrataHubReporterPage() {
                       <CheckCircle2 className="w-5 h-5" />
                       <span className="font-medium">Your report is ready!</span>
                     </div>
-                    <p className="text-slate-300 text-sm">
+                    <p className="text-[#F8F5F0]/80 text-sm">
                       Want all 4 agents working for your scheme?
                     </p>
                   </div>
@@ -569,14 +569,14 @@ export default function StrataHubReporterPage() {
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <Link
                       href="/sign-up"
-                      className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-full hover:from-cyan-400 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:-translate-y-0.5"
+                      className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#FF6B35] to-[#E85A2A] text-white font-semibold rounded-full hover:from-[#E85A2A] hover:to-[#FF6B35] transition-all shadow-lg shadow-[#FF6B35]/25 hover:shadow-[#FF6B35]/40 hover:-translate-y-0.5"
                     >
                       Start 14-Day Free Trial
                       <ArrowRight className="w-4 h-4" />
                     </Link>
                     <button
                       onClick={() => setStep("results")}
-                      className="inline-flex items-center gap-2 px-6 py-3 text-slate-400 hover:text-white transition-colors text-sm"
+                      className="inline-flex items-center gap-2 px-6 py-3 text-[#F8F5F0]/60 hover:text-white transition-colors text-sm"
                     >
                       <XCircle className="w-4 h-4" />
                       Skip, show my report
@@ -588,7 +588,7 @@ export default function StrataHubReporterPage() {
                   {/* Progress indicator while watching */}
                   {!storyComplete && (
                     <div className="mt-6 text-center">
-                      <p className="text-slate-500 text-xs">
+                      <p className="text-[#6b6b8a] text-xs">
                         {analysisReady ? (
                           <span className="text-emerald-400">Analysis complete — watch the tour to continue</span>
                         ) : (

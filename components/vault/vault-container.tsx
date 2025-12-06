@@ -85,7 +85,7 @@ export function VaultContainer({
     setIsUploading(true);
     try {
       // Get signed upload URL
-      const uploadUrl = await generateUploadUrl();
+      const uploadUrl = await generateUploadUrl({ schemeId });
 
       // Upload file to Convex storage
       const result = await fetch(uploadUrl, {

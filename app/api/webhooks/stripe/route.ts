@@ -75,7 +75,8 @@ export async function POST(request: NextRequest) {
 
     // Process the event via Convex action
     try {
-      await getConvex().action(internal.billing.actions.processWebhookEvent, {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await getConvex().action(internal.billing.actions.processWebhookEvent as any, {
         eventId: event.id,
         eventType: event.type,
         payload: JSON.stringify(event),

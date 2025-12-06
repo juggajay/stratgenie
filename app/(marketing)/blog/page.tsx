@@ -47,11 +47,11 @@ export default async function BlogPage() {
       />
 
       {/* Hero Section with Brand Accent */}
-      <div className="relative overflow-hidden bg-gradient-to-b from-slate-50 to-white">
+      <div className="relative overflow-hidden bg-gradient-to-b from-[#FDFBF7] to-white">
         {/* Subtle decorative elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-24 -right-24 w-96 h-96 bg-gradient-to-br from-cyan-100/40 to-blue-100/30 rounded-full blur-3xl" />
-          <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-gradient-to-tr from-blue-50/50 to-cyan-50/40 rounded-full blur-3xl" />
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-gradient-to-br from-[#FFF0EB]/40 to-[#FFF0EB]/30 rounded-full blur-3xl" />
+          <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-gradient-to-tr from-[#FFF0EB]/50 to-[#FFF0EB]/40 rounded-full blur-3xl" />
         </div>
 
         <div className="relative py-16 px-6">
@@ -63,20 +63,20 @@ export default async function BlogPage() {
                 <Logo className="h-12 w-auto" />
               </div>
 
-              <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 mb-4">
+              <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-foreground mb-4">
                 Strata{" "}
-                <span className="bg-gradient-to-r from-cyan-600 via-blue-600 to-blue-700 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-[#FF6B35] via-[#FF6B35] to-[#E85A2A] bg-clip-text text-transparent">
                   Insights
                 </span>
               </h1>
-              <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg text-[#3d3d5c] max-w-2xl mx-auto leading-relaxed">
                 Expert guides and compliance updates to help you manage your NSW strata
                 scheme with confidence.
               </p>
 
               {/* Decorative accent line */}
               <div className="mt-8 flex justify-center">
-                <div className="h-1 w-24 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full" />
+                <div className="h-1 w-24 bg-gradient-to-r from-[#FF6B35] to-[#E85A2A] rounded-full" />
               </div>
             </div>
 
@@ -85,7 +85,7 @@ export default async function BlogPage() {
               <div className="flex flex-wrap justify-center gap-2 mb-12">
                 <Link
                   href="/blog"
-                  className="px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 transition-all"
+                  className="px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-[#FF6B35] to-[#E85A2A] text-white shadow-md shadow-[#FF6B35]/20 hover:shadow-lg hover:shadow-[#FF6B35]/30 transition-all"
                 >
                   All Posts
                 </Link>
@@ -93,7 +93,7 @@ export default async function BlogPage() {
                   <Link
                     key={category}
                     href={`/blog/category/${category}`}
-                    className="px-4 py-2 rounded-full text-sm font-medium bg-white text-slate-700 border border-slate-200 hover:border-cyan-300 hover:text-cyan-700 transition-all"
+                    className="px-4 py-2 rounded-full text-sm font-medium bg-white text-foreground border border-[#E8E4DE] hover:border-[#FF6B35]/30 hover:text-[#FF6B35] transition-all"
                   >
                     {categoryLabels[category] || category}
                   </Link>
@@ -111,10 +111,10 @@ export default async function BlogPage() {
           {featuredPosts.length > 0 && (
             <section className="mb-16">
               <div className="flex items-center gap-3 mb-6">
-                <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600">
+                <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-[#FF6B35] to-[#E85A2A]">
                   <Sparkles className="w-4 h-4 text-white" />
                 </div>
-                <h2 className="text-xl font-semibold text-slate-900">
+                <h2 className="text-xl font-semibold text-foreground">
                   Featured Articles
                 </h2>
               </div>
@@ -128,7 +128,7 @@ export default async function BlogPage() {
 
           {/* All Posts */}
           <section>
-            <h2 className="text-xl font-semibold text-slate-900 mb-6">
+            <h2 className="text-xl font-semibold text-foreground mb-6">
               {featuredPosts.length > 0 ? "Latest Articles" : "All Articles"}
             </h2>
             {regularPosts.length > 0 ? (
@@ -138,8 +138,8 @@ export default async function BlogPage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 bg-slate-50 rounded-xl border border-slate-100">
-                <p className="text-slate-600">
+              <div className="text-center py-12 bg-[#F8F5F0] rounded-xl border border-[#E8E4DE]">
+                <p className="text-[#3d3d5c]">
                   No articles published yet. Check back soon!
                 </p>
               </div>
@@ -149,9 +149,9 @@ export default async function BlogPage() {
           {/* Newsletter CTA */}
           <section className="mt-16 relative overflow-hidden rounded-2xl">
             {/* Background gradient with glow effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900" />
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-600/20 via-blue-600/20 to-cyan-600/20" />
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-gradient-to-b from-cyan-500/30 to-transparent blur-2xl" />
+            <div className="absolute inset-0 bg-gradient-to-r from-foreground via-foreground to-foreground" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B35]/20 via-[#E85A2A]/20 to-[#FF6B35]/20" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-gradient-to-b from-[#FF6B35]/30 to-transparent blur-2xl" />
 
             <div className="relative p-8 md:p-12 text-center">
               <div className="inline-flex items-center justify-center mb-4">
@@ -160,13 +160,13 @@ export default async function BlogPage() {
               <h2 className="text-2xl font-semibold text-white mb-3">
                 Stay Updated on Strata Compliance
               </h2>
-              <p className="text-slate-300 mb-6 max-w-xl mx-auto">
+              <p className="text-white/80 mb-6 max-w-xl mx-auto">
                 Get the latest guides, compliance updates, and tips delivered to your
                 inbox. No spam, just valuable insights for strata committees.
               </p>
               <Link
                 href="/sign-up"
-                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium rounded-lg hover:from-cyan-400 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/30"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#FF6B35] to-[#E85A2A] text-white font-medium rounded-lg hover:from-[#E85A2A] hover:to-[#FF6B35] transition-all shadow-lg shadow-[#FF6B35]/25 hover:shadow-xl hover:shadow-[#FF6B35]/30"
               >
                 Start Your Free Trial
               </Link>

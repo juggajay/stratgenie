@@ -99,6 +99,7 @@ export function FinancialReportDialog({
       setError(null);
       setSuccessMessage(null);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   // Generate report when year changes
@@ -106,6 +107,7 @@ export function FinancialReportDialog({
     if (selectedYear && open) {
       handleGenerateReport();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedYear]);
 
   const handleGenerateReport = async () => {
