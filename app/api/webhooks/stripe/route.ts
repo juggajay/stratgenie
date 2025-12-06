@@ -3,13 +3,33 @@ import Stripe from "stripe";
 import { ConvexHttpClient } from "convex/browser";
 import { internal } from "@/convex/_generated/api";
 
-// Initialize Stripe
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2024-11-20.acacia",
-});
+// Lazy initialization to avoid build-time errors
+let stripe: Stripe | null = null;
+let convex: ConvexHttpClient | null = null;
 
-// Initialize Convex client
-const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
+function getStripe(): Stripe {
+  if (!stripe) {
+    const secretKey = process.env.STRIPE_SECRET_KEY;
+    if (!secretKey) {
+      throw new Error("STRIPE_SECRET_KEY not configured");
+    }
+    stripe = new Stripe(secretKey, {
+      apiVersion: "2024-11-20.acacia",
+    });
+  }
+  return stripe;
+}
+
+function getConvex(): ConvexHttpClient {
+  if (!convex) {
+    const url = process.env.NEXT_PUBLIC_CONVEX_URL;
+    if (!url) {
+      throw new Error("NEXT_PUBLIC_CONVEX_URL not configured");
+    }
+    convex = new ConvexHttpClient(url);
+  }
+  return convex;
+}
 
 /**
  * Stripe webhook handler
@@ -40,7 +60,7 @@ export async function POST(request: NextRequest) {
     // Verify webhook signature
     let event: Stripe.Event;
     try {
-      event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+      event = getStripe().webhooks.constructEvent(body, signature, webhookSecret);
     } catch (err) {
       const message = err instanceof Error ? err.message : "Unknown error";
       console.error(`Webhook signature verification failed: ${message}`);
@@ -55,7 +75,7 @@ export async function POST(request: NextRequest) {
 
     // Process the event via Convex action
     try {
-      await convex.action(internal.billing.actions.processWebhookEvent, {
+      await getConvex().action(internal.billing.actions.processWebhookEvent, {
         eventId: event.id,
         eventType: event.type,
         payload: JSON.stringify(event),
