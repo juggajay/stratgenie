@@ -221,13 +221,13 @@ function ReportsTab({
   return (
     <div className="space-y-6">
       {/* Generate Report Card */}
-      <div className="rounded-xl border border-border bg-card p-6 shadow-card">
+      <div className="card-accent rounded-[20px] border border-[#E8E4DE] bg-white p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
         <div className="flex items-start gap-4">
-          <div className="rounded-lg bg-cyan-500/10 p-3">
-            <FileText className="h-6 w-6 text-cyan-500" />
+          <div className="rounded-[10px] bg-[#FFF0EB] p-3 border border-[#FF6B35]/20">
+            <FileText className="h-6 w-6 text-[#FF6B35]" />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-medium">
+            <h3 className="text-lg font-display font-medium text-foreground">
               Statement of Key Financial Information
             </h3>
             <p className="text-sm text-muted-foreground mt-1">
@@ -235,10 +235,7 @@ function ReportsTab({
               the NSW Strata Schemes Management Regulation 2016.
             </p>
             <div className="mt-4">
-              <Button
-                onClick={() => setReportDialogOpen(true)}
-                className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg shadow-lg shadow-cyan-600/20"
-              >
+              <Button onClick={() => setReportDialogOpen(true)}>
                 <FileText className="h-4 w-4 mr-2" />
                 Generate Statutory Report
               </Button>
@@ -248,39 +245,39 @@ function ReportsTab({
       </div>
 
       {/* Info about the report */}
-      <div className="rounded-xl border border-border bg-card/50 p-6">
-        <h4 className="font-medium mb-3">What&apos;s included in this report?</h4>
+      <div className="rounded-[20px] border border-[#E8E4DE] bg-[#F8F5F0] p-6">
+        <h4 className="font-display font-medium text-foreground mb-3">What&apos;s included in this report?</h4>
         <ul className="space-y-2 text-sm text-muted-foreground">
           <li className="flex items-start gap-2">
-            <span className="text-cyan-500">&#x2022;</span>
+            <span className="text-[#FF6B35]">•</span>
             <span>Opening and closing balances for Admin and Capital Works funds</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-cyan-500">&#x2022;</span>
+            <span className="text-[#FF6B35]">•</span>
             <span>Income and expenditure breakdown by statutory category</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-cyan-500">&#x2022;</span>
+            <span className="text-[#FF6B35]">•</span>
             <span>Professional PDF format compliant with NSW regulations</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-cyan-500">&#x2022;</span>
+            <span className="text-[#FF6B35]">•</span>
             <span>Automatic filing to your Compliance Vault</span>
           </li>
         </ul>
       </div>
 
       {/* Test Data Seeder (Development) */}
-      <div className="rounded-xl border border-amber-500/30 bg-amber-900/10 p-6">
+      <div className="rounded-[20px] border border-amber-200 bg-amber-50 p-6">
         <div className="flex items-start gap-4">
-          <div className="rounded-lg bg-amber-500/20 p-3">
-            <Beaker className="h-6 w-6 text-amber-400" />
+          <div className="rounded-[10px] bg-amber-100 p-3 border border-amber-200">
+            <Beaker className="h-6 w-6 text-amber-600" />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-medium text-amber-400">
+            <h3 className="text-lg font-display font-medium text-amber-800">
               Test Data Generator
             </h3>
-            <p className="text-sm text-amber-300/70 mt-1">
+            <p className="text-sm text-amber-700 mt-1">
               Create sample transactions and opening balances for FY 2024-25 to test
               the financial reporting feature.
             </p>
@@ -289,7 +286,7 @@ function ReportsTab({
                 onClick={handleSeedTestData}
                 disabled={isSeeding || isDeleting}
                 variant="outline"
-                className="rounded-lg border-amber-500/50 text-amber-400 hover:bg-amber-900/30"
+                className="rounded-lg border-amber-300 text-amber-700 hover:bg-amber-100"
               >
                 {isSeeding ? (
                   <>
@@ -307,7 +304,7 @@ function ReportsTab({
                 onClick={handleDeleteTestData}
                 disabled={isSeeding || isDeleting}
                 variant="outline"
-                className="rounded-lg border-red-500/50 text-red-400 hover:bg-red-900/30"
+                className="rounded-lg border-red-200 text-red-600 hover:bg-red-50"
               >
                 {isDeleting ? (
                   <>
@@ -322,7 +319,7 @@ function ReportsTab({
                 )}
               </Button>
               {seedResult && (
-                <span className={`text-sm ${seedResult.startsWith("Error") ? "text-red-400" : "text-emerald-400"}`}>
+                <span className={`text-sm ${seedResult.startsWith("Error") ? "text-red-600" : "text-emerald-600"}`}>
                   {seedResult}
                 </span>
               )}

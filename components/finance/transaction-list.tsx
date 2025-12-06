@@ -92,7 +92,7 @@ export function TransactionList({
   const isLoading = transactions === undefined;
 
   return (
-    <Card className="agent-treasurer">
+    <Card className="card-accent">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-4">
           <div>
