@@ -182,7 +182,7 @@ export function VaultContainer({
 
   return (
     <>
-      <Card className="bg-card border-border">
+      <Card className="card-accent bg-card border-border">
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">

@@ -319,21 +319,42 @@
   }
 
   /* ═══════════════════════════════════════════════════════════════
-     AGENT ACCENTS
+     AGENT ACCENTS - Gray border by default, colored on hover
      ═══════════════════════════════════════════════════════════════ */
   .agent-secretary {
     --agent-color: var(--secretary);
-    border-left: 4px solid var(--secretary);
+    border-left: 4px solid #E8E4DE;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .agent-secretary:hover {
+    border-left-color: var(--secretary);
   }
 
   .agent-treasurer {
     --agent-color: var(--treasurer);
-    border-left: 4px solid var(--treasurer);
+    border-left: 4px solid #E8E4DE;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .agent-treasurer:hover {
+    border-left-color: var(--treasurer);
   }
 
   .agent-guardian {
     --agent-color: var(--guardian);
-    border-left: 4px solid var(--guardian);
+    border-left: 4px solid #E8E4DE;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .agent-guardian:hover {
+    border-left-color: var(--guardian);
+  }
+
+  /* Generic accent card - coral border on hover */
+  .card-accent {
+    border-left: 4px solid #E8E4DE;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .card-accent:hover {
+    border-left-color: #FF6B35;
   }
 
   /* Agent badges - Light background tints */

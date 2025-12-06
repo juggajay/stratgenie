@@ -136,7 +136,7 @@ export function LevyRunsList({ schemeId }: LevyRunsListProps) {
 
   return (
     <>
-      <Card>
+      <Card className="card-accent">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>

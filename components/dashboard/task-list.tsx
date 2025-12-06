@@ -134,7 +134,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
   if (!tasks) {
     return (
       <div id="task-list">
-        <Card>
+        <Card className="card-accent">
           <CardHeader>
             <CardTitle>Compliance Tasks</CardTitle>
             <CardDescription>
@@ -155,7 +155,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
   if (tasks.length === 0) {
     return (
       <div id="task-list">
-        <Card>
+        <Card className="card-accent">
           <CardHeader>
             <CardTitle>Compliance Tasks</CardTitle>
             <CardDescription>
@@ -272,7 +272,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
 
   return (
     <div id="task-list">
-      <Card>
+      <Card className="card-accent">
         <CardHeader>
           <CardTitle>Compliance Tasks</CardTitle>
           <CardDescription>

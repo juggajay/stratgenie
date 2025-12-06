@@ -206,7 +206,7 @@ export function InvoiceUploadZone({ schemeId, onUploadComplete }: InvoiceUploadZ
   const isInteractive = status === "idle" || status === "error";
 
   return (
-    <Card>
+    <Card className="card-accent">
       <CardHeader className="pb-3">
         <CardTitle>Upload Invoice</CardTitle>
         <CardDescription>

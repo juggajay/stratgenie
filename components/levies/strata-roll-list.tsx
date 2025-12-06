@@ -81,7 +81,7 @@ export function StrataRollList({ schemeId }: StrataRollListProps) {
 
   return (
     <>
-      <Card>
+      <Card className="card-accent">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>

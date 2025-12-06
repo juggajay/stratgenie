@@ -76,7 +76,7 @@ export function SchemeSelector({
   }
 
   return (
-    <Card>
+    <Card className="card-accent">
       <CardHeader>
         <CardTitle>Your Schemes</CardTitle>
         <CardDescription>Select a scheme to view compliance status</CardDescription>

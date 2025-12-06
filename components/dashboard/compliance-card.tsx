@@ -308,7 +308,7 @@ export function ComplianceCard({
   }
 
   return (
-    <Card>
+    <Card className="card-accent">
       <CardHeader>
         <CardTitle>Compliance Status</CardTitle>
         <CardDescription>Your current compliance overview</CardDescription>
