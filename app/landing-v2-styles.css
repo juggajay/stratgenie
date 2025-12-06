@@ -1272,6 +1272,42 @@
   flex-shrink: 0;
 }
 
+/* Tier card as button */
+.landing-v2 button.tier-card {
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+.landing-v2 button.tier-card:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.landing-v2 .tier-select-cta {
+  display: block;
+  margin-top: auto;
+  padding-top: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  text-align: center;
+  border-top: 1px solid var(--border);
+  margin-top: 20px;
+  padding-top: 16px;
+}
+
+.landing-v2 .tier-card.active .tier-select-cta {
+  color: var(--text-muted);
+}
+
+.landing-v2 .tier-card:not(.active):hover .tier-select-cta {
+  color: var(--accent-hover);
+}
+
 /* Trust Signals */
 .landing-v2 .pricing-trust {
   display: grid;

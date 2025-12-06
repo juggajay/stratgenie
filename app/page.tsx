@@ -517,10 +517,17 @@ export default function LandingPage() {
             {PRICING_TIERS.map((tier, index) => {
               const isActive = tier.name === tierInfo.name;
               const tierLotRange = index === 0 ? "1-10 lots" : index === 1 ? "11-50 lots" : "51+ lots";
+              // Representative lot count for each tier (middle of range)
+              const tierLotCount = index === 0 ? 6 : index === 1 ? 25 : 75;
 
               return (
-                <div key={tier.name} className={`tier-card ${isActive ? 'active' : ''}`}>
-                  {isActive && <span className="current-tier-badge">Your Tier</span>}
+                <button
+                  key={tier.name}
+                  type="button"
+                  onClick={() => setLotCount(tierLotCount)}
+                  className={`tier-card ${isActive ? 'active' : ''}`}
+                >
+                  {isActive && <span className="current-tier-badge">Selected</span>}
                   <div className="tier-range">{tierLotRange}</div>
                   <div className="tier-price">
                     <span className="tier-amount">${tier.pricePerLot.toFixed(2)}</span>
@@ -537,7 +544,10 @@ export default function LandingPage() {
                     <li><SimpleCheckIcon /> Strata Hub Export</li>
                     <li><SimpleCheckIcon /> Unlimited Documents</li>
                   </ul>
-                </div>
+                  <span className="tier-select-cta">
+                    {isActive ? 'Currently Selected' : 'Select This Plan'}
+                  </span>
+                </button>
               );
             })}
           </div>
