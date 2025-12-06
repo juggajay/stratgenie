@@ -261,7 +261,7 @@ export default function StrataHubReporterPage() {
         {/* Back Link */}
         <Link
           href="/tools"
-          className="inline-flex items-center gap-2 text-sm text-slate-600 hover:text-blue-600 mb-8 transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-[#3d3d5c] hover:text-[#FF6B35] mb-8 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Tools
@@ -269,34 +269,34 @@ export default function StrataHubReporterPage() {
 
         {/* Header */}
         <div className="text-center mb-10">
-          <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <FileText className="w-8 h-8 text-blue-600" />
+          <div className="w-16 h-16 bg-[#FFF0EB] rounded-[20px] flex items-center justify-center mx-auto mb-4">
+            <FileText className="w-8 h-8 text-[#FF6B35]" />
           </div>
-          <h1 className="text-3xl font-semibold tracking-tight text-slate-900 mb-3">
+          <h1 className="text-3xl font-display font-semibold tracking-tight text-[#1a1a2e] mb-3">
             Strata Hub Report Generator
           </h1>
-          <p className="text-lg text-slate-600 max-w-xl mx-auto">
-            Upload your AGM Minutes or Financial Statement and we'll extract the
+          <p className="text-lg text-[#3d3d5c] max-w-xl mx-auto">
+            Upload your AGM Minutes or Financial Statement and we&apos;ll extract the
             key data points required for NSW Strata Hub reporting.
           </p>
         </div>
 
         {/* Email Step - Gate BEFORE upload */}
         {step === "email" && (
-          <Card className="border border-slate-200 rounded-xl bg-white shadow-sm max-w-xl mx-auto">
+          <Card className="border border-[#E8E4DE] rounded-[20px] bg-white shadow-sm max-w-xl mx-auto">
             <CardHeader className="text-center">
               <CardTitle className="text-lg font-medium flex items-center justify-center gap-2">
-                <Mail className="w-5 h-5 text-blue-600" />
+                <Mail className="w-5 h-5 text-[#FF6B35]" />
                 Get Your Free Report
               </CardTitle>
-              <CardDescription className="text-sm text-slate-500">
+              <CardDescription className="text-sm text-[#6b6b8a]">
                 Enter your email and we&apos;ll analyze your document in ~30 seconds
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleEmailSubmit} className="space-y-4">
                 <div>
-                  <Label htmlFor="name" className="text-sm font-medium text-slate-700">
+                  <Label htmlFor="name" className="text-sm font-medium text-[#3d3d5c]">
                     Name (optional)
                   </Label>
                   <Input
@@ -309,7 +309,7 @@ export default function StrataHubReporterPage() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="email" className="text-sm font-medium text-slate-700">
+                  <Label htmlFor="email" className="text-sm font-medium text-[#3d3d5c]">
                     Email address
                   </Label>
                   <Input
@@ -325,7 +325,7 @@ export default function StrataHubReporterPage() {
                 <Button
                   type="submit"
                   disabled={isCheckingAccess}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                  className="w-full bg-[#FF6B35] hover:bg-[#E85A2A] text-white rounded-lg"
                 >
                   {isCheckingAccess ? (
                     <>
@@ -339,35 +339,35 @@ export default function StrataHubReporterPage() {
                     </>
                   )}
                 </Button>
-                <p className="text-xs text-slate-500 text-center">
+                <p className="text-xs text-[#6b6b8a] text-center">
                   One free report per email. We&apos;ll send occasional compliance tips.
                 </p>
               </form>
 
-              <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
-                <h4 className="text-sm font-medium text-blue-900 mb-2 flex items-center gap-2">
+              <div className="mt-6 p-4 bg-gradient-to-r from-[#FFF0EB] to-[#FFF0EB] rounded-lg border border-[#E8E4DE]">
+                <h4 className="text-sm font-medium text-[#1a1a2e] mb-2 flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-green-600" />
                   What we extract from your document:
                 </h4>
-                <ul className="text-sm text-blue-800 space-y-1.5">
+                <ul className="text-sm text-[#3d3d5c] space-y-1.5">
                   <li className="flex items-center gap-2">
-                    <Building2 className="w-3.5 h-3.5 text-blue-600" />
+                    <Building2 className="w-3.5 h-3.5 text-[#FF6B35]" />
                     Strata Plan Number
                   </li>
                   <li className="flex items-center gap-2">
-                    <Calendar className="w-3.5 h-3.5 text-blue-600" />
+                    <Calendar className="w-3.5 h-3.5 text-[#FF6B35]" />
                     Last AGM Date
                   </li>
                   <li className="flex items-center gap-2">
-                    <DollarSign className="w-3.5 h-3.5 text-blue-600" />
+                    <DollarSign className="w-3.5 h-3.5 text-[#FF6B35]" />
                     Admin & Capital Works Fund Balances
                   </li>
                   <li className="flex items-center gap-2">
-                    <Flame className="w-3.5 h-3.5 text-blue-600" />
+                    <Flame className="w-3.5 h-3.5 text-[#FF6B35]" />
                     AFSS (Fire Safety) Date
                   </li>
                   <li className="flex items-center gap-2">
-                    <Shield className="w-3.5 h-3.5 text-blue-600" />
+                    <Shield className="w-3.5 h-3.5 text-[#FF6B35]" />
                     Insurance Replacement Value
                   </li>
                 </ul>
@@ -392,7 +392,7 @@ export default function StrataHubReporterPage() {
               </p>
               <div className="space-y-3">
                 <Link href="/sign-up">
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
+                  <Button className="w-full bg-[#FF6B35] hover:bg-[#E85A2A] text-white rounded-lg">
                     Start Free Trial
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
@@ -414,13 +414,13 @@ export default function StrataHubReporterPage() {
 
         {/* Upload Step */}
         {step === "upload" && (
-          <Card className="border border-slate-200 rounded-xl bg-white shadow-sm max-w-xl mx-auto">
+          <Card className="border border-[#E8E4DE] rounded-[20px] bg-white shadow-sm max-w-xl mx-auto">
             <CardHeader className="text-center">
               <CardTitle className="text-lg font-medium flex items-center justify-center gap-2">
-                <Sparkles className="w-5 h-5 text-blue-600" />
+                <Sparkles className="w-5 h-5 text-[#FF6B35]" />
                 Upload Your Document
               </CardTitle>
-              <CardDescription className="text-sm text-slate-500">
+              <CardDescription className="text-sm text-[#6b6b8a]">
                 Supports AGM Minutes, Financial Statements, or Annual Reports (PDF)
               </CardDescription>
             </CardHeader>
@@ -434,8 +434,8 @@ export default function StrataHubReporterPage() {
                 description="or tap to scan with camera"
               />
 
-              <p className="text-xs text-slate-500 text-center mt-4">
-                Analyzing for: <span className="font-medium text-slate-700">{email}</span>
+              <p className="text-xs text-[#6b6b8a] text-center mt-4">
+                Analyzing for: <span className="font-medium text-[#3d3d5c]">{email}</span>
               </p>
             </CardContent>
           </Card>
@@ -484,7 +484,7 @@ export default function StrataHubReporterPage() {
 
               {/* Intro text */}
               <div className="text-center mb-6">
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-2">
                   Meet Your Team
                 </h2>
                 <p className="text-slate-400 text-sm">
@@ -493,7 +493,7 @@ export default function StrataHubReporterPage() {
               </div>
 
               {/* Agent Card - Light background for contrast */}
-              <div className={`relative rounded-2xl border-2 ${agentStory[agentIndex].borderColor} bg-white shadow-xl overflow-hidden transition-all duration-700 ease-out`}>
+              <div className={`relative rounded-[20px] border-2 ${agentStory[agentIndex].borderColor} bg-white shadow-xl overflow-hidden transition-all duration-700 ease-out`}>
                 {/* Subtle colored accent bar at top */}
                 <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${agentStory[agentIndex].bgGradient}`} />
 
@@ -654,7 +654,7 @@ export default function StrataHubReporterPage() {
                 </Card>
 
                 {/* Results Grid */}
-                <Card className="border border-slate-200 rounded-xl bg-white shadow-sm">
+                <Card className="border border-[#E8E4DE] rounded-[20px] bg-white shadow-sm">
                   <CardHeader>
                     <CardTitle className="text-lg font-medium flex items-center gap-2">
                       <CheckCircle2 className="w-5 h-5 text-green-600" />
@@ -667,92 +667,92 @@ export default function StrataHubReporterPage() {
                   <CardContent>
                     <div className="grid md:grid-cols-2 gap-4">
                       {/* Strata Plan Number */}
-                      <div className="p-4 bg-slate-50 rounded-lg">
+                      <div className="p-4 bg-[#F8F5F0] rounded-lg">
                         <div className="flex items-center gap-2 mb-2">
-                          <Building2 className="w-4 h-4 text-slate-500" />
-                          <span className="text-xs font-medium text-slate-500 uppercase">
+                          <Building2 className="w-4 h-4 text-[#6b6b8a]" />
+                          <span className="text-xs font-medium text-[#6b6b8a] uppercase">
                             Strata Plan
                           </span>
                         </div>
-                        <p className="text-lg font-semibold text-slate-900">
+                        <p className="text-lg font-semibold text-[#1a1a2e]">
                           {report.extractedData?.strataPlanNumber || "Not found"}
                         </p>
                       </div>
 
                       {/* Total Lots */}
-                      <div className="p-4 bg-slate-50 rounded-lg">
+                      <div className="p-4 bg-[#F8F5F0] rounded-lg">
                         <div className="flex items-center gap-2 mb-2">
-                          <Users className="w-4 h-4 text-slate-500" />
-                          <span className="text-xs font-medium text-slate-500 uppercase">
+                          <Users className="w-4 h-4 text-[#6b6b8a]" />
+                          <span className="text-xs font-medium text-[#6b6b8a] uppercase">
                             Total Lots
                           </span>
                         </div>
-                        <p className="text-lg font-semibold text-slate-900">
+                        <p className="text-lg font-semibold text-[#1a1a2e]">
                           {report.extractedData?.totalLots ?? "Not found"}
                         </p>
                       </div>
 
                       {/* Last AGM Date */}
-                      <div className="p-4 bg-slate-50 rounded-lg">
+                      <div className="p-4 bg-[#F8F5F0] rounded-lg">
                         <div className="flex items-center gap-2 mb-2">
-                          <Calendar className="w-4 h-4 text-slate-500" />
-                          <span className="text-xs font-medium text-slate-500 uppercase">
+                          <Calendar className="w-4 h-4 text-[#6b6b8a]" />
+                          <span className="text-xs font-medium text-[#6b6b8a] uppercase">
                             Last AGM Date
                           </span>
                         </div>
-                        <p className="text-lg font-semibold text-slate-900">
+                        <p className="text-lg font-semibold text-[#1a1a2e]">
                           {report.extractedData?.lastAgmDate || "Not found"}
                         </p>
                       </div>
 
                       {/* AFSS Date */}
-                      <div className="p-4 bg-slate-50 rounded-lg">
+                      <div className="p-4 bg-[#F8F5F0] rounded-lg">
                         <div className="flex items-center gap-2 mb-2">
-                          <Flame className="w-4 h-4 text-slate-500" />
-                          <span className="text-xs font-medium text-slate-500 uppercase">
+                          <Flame className="w-4 h-4 text-[#6b6b8a]" />
+                          <span className="text-xs font-medium text-[#6b6b8a] uppercase">
                             Last AFSS Date
                           </span>
                         </div>
-                        <p className="text-lg font-semibold text-slate-900">
+                        <p className="text-lg font-semibold text-[#1a1a2e]">
                           {report.extractedData?.lastAfssDate || "Not found"}
                         </p>
                       </div>
 
                       {/* Admin Fund Balance */}
-                      <div className="p-4 bg-slate-50 rounded-lg">
+                      <div className="p-4 bg-[#F8F5F0] rounded-lg">
                         <div className="flex items-center gap-2 mb-2">
-                          <DollarSign className="w-4 h-4 text-slate-500" />
-                          <span className="text-xs font-medium text-slate-500 uppercase">
+                          <DollarSign className="w-4 h-4 text-[#6b6b8a]" />
+                          <span className="text-xs font-medium text-[#6b6b8a] uppercase">
                             Admin Fund Balance
                           </span>
                         </div>
-                        <p className="text-lg font-semibold text-slate-900">
+                        <p className="text-lg font-semibold text-[#1a1a2e]">
                           {formatCurrency(report.extractedData?.adminFundBalance)}
                         </p>
                       </div>
 
                       {/* Capital Works Fund */}
-                      <div className="p-4 bg-slate-50 rounded-lg">
+                      <div className="p-4 bg-[#F8F5F0] rounded-lg">
                         <div className="flex items-center gap-2 mb-2">
-                          <DollarSign className="w-4 h-4 text-slate-500" />
-                          <span className="text-xs font-medium text-slate-500 uppercase">
+                          <DollarSign className="w-4 h-4 text-[#6b6b8a]" />
+                          <span className="text-xs font-medium text-[#6b6b8a] uppercase">
                             Capital Works Fund
                           </span>
                         </div>
-                        <p className="text-lg font-semibold text-slate-900">
+                        <p className="text-lg font-semibold text-[#1a1a2e]">
                           {formatCurrency(report.extractedData?.capitalWorksFundBalance)}
                         </p>
                       </div>
 
                       {/* Insurance Value */}
-                      <div className="p-4 bg-slate-50 rounded-lg md:col-span-2">
+                      <div className="p-4 bg-[#F8F5F0] rounded-lg md:col-span-2">
                         <div className="flex items-center gap-2 mb-2">
-                          <Shield className="w-4 h-4 text-slate-500" />
-                          <span className="text-xs font-medium text-slate-500 uppercase">
+                          <Shield className="w-4 h-4 text-[#6b6b8a]" />
+                          <span className="text-xs font-medium text-[#6b6b8a] uppercase">
                             Insurance Replacement Value
                           </span>
                         </div>
-                        <p className="text-lg font-semibold text-slate-900">
+                        <p className="text-lg font-semibold text-[#1a1a2e]">
                           {formatCurrency(report.extractedData?.insuranceReplacementValue)}
                         </p>
                       </div>
@@ -761,16 +761,16 @@ export default function StrataHubReporterPage() {
                 </Card>
 
                 {/* CTA */}
-                <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 text-center">
-                  <h2 className="text-xl font-semibold text-white mb-3">
+                <div className="bg-gradient-to-r from-[#FF6B35] to-[#E85A2A] rounded-[20px] p-8 text-center">
+                  <h2 className="text-xl font-display font-semibold text-white mb-3">
                     Ready to automate your Strata Hub reporting?
                   </h2>
-                  <p className="text-blue-100 mb-6 max-w-md mx-auto">
+                  <p className="text-white/90 mb-6 max-w-md mx-auto">
                     StrataGenie tracks your AGM dates, generates compliant documents,
                     and reminds you when Strata Hub reports are due.
                   </p>
                   <Link href="/sign-up">
-                    <Button className="bg-white text-blue-700 hover:bg-blue-50 rounded-lg px-6 py-2.5">
+                    <Button className="bg-white text-[#3d3d5c] hover:bg-[#F8F5F0] rounded-lg px-6 py-2.5">
                       Start Free Trial
                     </Button>
                   </Link>
@@ -783,7 +783,7 @@ export default function StrataHubReporterPage() {
         {/* How It Works */}
         {step === "upload" && (
           <section className="mt-12">
-            <h2 className="text-xl font-semibold text-slate-900 mb-6 text-center">
+            <h2 className="text-xl font-display font-semibold text-[#1a1a2e] mb-6 text-center">
               How It Works
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
@@ -805,11 +805,11 @@ export default function StrataHubReporterPage() {
                 },
               ].map((item) => (
                 <div key={item.step} className="text-center">
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span className="text-blue-700 font-semibold">{item.step}</span>
+                  <div className="w-10 h-10 bg-[#FFF0EB] rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span className="text-[#FF6B35] font-semibold">{item.step}</span>
                   </div>
-                  <h3 className="font-medium text-slate-900 mb-1">{item.title}</h3>
-                  <p className="text-sm text-slate-600">{item.description}</p>
+                  <h3 className="font-medium text-[#1a1a2e] mb-1">{item.title}</h3>
+                  <p className="text-sm text-[#3d3d5c]">{item.description}</p>
                 </div>
               ))}
             </div>

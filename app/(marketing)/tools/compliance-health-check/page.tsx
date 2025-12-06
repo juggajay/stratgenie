@@ -109,7 +109,7 @@ export default function ComplianceHealthCheckPage() {
         {/* Back Link */}
         <Link
           href="/tools"
-          className="inline-flex items-center gap-2 text-sm text-slate-600 hover:text-purple-600 mb-8 transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-[#3d3d5c] hover:text-[#FF6B35] mb-8 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Tools
@@ -118,21 +118,21 @@ export default function ComplianceHealthCheckPage() {
         {/* Intro Step */}
         {step === "intro" && (
           <div className="text-center">
-            <div className="w-20 h-20 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <ClipboardCheck className="w-10 h-10 text-purple-600" />
+            <div className="w-20 h-20 bg-[#FFF0EB] rounded-[20px] flex items-center justify-center mx-auto mb-6">
+              <ClipboardCheck className="w-10 h-10 text-[#FF6B35]" />
             </div>
-            <h1 className="text-3xl font-semibold tracking-tight text-slate-900 mb-4">
+            <h1 className="text-3xl font-display font-semibold tracking-tight text-[#1a1a2e] mb-4">
               Strata Compliance Health Check
             </h1>
-            <p className="text-lg text-slate-600 max-w-xl mx-auto mb-8">
-              Answer 10 quick questions to assess your scheme's compliance status
+            <p className="text-lg text-[#3d3d5c] max-w-xl mx-auto mb-8">
+              Answer 10 quick questions to assess your scheme&apos;s compliance status
               and get personalized recommendations.
             </p>
             <div className="flex flex-wrap justify-center gap-4 mb-8">
               {quizCategories.map((cat) => (
                 <span
                   key={cat.id}
-                  className="px-3 py-1 bg-slate-100 text-slate-600 text-sm rounded-full"
+                  className="px-3 py-1 bg-[#F8F5F0] text-[#3d3d5c] text-sm rounded-lg"
                 >
                   {cat.name}
                 </span>
@@ -140,12 +140,12 @@ export default function ComplianceHealthCheckPage() {
             </div>
             <Button
               onClick={() => setStep("quiz")}
-              className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-8 py-3 text-lg"
+              className="bg-[#FF6B35] hover:bg-[#E85A2A] text-white rounded-lg px-8 py-3 text-lg"
             >
               Start Health Check
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
-            <p className="text-sm text-slate-500 mt-4">Takes about 2 minutes</p>
+            <p className="text-sm text-[#6b6b8a] mt-4">Takes about 2 minutes</p>
           </div>
         )}
 
@@ -154,20 +154,20 @@ export default function ComplianceHealthCheckPage() {
           <div>
             {/* Progress Bar */}
             <div className="mb-8">
-              <div className="flex justify-between text-sm text-slate-500 mb-2">
+              <div className="flex justify-between text-sm text-[#6b6b8a] mb-2">
                 <span>Question {currentQuestion + 1} of {quizQuestions.length}</span>
                 <span>{category?.name}</span>
               </div>
-              <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
+              <div className="h-2 bg-[#E8E4DE] rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-purple-600 transition-all duration-300"
+                  className="h-full bg-[#FF6B35] transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 />
               </div>
             </div>
 
             {/* Question Card */}
-            <Card className="border border-slate-200 rounded-xl bg-white shadow-sm">
+            <Card className="border border-[#E8E4DE] rounded-[20px] border bg-white shadow-sm">
               <CardHeader>
                 <CardTitle className="text-xl font-medium">
                   {question.question}
@@ -181,23 +181,23 @@ export default function ComplianceHealthCheckPage() {
                       onClick={() => handleAnswer(question.id, option.value)}
                       className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
                         answers[question.id] === option.value
-                          ? "border-purple-600 bg-purple-50"
-                          : "border-slate-200 hover:border-slate-300"
+                          ? "border-[#FF6B35] bg-[#FFF0EB]"
+                          : "border-[#E8E4DE] hover:border-[#E8E4DE]"
                       }`}
                     >
                       <div className="flex items-center gap-3">
                         <div
                           className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                             answers[question.id] === option.value
-                              ? "border-purple-600 bg-purple-600"
-                              : "border-slate-300"
+                              ? "border-[#FF6B35] bg-[#FF6B35]"
+                              : "border-[#E8E4DE]"
                           }`}
                         >
                           {answers[question.id] === option.value && (
                             <Check className="w-3 h-3 text-white" />
                           )}
                         </div>
-                        <span className="text-slate-700">{option.label}</span>
+                        <span className="text-[#3d3d5c]">{option.label}</span>
                       </div>
                     </button>
                   ))}
@@ -217,7 +217,7 @@ export default function ComplianceHealthCheckPage() {
                   <Button
                     onClick={handleNext}
                     disabled={!answers[question.id]}
-                    className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg"
+                    className="bg-[#FF6B35] hover:bg-[#E85A2A] text-white rounded-lg"
                   >
                     {currentQuestion === quizQuestions.length - 1
                       ? "Get Results"
@@ -232,22 +232,22 @@ export default function ComplianceHealthCheckPage() {
 
         {/* Email Step */}
         {step === "email" && (
-          <Card className="border border-slate-200 rounded-xl bg-white shadow-sm max-w-md mx-auto">
+          <Card className="border border-[#E8E4DE] rounded-[20px] border bg-white shadow-sm max-w-md mx-auto">
             <CardHeader className="text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <ClipboardCheck className="w-8 h-8 text-purple-600" />
+              <div className="w-16 h-16 bg-[#FFF0EB] rounded-[20px] flex items-center justify-center mx-auto mb-4">
+                <ClipboardCheck className="w-8 h-8 text-[#FF6B35]" />
               </div>
               <CardTitle className="text-xl font-medium">
                 Almost there!
               </CardTitle>
-              <CardDescription className="text-slate-500">
+              <CardDescription className="text-[#6b6b8a]">
                 Enter your email to see your personalized compliance report
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleEmailSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-sm font-medium text-slate-700">
+                  <Label htmlFor="name" className="text-sm font-medium text-[#3d3d5c]">
                     Name (optional)
                   </Label>
                   <Input
@@ -256,11 +256,11 @@ export default function ComplianceHealthCheckPage() {
                     placeholder="Your name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="rounded-lg border-slate-300"
+                    className="rounded-lg border-[#E8E4DE]"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium text-slate-700">
+                  <Label htmlFor="email" className="text-sm font-medium text-[#3d3d5c]">
                     Email Address
                   </Label>
                   <Input
@@ -270,18 +270,18 @@ export default function ComplianceHealthCheckPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="rounded-lg border-slate-300"
+                    className="rounded-lg border-[#E8E4DE]"
                   />
                 </div>
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-purple-600 hover:bg-purple-700 text-white rounded-lg py-3"
+                  className="w-full bg-[#FF6B35] hover:bg-[#E85A2A] text-white rounded-lg py-3"
                 >
                   {isLoading ? "Calculating..." : "See My Results"}
                 </Button>
-                <p className="text-xs text-slate-500 text-center">
-                  We'll send you helpful strata tips. Unsubscribe anytime.
+                <p className="text-xs text-[#6b6b8a] text-center">
+                  We&apos;ll send you helpful strata tips. Unsubscribe anytime.
                 </p>
               </form>
             </CardContent>
@@ -301,20 +301,20 @@ export default function ComplianceHealthCheckPage() {
                 >
                   {ratingConfig[results.rating].label}
                 </div>
-                <div className="text-6xl font-bold text-slate-900 mb-2">
+                <div className="text-6xl font-bold text-[#1a1a2e] mb-2">
                   {results.percentage}%
                 </div>
-                <p className="text-slate-600 mb-6">
+                <p className="text-[#3d3d5c] mb-6">
                   {ratingConfig[results.rating].description}
                 </p>
-                <div className="text-sm text-slate-500">
+                <div className="text-sm text-[#6b6b8a]">
                   Score: {results.totalScore} / {results.maxScore}
                 </div>
               </CardContent>
             </Card>
 
             {/* Category Breakdown */}
-            <Card className="border border-slate-200 rounded-xl bg-white shadow-sm">
+            <Card className="border border-[#E8E4DE] rounded-[20px] border bg-white shadow-sm">
               <CardHeader>
                 <CardTitle className="text-lg font-medium">
                   Category Breakdown
@@ -325,7 +325,7 @@ export default function ComplianceHealthCheckPage() {
                   {results.categoryScores.map(({ category, percentage }) => (
                     <div key={category.id}>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-slate-700">{category.name}</span>
+                        <span className="text-[#3d3d5c]">{category.name}</span>
                         <span
                           className={
                             percentage >= 60
@@ -338,7 +338,7 @@ export default function ComplianceHealthCheckPage() {
                           {percentage}%
                         </span>
                       </div>
-                      <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
+                      <div className="h-2 bg-[#E8E4DE] rounded-full overflow-hidden">
                         <div
                           className={`h-full transition-all ${
                             percentage >= 60
@@ -357,7 +357,7 @@ export default function ComplianceHealthCheckPage() {
             </Card>
 
             {/* Recommendations */}
-            <Card className="border border-slate-200 rounded-xl bg-white shadow-sm">
+            <Card className="border border-[#E8E4DE] rounded-[20px] border bg-white shadow-sm">
               <CardHeader>
                 <CardTitle className="text-lg font-medium flex items-center gap-2">
                   <AlertCircle className="w-5 h-5 text-amber-600" />
@@ -368,12 +368,12 @@ export default function ComplianceHealthCheckPage() {
                 <ul className="space-y-3">
                   {results.recommendations.map((rec, index) => (
                     <li key={index} className="flex items-start gap-3">
-                      <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <span className="text-purple-700 text-xs font-semibold">
+                      <div className="w-6 h-6 bg-[#FFF0EB] rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span className="text-[#FF6B35] text-xs font-semibold">
                           {index + 1}
                         </span>
                       </div>
-                      <p className="text-slate-600">{rec}</p>
+                      <p className="text-[#3d3d5c]">{rec}</p>
                     </li>
                   ))}
                 </ul>
@@ -381,17 +381,17 @@ export default function ComplianceHealthCheckPage() {
             </Card>
 
             {/* CTA */}
-            <div className="bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl p-8 text-center">
+            <div className="bg-gradient-to-r from-[#FF6B35] to-[#E85A2A] rounded-[20px] p-8 text-center">
               <h2 className="text-xl font-semibold text-white mb-3">
                 Want help improving your compliance?
               </h2>
-              <p className="text-purple-100 mb-6 max-w-md mx-auto">
+              <p className="text-white/90 mb-6 max-w-md mx-auto">
                 StrataGenie tracks deadlines, generates documents, and keeps your
                 scheme compliant automatically.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Link href="/sign-up">
-                  <Button className="bg-white text-purple-700 hover:bg-purple-50 rounded-lg px-6 py-2.5">
+                  <Button className="bg-white text-[#FF6B35] hover:bg-[#F8F5F0] rounded-lg px-6 py-2.5">
                     Start Free Trial
                   </Button>
                 </Link>

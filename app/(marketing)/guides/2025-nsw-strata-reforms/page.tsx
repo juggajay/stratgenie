@@ -121,7 +121,7 @@ export default function StrataReforms2025Page() {
         {/* Breadcrumb */}
         <Link
           href="/guides"
-          className="inline-flex items-center gap-2 text-sm text-slate-600 hover:text-blue-600 mb-8 transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-[#3d3d5c] hover:text-[#FF6B35] mb-8 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Guides
@@ -130,22 +130,22 @@ export default function StrataReforms2025Page() {
         {/* Header */}
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-              <Scale className="w-6 h-6 text-blue-600" />
+            <div className="w-12 h-12 bg-[#FFF0EB] rounded-[20px] flex items-center justify-center">
+              <Scale className="w-6 h-6 text-[#FF6B35]" />
             </div>
-            <span className="px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-full flex items-center gap-1">
+            <span className="px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-lg flex items-center gap-1">
               <AlertTriangle className="w-3 h-3" />
               New Laws 2025
             </span>
           </div>
-          <h1 className="text-3xl font-semibold tracking-tight text-slate-900 mb-4">
+          <h1 className="text-3xl font-semibold font-display tracking-tight text-[#1a1a2e] mb-4">
             The 2025 NSW Strata Reforms: What Self-Managed Committees Must Do
           </h1>
-          <p className="text-lg text-slate-600 mb-6">
+          <p className="text-lg text-[#3d3d5c] mb-6">
             Significant reforms to the Strata Schemes Management Act 2015 commenced in October 2025.
             This guide explains the key changes and what your committee needs to do to stay compliant.
           </p>
-          <div className="flex flex-wrap gap-4 text-sm text-slate-500">
+          <div className="flex flex-wrap gap-4 text-sm text-[#6b6b8a]">
             <span className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
               Effective: 1 October 2025
@@ -158,7 +158,7 @@ export default function StrataReforms2025Page() {
         </div>
 
         {/* Urgent Action Banner */}
-        <Card className="border-2 border-amber-300 bg-amber-50 rounded-xl mb-10">
+        <Card className="border-2 border-amber-300 bg-amber-50 rounded-[20px] mb-10">
           <CardContent className="pt-6">
             <div className="flex gap-4">
               <div className="w-10 h-10 bg-amber-200 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -169,7 +169,7 @@ export default function StrataReforms2025Page() {
                   Immediate Action Required
                 </h3>
                 <p className="text-amber-800 text-sm mb-3">
-                  These reforms are now in effect. If your committee hasn't updated its processes,
+                  These reforms are now in effect. If your committee hasn&apos;t updated its processes,
                   you may be non-compliant. Review each reform below and take action.
                 </p>
                 <ul className="text-sm text-amber-800 space-y-1">
@@ -193,17 +193,17 @@ export default function StrataReforms2025Page() {
 
         {/* Overview Section */}
         <section className="mb-12">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">
+          <h2 className="text-xl font-semibold font-display text-[#1a1a2e] mb-4">
             Overview of the 2025 Reforms
           </h2>
           <div className="prose prose-slate max-w-none">
-            <p className="text-slate-600">
+            <p className="text-[#3d3d5c]">
               The NSW Government introduced significant amendments to strata legislation in 2025,
               focusing on four key areas: financial hardship support, levy payment flexibility,
               committee accountability, and insurance transparency. These changes aim to protect
               lot owners while improving governance standards across NSW strata schemes.
             </p>
-            <p className="text-slate-600">
+            <p className="text-[#3d3d5c]">
               For self-managed strata committees, these reforms mean new administrative obligations
               and updated processes. Failure to comply could result in disputes, complaints to
               NSW Fair Trading, and potential penalties.
@@ -213,7 +213,7 @@ export default function StrataReforms2025Page() {
 
         {/* Reform Cards */}
         <section className="mb-12">
-          <h2 className="text-xl font-semibold text-slate-900 mb-6">
+          <h2 className="text-xl font-semibold font-display text-[#1a1a2e] mb-6">
             The Four Key Reforms
           </h2>
           <div className="space-y-6">
@@ -223,34 +223,34 @@ export default function StrataReforms2025Page() {
               return (
                 <Card
                   key={reform.id}
-                  className={`border ${colors.border} rounded-xl bg-white shadow-sm`}
+                  className={`border ${colors.border} rounded-[20px] bg-white shadow-sm`}
                 >
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex items-start gap-4">
-                        <div className={`w-12 h-12 ${colors.bg} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                        <div className={`w-12 h-12 ${colors.bg} rounded-[20px] flex items-center justify-center flex-shrink-0`}>
                           <Icon className={`w-6 h-6 ${colors.text}`} />
                         </div>
                         <div>
                           <CardTitle className="text-lg font-medium">
                             {reform.title}
                           </CardTitle>
-                          <CardDescription className="text-sm text-slate-500 mt-1">
+                          <CardDescription className="text-sm text-[#6b6b8a] mt-1">
                             {reform.description}
                           </CardDescription>
                         </div>
                       </div>
-                      <span className={`px-2 py-1 ${colors.light} ${colors.text} text-xs font-medium rounded-full whitespace-nowrap`}>
+                      <span className={`px-2 py-1 ${colors.light} ${colors.text} text-xs font-medium rounded-lg whitespace-nowrap`}>
                         {reform.effectiveDate}
                       </span>
                     </div>
                   </CardHeader>
                   <CardContent className="pt-0">
                     <div className={`p-4 ${colors.light} rounded-lg mb-4`}>
-                      <h4 className="text-sm font-medium text-slate-700 mb-2">Key Points:</h4>
+                      <h4 className="text-sm font-medium text-[#3d3d5c] mb-2">Key Points:</h4>
                       <ul className="space-y-1">
                         {reform.keyPoints.map((point, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
+                          <li key={i} className="flex items-start gap-2 text-sm text-[#3d3d5c]">
                             <CheckCircle2 className={`w-4 h-4 ${colors.text} flex-shrink-0 mt-0.5`} />
                             {point}
                           </li>
@@ -272,10 +272,10 @@ export default function StrataReforms2025Page() {
 
         {/* Compliance Checklist */}
         <section className="mb-12">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">
+          <h2 className="text-xl font-semibold font-display text-[#1a1a2e] mb-4">
             Compliance Checklist for Self-Managed Schemes
           </h2>
-          <Card className="border border-slate-200 rounded-xl bg-white shadow-sm">
+          <Card className="border border-[#E8E4DE] rounded-[20px] bg-white shadow-sm">
             <CardContent className="pt-6">
               <div className="space-y-4">
                 {[
@@ -312,24 +312,24 @@ export default function StrataReforms2025Page() {
                 ].map((item, i) => (
                   <div
                     key={i}
-                    className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg"
+                    className="flex items-start gap-3 p-3 bg-[#F8F5F0] rounded-lg"
                   >
                     <div className="w-6 h-6 border-2 border-slate-300 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
                       <span className="text-xs text-slate-400">{i + 1}</span>
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-slate-700">{item.task}</p>
+                      <p className="text-sm text-[#3d3d5c]">{item.task}</p>
                       <div className="flex gap-3 mt-1 text-xs">
                         <span className={`${
                           item.priority === "High"
                             ? "text-red-600"
                             : item.priority === "Medium"
                             ? "text-amber-600"
-                            : "text-blue-600"
+                            : "text-[#FF6B35]"
                         }`}>
                           {item.priority} Priority
                         </span>
-                        <span className="text-slate-500">{item.deadline}</span>
+                        <span className="text-[#6b6b8a]">{item.deadline}</span>
                       </div>
                     </div>
                   </div>
@@ -341,7 +341,7 @@ export default function StrataReforms2025Page() {
 
         {/* FAQ Section */}
         <section className="mb-12">
-          <h2 className="text-xl font-semibold text-slate-900 mb-6">
+          <h2 className="text-xl font-semibold font-display text-[#1a1a2e] mb-6">
             Frequently Asked Questions
           </h2>
           <div className="space-y-4">
@@ -369,10 +369,10 @@ export default function StrataReforms2025Page() {
             ].map((faq, i) => (
               <div
                 key={i}
-                className="p-6 bg-white rounded-xl border border-slate-200"
+                className="p-6 bg-white rounded-[20px] border border-[#E8E4DE]"
               >
-                <h3 className="font-medium text-slate-900 mb-2">{faq.q}</h3>
-                <p className="text-slate-600 text-sm">{faq.a}</p>
+                <h3 className="font-medium text-[#1a1a2e] mb-2">{faq.q}</h3>
+                <p className="text-[#3d3d5c] text-sm">{faq.a}</p>
               </div>
             ))}
           </div>
@@ -380,7 +380,7 @@ export default function StrataReforms2025Page() {
 
         {/* Related Guides */}
         <section className="mb-12">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">
+          <h2 className="text-xl font-semibold font-display text-[#1a1a2e] mb-4">
             Related Guides
           </h2>
           <div className="grid md:grid-cols-2 gap-4">
@@ -397,12 +397,12 @@ export default function StrataReforms2025Page() {
               },
             ].map((guide) => (
               <Link key={guide.href} href={guide.href}>
-                <Card className="border border-slate-200 rounded-xl bg-white shadow-sm hover:border-blue-300 hover:shadow-md transition-all h-full">
+                <Card className="border border-[#E8E4DE] rounded-[20px] bg-white shadow-sm hover:border-[#FF6B35] hover:shadow-md transition-all h-full">
                   <CardContent className="pt-6">
-                    <h3 className="font-medium text-slate-900 mb-1">
+                    <h3 className="font-medium text-[#1a1a2e] mb-1">
                       {guide.title}
                     </h3>
-                    <p className="text-sm text-slate-500">{guide.description}</p>
+                    <p className="text-sm text-[#6b6b8a]">{guide.description}</p>
                   </CardContent>
                 </Card>
               </Link>
@@ -411,16 +411,16 @@ export default function StrataReforms2025Page() {
         </section>
 
         {/* CTA */}
-        <section className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 text-center">
-          <h2 className="text-xl font-semibold text-white mb-3">
+        <section className="bg-gradient-to-r from-[#FF6B35] to-[#E85A2A] rounded-[20px] p-8 text-center">
+          <h2 className="text-xl font-semibold font-display text-white mb-3">
             Stay Compliant with the 2025 Reforms
           </h2>
-          <p className="text-blue-100 mb-6 max-w-md mx-auto">
+          <p className="text-white/90 mb-6 max-w-md mx-auto">
             StrataGenie automatically generates compliant levy notices with the required
             Financial Hardship Statement and tracks all your reform obligations.
           </p>
           <Link href="/sign-up">
-            <Button className="bg-white text-blue-700 hover:bg-blue-50 rounded-lg px-6 py-2.5">
+            <Button className="bg-white text-[#FF6B35] hover:bg-[#F8F5F0] rounded-lg px-6 py-2.5">
               Start Free Trial
             </Button>
           </Link>

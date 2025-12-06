@@ -77,21 +77,21 @@ export default async function StrataFinancialManagementPage() {
       />
 
       {/* Hero Section */}
-      <section className="py-16 px-6 bg-gradient-to-b from-emerald-50 to-white">
+      <section className="py-16 px-6 bg-gradient-to-b from-[#F8F5F0] to-white">
         <div className="max-w-4xl mx-auto text-center">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 mb-4">
+          <span className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-medium bg-[#FF6B35]/10 text-[#FF6B35] mb-4">
             Financial Guide
           </span>
-          <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 mb-6">
+          <h1 className="text-4xl md:text-5xl font-display font-semibold tracking-tight text-[#1a1a2e] mb-6">
             Strata Financial Management Guide
           </h1>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto mb-8">
+          <p className="text-xl text-[#3d3d5c] max-w-2xl mx-auto mb-8">
             Master the financial side of strata management. From levy calculations to
             fund management and compliant reporting.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/tools/levy-calculator">
-              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-6 py-3">
+              <Button className="bg-[#FF6B35] hover:bg-[#E85A2A] text-white rounded-lg px-6 py-3">
                 Try Levy Calculator
               </Button>
             </Link>
@@ -107,74 +107,74 @@ export default async function StrataFinancialManagementPage() {
       {/* Fund Types */}
       <section className="py-16 px-6">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-semibold text-slate-900 mb-8 text-center">
+          <h2 className="text-2xl font-display font-semibold text-[#1a1a2e] mb-8 text-center">
             Understanding Strata Funds
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
-                <Wallet className="w-6 h-6 text-blue-600" />
+            <div className="bg-white p-8 rounded-[20px] border border-[#E8E4DE] shadow-sm">
+              <div className="w-12 h-12 bg-[#FF6B35]/10 rounded-[20px] flex items-center justify-center mb-6">
+                <Wallet className="w-6 h-6 text-[#FF6B35]" />
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-4">
+              <h3 className="text-xl font-semibold text-[#1a1a2e] mb-4">
                 Administrative Fund
               </h3>
-              <p className="text-slate-600 mb-4">
+              <p className="text-[#3d3d5c] mb-4">
                 For day-to-day operating expenses that keep your building running
                 smoothly throughout the year.
               </p>
-              <ul className="space-y-2 text-sm text-slate-600">
+              <ul className="space-y-2 text-sm text-[#3d3d5c]">
                 <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-1.5"></span>
+                  <span className="w-1.5 h-1.5 bg-[#FF6B35] rounded-full mt-1.5"></span>
                   Building insurance premiums
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-1.5"></span>
+                  <span className="w-1.5 h-1.5 bg-[#FF6B35] rounded-full mt-1.5"></span>
                   Cleaning and garden maintenance
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-1.5"></span>
+                  <span className="w-1.5 h-1.5 bg-[#FF6B35] rounded-full mt-1.5"></span>
                   Utilities (common area electricity, water)
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-1.5"></span>
+                  <span className="w-1.5 h-1.5 bg-[#FF6B35] rounded-full mt-1.5"></span>
                   Minor repairs and maintenance
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-1.5"></span>
+                  <span className="w-1.5 h-1.5 bg-[#FF6B35] rounded-full mt-1.5"></span>
                   Strata management fees and audit costs
                 </li>
               </ul>
             </div>
-            <div className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
-              <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mb-6">
-                <PiggyBank className="w-6 h-6 text-emerald-600" />
+            <div className="bg-white p-8 rounded-[20px] border border-[#E8E4DE] shadow-sm">
+              <div className="w-12 h-12 bg-[#FF6B35]/10 rounded-[20px] flex items-center justify-center mb-6">
+                <PiggyBank className="w-6 h-6 text-[#FF6B35]" />
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-4">
+              <h3 className="text-xl font-semibold text-[#1a1a2e] mb-4">
                 Capital Works Fund
               </h3>
-              <p className="text-slate-600 mb-4">
+              <p className="text-[#3d3d5c] mb-4">
                 For major repairs and long-term maintenance. This fund should grow
                 steadily to meet future needs.
               </p>
-              <ul className="space-y-2 text-sm text-slate-600">
+              <ul className="space-y-2 text-sm text-[#3d3d5c]">
                 <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-1.5"></span>
+                  <span className="w-1.5 h-1.5 bg-[#FF6B35] rounded-full mt-1.5"></span>
                   Building repainting (every 10-15 years)
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-1.5"></span>
+                  <span className="w-1.5 h-1.5 bg-[#FF6B35] rounded-full mt-1.5"></span>
                   Roof replacement or major repairs
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-1.5"></span>
+                  <span className="w-1.5 h-1.5 bg-[#FF6B35] rounded-full mt-1.5"></span>
                   Lift upgrades or replacement
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-1.5"></span>
+                  <span className="w-1.5 h-1.5 bg-[#FF6B35] rounded-full mt-1.5"></span>
                   Waterproofing and structural repairs
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-1.5"></span>
+                  <span className="w-1.5 h-1.5 bg-[#FF6B35] rounded-full mt-1.5"></span>
                   Fire safety system upgrades
                 </li>
               </ul>
@@ -184,36 +184,36 @@ export default async function StrataFinancialManagementPage() {
       </section>
 
       {/* Levy Calculation */}
-      <section className="py-16 px-6 bg-slate-50">
+      <section className="py-16 px-6 bg-[#F8F5F0]">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-semibold text-slate-900 mb-8 text-center">
+          <h2 className="text-2xl font-display font-semibold text-[#1a1a2e] mb-8 text-center">
             How Levies Are Calculated
           </h2>
-          <div className="bg-white p-8 rounded-xl border border-slate-200">
+          <div className="bg-white p-8 rounded-[20px] border border-[#E8E4DE]">
             <div className="grid md:grid-cols-2 gap-8 mb-8">
               <div>
-                <h3 className="text-lg font-medium text-slate-900 mb-4">The Formula</h3>
-                <div className="bg-slate-50 p-4 rounded-lg font-mono text-sm">
+                <h3 className="text-lg font-medium text-[#1a1a2e] mb-4">The Formula</h3>
+                <div className="bg-[#F8F5F0] p-4 rounded-lg font-mono text-sm">
                   <p>Your Levy =</p>
                   <p className="pl-4">(Your Unit Entitlement / Total Entitlements)</p>
                   <p className="pl-4">x Total Budget</p>
                 </div>
               </div>
               <div>
-                <h3 className="text-lg font-medium text-slate-900 mb-4">Example</h3>
-                <div className="space-y-2 text-sm text-slate-600">
+                <h3 className="text-lg font-medium text-[#1a1a2e] mb-4">Example</h3>
+                <div className="space-y-2 text-sm text-[#3d3d5c]">
                   <p>Total scheme budget: $50,000/year</p>
                   <p>Your unit entitlement: 15</p>
                   <p>Total scheme entitlements: 200</p>
-                  <p className="pt-2 font-medium text-slate-900">
+                  <p className="pt-2 font-medium text-[#1a1a2e]">
                     Your annual levy: $50,000 x (15/200) = $3,750
                   </p>
                 </div>
               </div>
             </div>
-            <div className="text-center pt-6 border-t border-slate-100">
+            <div className="text-center pt-6 border-t border-[#E8E4DE]">
               <Link href="/tools/levy-calculator">
-                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg">
+                <Button className="bg-[#FF6B35] hover:bg-[#E85A2A] text-white rounded-lg">
                   <Calculator className="w-4 h-4 mr-2" />
                   Calculate Your Levies
                 </Button>
@@ -226,42 +226,42 @@ export default async function StrataFinancialManagementPage() {
       {/* Key Financial Responsibilities */}
       <section className="py-16 px-6">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-semibold text-slate-900 mb-8 text-center">
+          <h2 className="text-2xl font-display font-semibold text-[#1a1a2e] mb-8 text-center">
             Treasurer Responsibilities
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-              <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
-                <FileSpreadsheet className="w-5 h-5 text-amber-600" />
+            <div className="bg-white p-6 rounded-[20px] border border-[#E8E4DE] shadow-sm">
+              <div className="w-10 h-10 bg-[#FF6B35]/10 rounded-lg flex items-center justify-center mb-4">
+                <FileSpreadsheet className="w-5 h-5 text-[#FF6B35]" />
               </div>
-              <h3 className="text-lg font-medium text-slate-900 mb-2">
+              <h3 className="text-lg font-medium text-[#1a1a2e] mb-2">
                 Budget Preparation
               </h3>
-              <p className="text-slate-600 text-sm">
+              <p className="text-[#3d3d5c] text-sm">
                 Prepare annual budgets for both funds based on expected expenses and
                 the 10-year capital works plan.
               </p>
             </div>
-            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                <TrendingUp className="w-5 h-5 text-purple-600" />
+            <div className="bg-white p-6 rounded-[20px] border border-[#E8E4DE] shadow-sm">
+              <div className="w-10 h-10 bg-[#FF6B35]/10 rounded-lg flex items-center justify-center mb-4">
+                <TrendingUp className="w-5 h-5 text-[#FF6B35]" />
               </div>
-              <h3 className="text-lg font-medium text-slate-900 mb-2">
+              <h3 className="text-lg font-medium text-[#1a1a2e] mb-2">
                 Levy Collection
               </h3>
-              <p className="text-slate-600 text-sm">
+              <p className="text-[#3d3d5c] text-sm">
                 Issue levy notices, track payments, follow up on arrears, and maintain
                 accurate records of all transactions.
               </p>
             </div>
-            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-              <div className="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center mb-4">
-                <Calculator className="w-5 h-5 text-cyan-600" />
+            <div className="bg-white p-6 rounded-[20px] border border-[#E8E4DE] shadow-sm">
+              <div className="w-10 h-10 bg-[#FF6B35]/10 rounded-lg flex items-center justify-center mb-4">
+                <Calculator className="w-5 h-5 text-[#FF6B35]" />
               </div>
-              <h3 className="text-lg font-medium text-slate-900 mb-2">
+              <h3 className="text-lg font-medium text-[#1a1a2e] mb-2">
                 Financial Reporting
               </h3>
-              <p className="text-slate-600 text-sm">
+              <p className="text-[#3d3d5c] text-sm">
                 Prepare Section 93 compliant financial statements for the AGM and
                 provide regular reports to the committee.
               </p>
@@ -271,21 +271,21 @@ export default async function StrataFinancialManagementPage() {
       </section>
 
       {/* FAQs */}
-      <section className="py-16 px-6 bg-slate-50">
+      <section className="py-16 px-6 bg-[#F8F5F0]">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl font-semibold text-slate-900 mb-8 text-center">
+          <h2 className="text-2xl font-display font-semibold text-[#1a1a2e] mb-8 text-center">
             Frequently Asked Questions
           </h2>
           <div className="space-y-4">
             {faqs.map((faq, index) => (
               <div
                 key={index}
-                className="bg-white p-6 rounded-xl border border-slate-200"
+                className="bg-white p-6 rounded-[20px] border border-[#E8E4DE]"
               >
-                <h3 className="text-lg font-medium text-slate-900 mb-2">
+                <h3 className="text-lg font-medium text-[#1a1a2e] mb-2">
                   {faq.question}
                 </h3>
-                <p className="text-slate-600">{faq.answer}</p>
+                <p className="text-[#3d3d5c]">{faq.answer}</p>
               </div>
             ))}
           </div>
@@ -297,12 +297,12 @@ export default async function StrataFinancialManagementPage() {
         <section className="py-16 px-6">
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-semibold text-slate-900">
+              <h2 className="text-2xl font-display font-semibold text-[#1a1a2e]">
                 Financial Management Articles
               </h2>
               <Link
                 href="/blog/category/financial"
-                className="text-emerald-600 hover:text-emerald-700 text-sm font-medium flex items-center gap-1"
+                className="text-[#FF6B35] hover:text-[#E85A2A] text-sm font-medium flex items-center gap-1"
               >
                 View all <ArrowRight className="w-4 h-4" />
               </Link>
@@ -318,16 +318,16 @@ export default async function StrataFinancialManagementPage() {
 
       {/* CTA */}
       <section className="py-16 px-6">
-        <div className="max-w-4xl mx-auto bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-2xl p-8 md:p-12 text-center">
-          <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
+        <div className="max-w-4xl mx-auto bg-gradient-to-r from-[#FF6B35] to-[#E85A2A] rounded-[20px] p-8 md:p-12 text-center">
+          <h2 className="text-2xl md:text-3xl font-display font-semibold text-white mb-4">
             Simplify Strata Finances with StrataGenie
           </h2>
-          <p className="text-emerald-100 mb-8 max-w-xl mx-auto">
+          <p className="text-white/90 mb-8 max-w-xl mx-auto">
             Automatic levy calculations, budget tracking, financial reporting, and
             more. Let StrataGenie handle the numbers while you focus on your building.
           </p>
           <Link href="/sign-up">
-            <Button className="bg-white text-emerald-700 hover:bg-emerald-50 rounded-lg px-8 py-3 text-lg font-medium">
+            <Button className="bg-white text-[#FF6B35] hover:bg-white/95 rounded-lg px-8 py-3 text-lg font-medium">
               Start Your Free Trial
             </Button>
           </Link>

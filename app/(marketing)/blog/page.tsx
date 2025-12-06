@@ -48,10 +48,10 @@ export default async function BlogPage() {
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-semibold tracking-tight text-slate-900 mb-4">
+            <h1 className="text-4xl font-semibold tracking-tight text-[#1a1a2e] mb-4 font-display">
               Strata Management Blog
             </h1>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="text-lg text-[#3d3d5c] max-w-2xl mx-auto">
               Expert insights, guides, and updates to help you manage your NSW strata
               scheme with confidence.
             </p>
@@ -62,7 +62,7 @@ export default async function BlogPage() {
             <div className="flex flex-wrap justify-center gap-2 mb-12">
               <Link
                 href="/blog"
-                className="px-4 py-2 rounded-full text-sm font-medium bg-blue-600 text-white"
+                className="px-4 py-2 rounded-lg text-sm font-medium bg-[#FF6B35] text-white"
               >
                 All Posts
               </Link>
@@ -70,7 +70,7 @@ export default async function BlogPage() {
                 <Link
                   key={category}
                   href={`/blog/category/${category}`}
-                  className="px-4 py-2 rounded-full text-sm font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors"
+                  className="px-4 py-2 rounded-lg text-sm font-medium bg-[#F8F5F0] text-[#3d3d5c] hover:bg-[#FFF0EB] hover:text-[#FF6B35] transition-colors"
                 >
                   {categoryLabels[category] || category}
                 </Link>
@@ -81,7 +81,7 @@ export default async function BlogPage() {
           {/* Featured Posts */}
           {featuredPosts.length > 0 && (
             <section className="mb-16">
-              <h2 className="text-xl font-semibold text-slate-900 mb-6">
+              <h2 className="text-xl font-semibold text-[#1a1a2e] mb-6 font-display">
                 Featured Articles
               </h2>
               <div className="grid md:grid-cols-2 gap-6">
@@ -94,7 +94,7 @@ export default async function BlogPage() {
 
           {/* All Posts */}
           <section>
-            <h2 className="text-xl font-semibold text-slate-900 mb-6">
+            <h2 className="text-xl font-semibold text-[#1a1a2e] mb-6 font-display">
               {featuredPosts.length > 0 ? "Latest Articles" : "All Articles"}
             </h2>
             {regularPosts.length > 0 ? (
@@ -104,8 +104,8 @@ export default async function BlogPage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 bg-slate-50 rounded-xl">
-                <p className="text-slate-600">
+              <div className="text-center py-12 bg-[#F8F5F0] rounded-[20px]">
+                <p className="text-[#3d3d5c]">
                   No articles published yet. Check back soon!
                 </p>
               </div>
@@ -113,17 +113,17 @@ export default async function BlogPage() {
           </section>
 
           {/* Newsletter CTA */}
-          <section className="mt-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 md:p-12 text-center">
-            <h2 className="text-2xl font-semibold text-white mb-3">
+          <section className="mt-16 bg-gradient-to-r from-[#FF6B35] to-[#E85A2A] rounded-[20px] p-8 md:p-12 text-center">
+            <h2 className="text-2xl font-semibold text-white mb-3 font-display">
               Stay Updated on Strata Compliance
             </h2>
-            <p className="text-blue-100 mb-6 max-w-xl mx-auto">
+            <p className="text-white/90 mb-6 max-w-xl mx-auto">
               Get the latest guides, compliance updates, and tips delivered to your
               inbox. No spam, just valuable insights for strata committees.
             </p>
             <Link
               href="/sign-up"
-              className="inline-flex items-center px-6 py-3 bg-white text-blue-700 font-medium rounded-lg hover:bg-blue-50 transition-colors"
+              className="inline-flex items-center px-6 py-3 bg-white text-[#FF6B35] font-medium rounded-lg hover:bg-[#FFF0EB] transition-colors"
             >
               Start Your Free Trial
             </Link>

@@ -55,24 +55,24 @@ const tools = [
 
 const colorClasses = {
   blue: {
-    bg: "bg-blue-100",
-    icon: "text-blue-600",
-    button: "bg-blue-600 hover:bg-blue-700",
+    bg: "bg-[#FFF0EB]",
+    icon: "text-[#FF6B35]",
+    button: "bg-[#FF6B35] hover:bg-[#E85A2A]",
   },
   emerald: {
-    bg: "bg-emerald-100",
-    icon: "text-emerald-600",
-    button: "bg-emerald-600 hover:bg-emerald-700",
+    bg: "bg-[#ECFDF5]",
+    icon: "text-[#059669]",
+    button: "bg-[#FF6B35] hover:bg-[#E85A2A]",
   },
   purple: {
-    bg: "bg-purple-100",
-    icon: "text-purple-600",
-    button: "bg-purple-600 hover:bg-purple-700",
+    bg: "bg-[#F3E8FF]",
+    icon: "text-[#9333EA]",
+    button: "bg-[#FF6B35] hover:bg-[#E85A2A]",
   },
   indigo: {
-    bg: "bg-indigo-100",
-    icon: "text-indigo-600",
-    button: "bg-indigo-600 hover:bg-indigo-700",
+    bg: "bg-[#E0E7FF]",
+    icon: "text-[#6366F1]",
+    button: "bg-[#FF6B35] hover:bg-[#E85A2A]",
   },
 };
 
@@ -94,12 +94,12 @@ export default function ToolsPage() {
       />
 
       {/* Hero */}
-      <section className="py-16 px-6 bg-gradient-to-b from-slate-50 to-white">
+      <section className="py-16 px-6 bg-gradient-to-b from-[#F8F5F0] to-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 mb-6">
+          <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-[#1a1a2e] mb-6 font-display">
             Free Strata Tools
           </h1>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+          <p className="text-xl text-[#3d3d5c] max-w-2xl mx-auto">
             Practical tools to help NSW strata committees manage their schemes
             effectively. No sign-up required.
           </p>
@@ -115,7 +115,7 @@ export default function ToolsPage() {
               return (
                 <div
                   key={tool.href}
-                  className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                  className="bg-white rounded-[20px] border border-[#E8E4DE] shadow-[0_4px_6px_rgba(0,0,0,0.02),0_10px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_6px_rgba(0,0,0,0.02),0_15px_30px_rgba(0,0,0,0.06)] transition-all overflow-hidden"
                 >
                   <div className="p-6">
                     <div
@@ -123,17 +123,17 @@ export default function ToolsPage() {
                     >
                       <tool.icon className={`w-6 h-6 ${colors.icon}`} />
                     </div>
-                    <h2 className="text-xl font-semibold text-slate-900 mb-2">
+                    <h2 className="text-xl font-semibold text-[#1a1a2e] mb-2 font-display">
                       {tool.title}
                     </h2>
-                    <p className="text-slate-600 text-sm mb-4">{tool.description}</p>
+                    <p className="text-[#3d3d5c] text-sm mb-4">{tool.description}</p>
                     <ul className="space-y-2 mb-6">
                       {tool.features.map((feature) => (
                         <li
                           key={feature}
-                          className="text-xs text-slate-500 flex items-center gap-2"
+                          className="text-xs text-[#6b6b8a] flex items-center gap-2"
                         >
-                          <span className="w-1 h-1 bg-slate-400 rounded-full"></span>
+                          <span className="w-1 h-1 bg-[#9595ad] rounded-full"></span>
                           {feature}
                         </li>
                       ))}
@@ -155,29 +155,29 @@ export default function ToolsPage() {
       </section>
 
       {/* Trust Signals */}
-      <section className="py-12 px-6 bg-slate-50">
+      <section className="py-12 px-6 bg-[#F8F5F0]">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="flex flex-wrap justify-center gap-8 text-sm text-slate-500">
+          <div className="flex flex-wrap justify-center gap-8 text-sm text-[#6b6b8a]">
             <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5 text-[#22C55E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
               <span>100% Free</span>
             </div>
             <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5 text-[#22C55E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
               <span>No Sign-up Required</span>
             </div>
             <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5 text-[#22C55E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
               <span>NSW Compliant</span>
             </div>
             <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5 text-[#22C55E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
               <span>Australian Made</span>
@@ -188,16 +188,16 @@ export default function ToolsPage() {
 
       {/* CTA */}
       <section className="py-16 px-6">
-        <div className="max-w-4xl mx-auto bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 md:p-12 text-center">
-          <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
+        <div className="max-w-4xl mx-auto bg-gradient-to-r from-[#FF6B35] to-[#E85A2A] rounded-[20px] p-8 md:p-12 text-center">
+          <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4 font-display">
             Need More Than Free Tools?
           </h2>
-          <p className="text-blue-100 mb-8 max-w-xl mx-auto">
+          <p className="text-white/90 mb-8 max-w-xl mx-auto">
             StrataGenie provides complete strata management with compliance tracking,
             document generation, financial management, and AI-powered guidance.
           </p>
           <Link href="/sign-up">
-            <Button className="bg-white text-blue-700 hover:bg-blue-50 rounded-lg px-8 py-3 text-lg font-medium">
+            <Button className="bg-white text-[#FF6B35] hover:bg-[#FFF0EB] rounded-lg px-8 py-3 text-lg font-medium">
               Start Your Free Trial
             </Button>
           </Link>

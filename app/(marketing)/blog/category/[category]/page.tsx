@@ -105,7 +105,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           {/* Back Link */}
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-sm text-slate-600 hover:text-blue-600 mb-8 transition-colors"
+            className="inline-flex items-center gap-2 text-sm text-[#6b6b8a] hover:text-[#FF6B35] mb-8 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Blog
@@ -113,10 +113,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
           {/* Header */}
           <div className="mb-12">
-            <h1 className="text-4xl font-semibold tracking-tight text-slate-900 mb-4">
+            <h1 className="text-4xl font-semibold tracking-tight text-[#1a1a2e] mb-4 font-display">
               {info.label}
             </h1>
-            <p className="text-lg text-slate-600 max-w-2xl">
+            <p className="text-lg text-[#3d3d5c] max-w-2xl">
               {info.description}
             </p>
           </div>
@@ -125,7 +125,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           <div className="flex flex-wrap gap-2 mb-12">
             <Link
               href="/blog"
-              className="px-4 py-2 rounded-full text-sm font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors"
+              className="px-4 py-2 rounded-lg text-sm font-medium bg-[#F8F5F0] text-[#3d3d5c] hover:bg-[#FFF0EB] hover:text-[#FF6B35] transition-colors"
             >
               All Posts
             </Link>
@@ -133,10 +133,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               <Link
                 key={cat}
                 href={`/blog/category/${cat}`}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   cat === category
-                    ? "bg-blue-600 text-white"
-                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                    ? "bg-[#FF6B35] text-white"
+                    : "bg-[#F8F5F0] text-[#3d3d5c] hover:bg-[#FFF0EB] hover:text-[#FF6B35]"
                 }`}
               >
                 {categoryInfo[cat]?.label || cat}
@@ -152,25 +152,25 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 bg-slate-50 rounded-xl">
-              <p className="text-slate-600">
+            <div className="text-center py-12 bg-[#F8F5F0] rounded-[20px]">
+              <p className="text-[#3d3d5c]">
                 No articles in this category yet. Check back soon!
               </p>
             </div>
           )}
 
           {/* CTA */}
-          <section className="mt-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 md:p-12 text-center">
-            <h2 className="text-2xl font-semibold text-white mb-3">
+          <section className="mt-16 bg-gradient-to-r from-[#FF6B35] to-[#E85A2A] rounded-[20px] p-8 md:p-12 text-center">
+            <h2 className="text-2xl font-semibold text-white mb-3 font-display">
               Simplify Your Strata Compliance
             </h2>
-            <p className="text-blue-100 mb-6 max-w-xl mx-auto">
+            <p className="text-white/90 mb-6 max-w-xl mx-auto">
               StrataGenie helps NSW strata committees stay compliant with automated
               reminders, document generation, and AI-powered guidance.
             </p>
             <Link
               href="/sign-up"
-              className="inline-flex items-center px-6 py-3 bg-white text-blue-700 font-medium rounded-lg hover:bg-blue-50 transition-colors"
+              className="inline-flex items-center px-6 py-3 bg-white text-[#FF6B35] font-medium rounded-lg hover:bg-[#FFF0EB] transition-colors"
             >
               Start Your Free Trial
             </Link>

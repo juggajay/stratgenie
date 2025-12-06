@@ -52,11 +52,11 @@ export async function generateMetadata({
 }
 
 const categoryColors: Record<string, { bg: string; text: string }> = {
-  compliance: { bg: "bg-blue-100", text: "text-blue-700" },
-  financial: { bg: "bg-emerald-100", text: "text-emerald-700" },
-  maintenance: { bg: "bg-amber-100", text: "text-amber-700" },
-  "self-managed": { bg: "bg-purple-100", text: "text-purple-700" },
-  news: { bg: "bg-slate-100", text: "text-slate-700" },
+  compliance: { bg: "bg-[#FFF0EB]", text: "text-[#FF6B35]" },
+  financial: { bg: "bg-[#ECFDF5]", text: "text-[#059669]" },
+  maintenance: { bg: "bg-[#FEF3C7]", text: "text-[#D97706]" },
+  "self-managed": { bg: "bg-[#E0F2FE]", text: "text-[#0891B2]" },
+  news: { bg: "bg-[#F8F5F0]", text: "text-[#6b6b8a]" },
 };
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
@@ -92,7 +92,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           generateArticleSchema({
             title: post.frontmatter.title,
             description: post.frontmatter.description,
-            path: `/blog/${slug}`,
+            slug: `/blog/${slug}`,
             publishedAt: post.frontmatter.publishedAt,
             updatedAt: post.frontmatter.updatedAt,
             author: post.frontmatter.author || "StrataGenie Team",
@@ -106,7 +106,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {/* Back Link */}
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-sm text-slate-600 hover:text-blue-600 mb-8 transition-colors"
+            className="inline-flex items-center gap-2 text-sm text-[#6b6b8a] hover:text-[#FF6B35] mb-8 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Blog
@@ -117,30 +117,30 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <div className="flex flex-wrap items-center gap-3 mb-4">
               <Link
                 href={`/blog/category/${post.frontmatter.category}`}
-                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${colors.bg} ${colors.text} hover:opacity-80 transition-opacity`}
+                className={`inline-flex items-center px-3 py-1 rounded text-[10px] font-semibold uppercase tracking-wide ${colors.bg} ${colors.text} hover:opacity-80 transition-opacity`}
               >
                 {post.frontmatter.category}
               </Link>
-              <span className="text-sm text-slate-500 flex items-center gap-1">
+              <span className="text-sm text-[#6b6b8a] flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
                 {formattedDate}
               </span>
-              <span className="text-sm text-slate-500 flex items-center gap-1">
+              <span className="text-sm text-[#6b6b8a] flex items-center gap-1">
                 <Clock className="w-4 h-4" />
                 {post.readingTime}
               </span>
             </div>
 
-            <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 mb-4">
+            <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-[#1a1a2e] mb-4 font-display">
               {post.frontmatter.title}
             </h1>
 
-            <p className="text-lg text-slate-600 leading-relaxed">
+            <p className="text-lg text-[#3d3d5c] leading-relaxed">
               {post.frontmatter.description}
             </p>
 
             {post.frontmatter.author && (
-              <p className="mt-4 text-sm text-slate-500">
+              <p className="mt-4 text-sm text-[#6b6b8a]">
                 By {post.frontmatter.author}
               </p>
             )}
@@ -174,13 +174,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
           {/* Tags */}
           {post.frontmatter.tags && post.frontmatter.tags.length > 0 && (
-            <div className="mt-10 pt-6 border-t border-slate-200">
+            <div className="mt-10 pt-6 border-t border-[#E8E4DE]">
               <div className="flex flex-wrap items-center gap-2">
-                <Tag className="w-4 h-4 text-slate-400" />
+                <Tag className="w-4 h-4 text-[#9595ad]" />
                 {post.frontmatter.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-3 py-1 bg-slate-100 text-slate-600 text-sm rounded-full"
+                    className="px-3 py-1 bg-[#F8F5F0] text-[#3d3d5c] text-sm rounded-lg"
                   >
                     {tag}
                   </span>
@@ -190,16 +190,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           )}
 
           {/* Trial CTA */}
-          <div className="mt-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-6 text-center">
-            <h3 className="text-xl font-semibold text-white mb-2">
+          <div className="mt-12 bg-gradient-to-r from-[#FF6B35] to-[#E85A2A] rounded-[20px] p-6 text-center">
+            <h3 className="text-xl font-semibold text-white mb-2 font-display">
               Ready to simplify your strata compliance?
             </h3>
-            <p className="text-blue-100 mb-4">
+            <p className="text-white/90 mb-4">
               Start your free trial today. No credit card required.
             </p>
             <Link
               href="/sign-up"
-              className="inline-flex items-center px-5 py-2.5 bg-white text-blue-700 font-medium rounded-lg hover:bg-blue-50 transition-colors"
+              className="inline-flex items-center px-5 py-2.5 bg-white text-[#FF6B35] font-medium rounded-lg hover:bg-[#FFF0EB] transition-colors"
             >
               Start Free Trial
             </Link>
@@ -209,9 +209,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       {/* Related Posts */}
       {relatedPosts.length > 0 && (
-        <section className="py-12 px-6 bg-slate-50">
+        <section className="py-12 px-6 bg-[#F8F5F0]">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-xl font-semibold text-slate-900 mb-6">
+            <h2 className="text-xl font-semibold text-[#1a1a2e] mb-6 font-display">
               Related Articles
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
