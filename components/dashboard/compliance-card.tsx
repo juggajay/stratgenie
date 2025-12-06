@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Clock, AlertTriangle, XCircle, Settings } from "lucide-react";
+import { CheckCircle2, Clock, AlertTriangle, XCircle, Settings, Calendar, FileText } from "lucide-react";
 
 type ComplianceStatus = "on_track" | "upcoming" | "due_soon" | "overdue" | null;
 
@@ -94,6 +94,68 @@ function StatusPill({ status }: { status: ComplianceStatus }) {
   );
 }
 
+function ComplianceItem({
+  title,
+  status,
+  nextDueDate,
+  needsSetup,
+  onGenerateChecklist,
+  isGenerating,
+  hasExistingTasks,
+  onViewChecklist,
+  onOpenSettings,
+  icon: IconComponent,
+}: {
+  title: string;
+  status: ComplianceStatus;
+  nextDueDate: number | null;
+  needsSetup: boolean;
+  onGenerateChecklist?: () => void;
+  isGenerating?: boolean;
+  hasExistingTasks?: boolean;
+  onViewChecklist?: () => void;
+  onOpenSettings?: () => void;
+  icon: typeof Calendar;
+}) {
+  const config = status ? statusConfig[status] : null;
+  const StatusIcon = config?.icon;
+
+  // Icon color based on status
+  const iconColorClass = status === "on_track"
+    ? "text-emerald-600"
+    : status === "due_soon" || status === "upcoming"
+    ? "text-[#FF6B35]"
+    : status === "overdue"
+    ? "text-red-600"
+    : "text-[#6b6b8a]";
+
+  return (
+    <div className="group flex items-center gap-4 p-4 rounded-xl bg-[#F8F5F0] hover:bg-[#FFF0EB] transition-all cursor-pointer">
+      {/* Icon box with hover effect */}
+      <div className="flex h-11 w-11 items-center justify-center rounded-[10px] border bg-white border-[#E8E4DE] group-hover:bg-[#FFF0EB] group-hover:border-[#FF6B35]/30 transition-all flex-shrink-0">
+        {StatusIcon ? (
+          <StatusIcon className={`h-5 w-5 transition-colors ${iconColorClass} group-hover:text-[#FF6B35]`} />
+        ) : (
+          <IconComponent className="h-5 w-5 text-[#6b6b8a] group-hover:text-[#FF6B35] transition-colors" />
+        )}
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-medium text-foreground">{title}</p>
+        <p className="text-xs text-muted-foreground">
+          {needsSetup
+            ? "Set your last AGM date to enable tracking"
+            : `Next due: ${formatDate(nextDueDate)} (${getDaysUntil(nextDueDate)})`}
+        </p>
+      </div>
+
+      {/* Status badge */}
+      <StatusPill status={status} />
+    </div>
+  );
+}
+
 function ComplianceSection({
   title,
   status,
@@ -122,7 +184,7 @@ function ComplianceSection({
     ? "urgency-urgent"
     : status === "due_soon"
     ? "urgency-attention"
-    : "urgency-normal";
+    : "";
 
   return (
     <Card className={urgencyClass}>
@@ -228,45 +290,52 @@ export function ComplianceCard({
 
   if (!complianceStatus) {
     return (
-      <div className="space-y-4">
-        <Card>
-          <CardHeader>
-            <div className="animate-pulse">
-              <div className="h-5 bg-secondary rounded w-1/3 mb-2"></div>
-              <div className="h-4 bg-secondary rounded w-1/2"></div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="animate-pulse">
-              <div className="h-4 bg-secondary rounded w-3/4"></div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <Card>
+        <CardHeader>
+          <div className="animate-pulse">
+            <div className="h-5 bg-secondary rounded w-1/3 mb-2"></div>
+            <div className="h-4 bg-secondary rounded w-1/2"></div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="animate-pulse space-y-3">
+            <div className="h-16 bg-secondary rounded"></div>
+            <div className="h-16 bg-secondary rounded"></div>
+          </div>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <div className="space-y-4">
-      <ComplianceSection
-        title="Annual General Meeting"
-        status={complianceStatus.agm.status}
-        nextDueDate={complianceStatus.agm.nextDueDate}
-        needsSetup={complianceStatus.agm.needsSetup}
-        onGenerateChecklist={
-          !complianceStatus.agm.needsSetup ? handleGenerateChecklist : undefined
-        }
-        hasExistingTasks={hasExistingTasks}
-        onViewChecklist={handleViewChecklist}
-        onOpenSettings={onOpenSettings}
-      />
-      <ComplianceSection
-        title="Strata Hub Report"
-        status={complianceStatus.strataHub.status}
-        nextDueDate={complianceStatus.strataHub.nextDueDate}
-        needsSetup={complianceStatus.strataHub.needsSetup}
-        onOpenSettings={onOpenSettings}
-      />
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Compliance Status</CardTitle>
+        <CardDescription>Your current compliance overview</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <ComplianceItem
+          title="Annual General Meeting"
+          status={complianceStatus.agm.status}
+          nextDueDate={complianceStatus.agm.nextDueDate}
+          needsSetup={complianceStatus.agm.needsSetup}
+          onGenerateChecklist={
+            !complianceStatus.agm.needsSetup ? handleGenerateChecklist : undefined
+          }
+          hasExistingTasks={hasExistingTasks}
+          onViewChecklist={handleViewChecklist}
+          onOpenSettings={onOpenSettings}
+          icon={Calendar}
+        />
+        <ComplianceItem
+          title="Strata Hub Reporting"
+          status={complianceStatus.strataHub.status}
+          nextDueDate={complianceStatus.strataHub.nextDueDate}
+          needsSetup={complianceStatus.strataHub.needsSetup}
+          onOpenSettings={onOpenSettings}
+          icon={FileText}
+        />
+      </CardContent>
+    </Card>
   );
 }

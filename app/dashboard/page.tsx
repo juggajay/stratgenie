@@ -4,7 +4,6 @@ export const dynamic = "force-dynamic";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useSelectedScheme } from "@/hooks/use-selected-scheme";
@@ -23,7 +22,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Receipt, Shield, Building, Archive } from "lucide-react";
+import { Receipt, Shield, Building, Archive, Settings } from "lucide-react";
 
 export default function DashboardPage() {
   // All existing state and logic preserved exactly
@@ -46,19 +45,15 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header - Light editorial theme */}
-      <header className="bg-white border-b border-[#E8E4DE] sticky top-0 z-10">
+      {/* Header - Light editorial theme with frosted glass */}
+      <header className="bg-white/90 backdrop-blur-xl border-b border-[#E8E4DE] sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <Image
-                src="/images/logo/logo-transparent-wide.png"
-                alt="StrataGenie"
-                width={160}
-                height={40}
-                className="h-10 w-auto"
-                priority
-              />
+            <div className="flex items-center">
+              <span className="text-2xl font-display font-medium tracking-tight">
+                <span className="text-foreground">Strata</span>
+                <span className="text-[#FF6B35]">Genie</span>
+              </span>
             </div>
             <div className="h-6 w-px bg-[#E8E4DE]" />
             <div>
@@ -122,11 +117,20 @@ export default function DashboardPage() {
               </Sheet>
             )}
             {selectedSchemeId && (
-              <SchemeSettingsForm
-                schemeId={selectedSchemeId}
-                open={settingsOpen}
-                onOpenChange={setSettingsOpen}
-              />
+              <>
+                <Button
+                  variant="outline"
+                  onClick={() => setSettingsOpen(true)}
+                >
+                  <Settings className="h-4 w-4 mr-2" />
+                  Settings
+                </Button>
+                <SchemeSettingsForm
+                  schemeId={selectedSchemeId}
+                  open={settingsOpen}
+                  onOpenChange={setSettingsOpen}
+                />
+              </>
             )}
           </div>
         </div>
@@ -142,7 +146,7 @@ export default function DashboardPage() {
           />
         )}
 
-        <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+        <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
           {/* Left column: Scheme selector */}
           <div>
             <SchemeSelector

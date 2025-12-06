@@ -11,9 +11,9 @@ const buttonVariants = cva(
         default: "bg-[#FF6B35] hover:bg-[#E85A2A] text-white rounded-lg shadow-sm hover:shadow-md",
         // Destructive - Red for dangerous actions
         destructive: "bg-red-600 hover:bg-red-500 text-white rounded-lg",
-        // Outline - Warm border
+        // Outline - Warm border, hover fills navy
         outline:
-          "border border-[#E8E4DE] bg-white hover:bg-[#F8F5F0] text-[#3d3d5c] hover:text-[#1a1a2e] rounded-lg",
+          "border border-[#E8E4DE] bg-white hover:bg-[#1a1a2e] hover:border-[#1a1a2e] text-[#3d3d5c] hover:text-white rounded-lg transition-colors",
         // Secondary - Muted background
         secondary: "bg-[#F8F5F0] hover:bg-[#E8E4DE] text-[#3d3d5c] rounded-lg",
         // Ghost - No background, minimal

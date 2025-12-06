@@ -182,10 +182,22 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
   }) => {
     const isGenerating = generatingForTask === task._id;
 
+    // Consistent button styling for all states
+    const buttonClass = "min-w-[90px]";
+
     // Special handling for send_agm_notice task
     if (task.type === "send_agm_notice") {
       if (task.status === "done") {
-        return <span className="text-xs text-muted-foreground">Completed</span>;
+        return (
+          <Button
+            size="sm"
+            variant="secondary"
+            className={buttonClass}
+            onClick={() => latestAgmNotice && handleViewDocument(latestAgmNotice._id)}
+          >
+            View
+          </Button>
+        );
       }
 
       // Check if there's an existing document
@@ -193,9 +205,10 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
         return (
           <Button
             size="sm"
+            className={buttonClass}
             onClick={() => handleViewDocument(latestAgmNotice._id)}
           >
-            {latestAgmNotice.status === "draft" ? "View Draft" : "View Notice"}
+            {latestAgmNotice.status === "draft" ? "View Draft" : "View"}
           </Button>
         );
       }
@@ -203,13 +216,14 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
       return (
         <Button
           size="sm"
+          className={buttonClass}
           onClick={() => handleGenerateNotice(task._id)}
           disabled={isGenerating}
         >
           {isGenerating ? (
             <>
               <Loader2 className="h-4 w-4 mr-1 animate-spin" />
-              Generating
+              ...
             </>
           ) : (
             "Generate"
@@ -223,6 +237,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
       return (
         <Button
           size="sm"
+          className={buttonClass}
           onClick={() => handleStatusChange(task._id, "in_progress")}
         >
           Start
@@ -234,6 +249,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
       return (
         <Button
           size="sm"
+          className={buttonClass}
           onClick={() => handleStatusChange(task._id, "done")}
         >
           Complete
@@ -244,11 +260,11 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
     return (
       <Button
         size="sm"
-        variant="ghost"
+        variant="secondary"
         onClick={() => handleStatusChange(task._id, "draft")}
-        className="text-muted-foreground hover:text-foreground group"
+        className={`${buttonClass} group`}
       >
-        <span className="group-hover:hidden">Completed</span>
+        <span className="group-hover:hidden">Done</span>
         <span className="hidden group-hover:inline">Undo</span>
       </Button>
     );
@@ -300,7 +316,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
                 return (
                   <div
                     key={task._id}
-                    className="grid grid-cols-[1fr_auto_auto] gap-4 px-4 py-3 rounded-lg bg-[#FFF0EB] hover:bg-[#FFE4DB] border border-[#FFCDB8] transition-colors items-center mb-2 last:mb-0"
+                    className="grid grid-cols-[1fr_auto_auto] gap-4 px-4 py-3 rounded-lg bg-[#F8F5F0] hover:bg-[#FFF0EB] border border-[#E8E4DE] hover:border-[#FFCDB8] transition-all items-center mb-2 last:mb-0"
                   >
                     {/* Task name + status icon */}
                     <div className="flex items-center gap-3 min-w-0">

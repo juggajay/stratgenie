@@ -88,21 +88,21 @@ export function SchemeSelector({
               <button
                 key={scheme._id}
                 onClick={() => onSchemeSelect(scheme._id)}
-                className={`w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-all ${
+                className={`group w-full flex items-center gap-3 p-3.5 rounded-xl border-[1.5px] text-left transition-all duration-200 ${
                   selectedSchemeId === scheme._id
-                    ? "border-[#FF6B35]/50 bg-[#FFF0EB]"
-                    : "border-[#E8E4DE] hover:border-[#FF6B35]/30 hover:bg-[#F8F5F0]"
+                    ? "border-[#FF6B35] bg-[#FFF0EB] shadow-sm"
+                    : "border-[#E8E4DE] hover:border-[#FF6B35]/30 hover:bg-[#F8F5F0] hover:-translate-y-0.5 hover:shadow-md"
                 }`}
               >
-                <div className={`flex h-10 w-10 items-center justify-center rounded-lg transition-colors ${
+                <div className={`flex h-11 w-11 items-center justify-center rounded-[10px] border transition-all ${
                   selectedSchemeId === scheme._id
-                    ? "bg-[#FFF0EB]"
-                    : "bg-[#F8F5F0]"
+                    ? "bg-[#FFF0EB] border-[#FF6B35]/30"
+                    : "bg-white border-[#E8E4DE] group-hover:bg-[#FFF0EB] group-hover:border-[#FF6B35]/30"
                 }`}>
                   <Building2 className={`h-5 w-5 transition-colors ${
                     selectedSchemeId === scheme._id
                       ? "text-[#FF6B35]"
-                      : "text-[#6b6b8a]"
+                      : "text-[#6b6b8a] group-hover:text-[#FF6B35]"
                   }`} />
                 </div>
                 <div className="min-w-0 flex-1">

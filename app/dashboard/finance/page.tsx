@@ -362,37 +362,38 @@ export default function FinancePage() {
   };
 
   return (
-    <div className="min-h-screen bg-background bg-grain">
-      {/* Header */}
-      <header className="bg-header border-b border-header/50 sticky top-0 z-10">
+    <div className="min-h-screen bg-background">
+      {/* Header - Editorial Light Theme */}
+      <header className="bg-white/90 backdrop-blur-xl border-b border-[#E8E4DE] sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2">
-                <span className="text-xl font-semibold tracking-tight text-header-foreground font-display">
-                  StrataGenie
+              <div className="flex items-center">
+                <span className="text-2xl font-display font-medium tracking-tight">
+                  <span className="text-foreground">Strata</span>
+                  <span className="text-[#FF6B35]">Genie</span>
                 </span>
               </div>
-              <div className="h-6 w-px bg-header-foreground/20" />
+              <div className="h-6 w-px bg-[#E8E4DE]" />
               <div>
                 <div className="flex items-center gap-2">
                   <Link href="/dashboard">
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="rounded-lg text-header-foreground/70 hover:text-header-foreground hover:bg-header-foreground/10 -ml-2"
+                      className="rounded-lg text-muted-foreground hover:text-foreground -ml-2"
                     >
                       <ArrowLeft className="h-4 w-4 mr-1" />
                       Dashboard
                     </Button>
                   </Link>
-                  <span className="text-header-foreground/40">/</span>
-                  <h1 className="text-lg font-medium tracking-tight text-header-foreground flex items-center gap-2">
-                    <Receipt className="h-5 w-5 text-header-foreground/70" />
+                  <span className="text-muted-foreground/40">/</span>
+                  <h1 className="text-lg font-display font-bold tracking-tight text-foreground flex items-center gap-2">
+                    <Receipt className="h-5 w-5 text-[#FF6B35]" />
                     Finance
                   </h1>
                 </div>
-                <p className="text-sm text-header-foreground/70">
+                <p className="text-sm text-muted-foreground">
                   Manage expenses and generate levy income
                 </p>
               </div>
@@ -462,8 +463,8 @@ export default function FinancePage() {
         </div>
 
         {/* Disclaimer */}
-        <footer className="mt-12 pt-6 border-t border-border">
-          <p className="text-xs text-muted-foreground/70 text-center">
+        <footer className="mt-12 pt-6 border-t border-[#E8E4DE]">
+          <p className="text-xs text-muted-foreground text-center">
             Financial data is extracted using AI and should be verified before approval.
             This tool does not provide accounting advice.
           </p>

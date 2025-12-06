@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Logo } from "@/components/marketing/logo";
 import { ArrowRight, ArrowLeft, Building2, Users, Loader2, SkipForward } from "lucide-react";
 
 type Step = 1 | 2;
@@ -125,7 +124,10 @@ export default function OnboardingPage() {
       {/* Header */}
       <header className="px-6 py-4 border-b border-[#E8E4DE] bg-white">
         <div className="max-w-xl mx-auto">
-          <Logo className="h-8 w-auto" />
+          <span className="text-2xl font-display font-medium tracking-tight">
+            <span className="text-[#1a1a2e]">Strata</span>
+            <span className="text-[#FF6B35]">Genie</span>
+          </span>
         </div>
       </header>
 

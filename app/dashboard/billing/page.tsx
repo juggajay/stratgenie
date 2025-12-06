@@ -103,17 +103,17 @@ export default function BillingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-white border-b border-[#E8E4DE] sticky top-0 z-10">
+      {/* Header - Editorial Light Theme */}
+      <header className="bg-white/90 backdrop-blur-xl border-b border-[#E8E4DE] sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
-              <Link href="/dashboard" className="flex items-center gap-2">
-                <span className="text-[26px] font-medium tracking-tight font-display" style={{ letterSpacing: '-0.5px' }}>
-                  <span className="text-[#1a1a2e]">Strata</span>
+              <div className="flex items-center">
+                <span className="text-2xl font-display font-medium tracking-tight">
+                  <span className="text-foreground">Strata</span>
                   <span className="text-[#FF6B35]">Genie</span>
                 </span>
-              </Link>
+              </div>
               <div className="h-6 w-px bg-[#E8E4DE]" />
               <div>
                 <div className="flex items-center gap-2">
@@ -121,15 +121,15 @@ export default function BillingPage() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="rounded-lg -ml-2"
+                      className="rounded-lg text-muted-foreground hover:text-foreground -ml-2"
                     >
                       <ArrowLeft className="h-4 w-4 mr-1" />
                       Dashboard
                     </Button>
                   </Link>
-                  <span className="text-muted-foreground">/</span>
-                  <h1 className="text-lg font-medium tracking-tight text-foreground flex items-center gap-2">
-                    <CreditCard className="h-5 w-5 text-muted-foreground" />
+                  <span className="text-muted-foreground/40">/</span>
+                  <h1 className="text-lg font-display font-bold tracking-tight text-foreground flex items-center gap-2">
+                    <CreditCard className="h-5 w-5 text-[#FF6B35]" />
                     Billing
                   </h1>
                 </div>

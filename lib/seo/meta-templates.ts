@@ -324,7 +324,9 @@ export const emotionalTriggers = {
  * CTA FORMULAS
  * Specific, action-oriented call-to-action phrases
  */
-export const ctaOptions = {
+type CtaCategory = "immediate" | "learning" | "action" | "comparison" | "validation";
+
+const ctaData: Record<CtaCategory, string[]> = {
   immediate: [
     "Start free today",
     "Get started now",
@@ -352,9 +354,12 @@ export const ctaOptions = {
   comparison: ["Compare features", "Compare pricing", "See the difference", "Learn why"],
 
   validation: ["View demo", "Watch video", "See examples", "Check it out"],
+};
 
-  random: (category: keyof typeof ctaOptions = "immediate"): string => {
-    const options = ctaOptions[category];
+export const ctaOptions = {
+  ...ctaData,
+  random: (category: CtaCategory = "immediate"): string => {
+    const options = ctaData[category];
     return options[Math.floor(Math.random() * options.length)];
   },
 };
