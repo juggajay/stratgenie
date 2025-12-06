@@ -25,17 +25,17 @@ const statusConfig: Record<
   draft: {
     label: "To do",
     icon: Circle,
-    iconClass: "text-slate-400",
+    iconClass: "text-muted-foreground",
   },
   in_progress: {
     label: "In progress",
     icon: Clock,
-    iconClass: "text-cyan-400",
+    iconClass: "text-[#FF6B35]",
   },
   done: {
     label: "Done",
     icon: CheckCircle2,
-    iconClass: "text-emerald-400",
+    iconClass: "text-emerald-600",
   },
 };
 
@@ -266,9 +266,9 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
         <CardContent className="pt-2">
           {/* Error message */}
           {error && (
-            <div className="mb-4 text-sm text-red-400 bg-red-900/20 border border-red-500/30 px-3 py-2 rounded-lg">
+            <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
               {error}
-              <p className="text-xs mt-1 text-red-400/80">
+              <p className="text-xs mt-1 text-red-500">
                 Make sure scheme settings are configured (Secretary, Location,
                 Time).
               </p>
@@ -300,7 +300,7 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
                 return (
                   <div
                     key={task._id}
-                    className="grid grid-cols-[1fr_auto_auto] gap-4 px-4 py-3 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-colors items-center mb-2 last:mb-0"
+                    className="grid grid-cols-[1fr_auto_auto] gap-4 px-4 py-3 rounded-lg bg-[#FFF0EB] hover:bg-[#FFE4DB] border border-[#FFCDB8] transition-colors items-center mb-2 last:mb-0"
                   >
                     {/* Task name + status icon */}
                     <div className="flex items-center gap-3 min-w-0">
@@ -323,8 +323,8 @@ export function TaskList({ schemeId }: { schemeId: Id<"schemes"> }) {
                       <span
                         className={`text-sm ${
                           isOverdue
-                            ? "text-red-400 font-medium"
-                            : "text-slate-400"
+                            ? "text-red-600 font-medium"
+                            : "text-muted-foreground"
                         }`}
                       >
                         {formatRelativeDate(task.dueDate)}

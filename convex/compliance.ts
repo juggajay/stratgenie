@@ -71,7 +71,8 @@ export const getSchemeComplianceStatus = query({
   handler: async (ctx, args) => {
     const scheme = await ctx.db.get(args.schemeId);
     if (!scheme) {
-      throw new Error("Scheme not found");
+      // Return null instead of throwing - handles stale localStorage references
+      return null;
     }
 
     const now = Date.now();

@@ -2,9 +2,11 @@
 
 export const dynamic = "force-dynamic";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 import { useSelectedScheme } from "@/hooks/use-selected-scheme";
 import { SchemeSelector } from "@/components/dashboard/scheme-selector";
 import { ComplianceCard } from "@/components/dashboard/compliance-card";
@@ -29,6 +31,19 @@ export default function DashboardPage() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [strataRollOpen, setStrataRollOpen] = useState(false);
 
+  // Fetch schemes to validate selected scheme exists
+  const schemes = useQuery(api.schemes.list);
+
+  // Clear stale scheme selection if scheme no longer exists
+  useEffect(() => {
+    if (schemes && selectedSchemeId) {
+      const schemeExists = schemes.some(s => s._id === selectedSchemeId);
+      if (!schemeExists) {
+        setSelectedSchemeId(null);
+      }
+    }
+  }, [schemes, selectedSchemeId, setSelectedSchemeId]);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header - Light editorial theme */}
@@ -37,11 +52,11 @@ export default function DashboardPage() {
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <Image
-                src="/images/logo/logo-seablue-transparent-v3.png"
+                src="/images/logo/logo-transparent-wide.png"
                 alt="StrataGenie"
-                width={320}
-                height={80}
-                className="h-20 w-auto"
+                width={160}
+                height={40}
+                className="h-10 w-auto"
                 priority
               />
             </div>
