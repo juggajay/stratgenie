@@ -44,6 +44,17 @@ export const get = query({
   },
 });
 
+/**
+ * Get scheme by ID - used by billing actions
+ * This version doesn't check user access as it's called from internal actions
+ */
+export const getScheme = query({
+  args: { schemeId: v.id("schemes") },
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.schemeId);
+  },
+});
+
 export const getByStrataNumber = query({
   args: { strataNumber: v.string() },
   handler: async (ctx, args) => {

@@ -52,10 +52,12 @@ export default defineSchema({
     openingBalanceCapital: v.optional(v.int64()), // cents (AUD)
     financialYearEnd: v.optional(v.string()), // e.g., "06-30" for June 30
 
-    // Trial/subscription tracking (CH-0008)
+    // Trial/subscription tracking (CH-0008, CH-0010)
     trialEndsAt: v.optional(v.number()), // timestamp, null = paid/grandfathered
+    stripeCustomerId: v.optional(v.string()), // Stripe customer ID (CH-0010)
   })
-    .index("by_strata_number", ["strataNumber"]),
+    .index("by_strata_number", ["strataNumber"])
+    .index("by_stripe_customer", ["stripeCustomerId"]),
 
   // Compliance tasks for AGM preparation (CH-0001)
   complianceTasks: defineTable({
@@ -336,4 +338,44 @@ export default defineSchema({
   })
     .index("by_email", ["email"])
     .index("by_source", ["source"]),
+
+  // Stripe subscriptions (CH-0010)
+  subscriptions: defineTable({
+    schemeId: v.id("schemes"),
+    stripeSubscriptionId: v.string(), // Stripe subscription ID
+    stripeCustomerId: v.string(), // Stripe customer ID
+    stripePriceId: v.string(), // Stripe price ID
+    status: v.union(
+      v.literal("active"),
+      v.literal("past_due"),
+      v.literal("canceled"),
+      v.literal("unpaid"),
+      v.literal("trialing"),
+      v.literal("incomplete"),
+      v.literal("incomplete_expired")
+    ),
+    lotCount: v.number(), // Number of lots at time of subscription
+    currentPeriodStart: v.number(), // timestamp
+    currentPeriodEnd: v.number(), // timestamp
+    cancelAtPeriodEnd: v.boolean(), // Whether subscription cancels at period end
+    canceledAt: v.optional(v.number()), // timestamp when canceled
+    createdAt: v.number(), // timestamp
+    updatedAt: v.number(), // timestamp
+  })
+    .index("by_scheme", ["schemeId"])
+    .index("by_stripe_subscription", ["stripeSubscriptionId"])
+    .index("by_stripe_customer", ["stripeCustomerId"]),
+
+  // Stripe webhook events for idempotency (CH-0010)
+  webhookEvents: defineTable({
+    stripeEventId: v.string(), // Stripe event ID (evt_xxx)
+    eventType: v.string(), // e.g., "checkout.session.completed"
+    processed: v.boolean(), // Whether event has been processed
+    processedAt: v.optional(v.number()), // timestamp when processed
+    payload: v.optional(v.string()), // JSON payload for debugging
+    errorMessage: v.optional(v.string()), // Error message if processing failed
+    createdAt: v.number(), // timestamp
+  })
+    .index("by_stripe_event", ["stripeEventId"])
+    .index("by_event_type", ["eventType"]),
 });

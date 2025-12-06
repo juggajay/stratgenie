@@ -2,9 +2,10 @@
 
 export const dynamic = "force-dynamic";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useQuery } from "convex/react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useQuery, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useSelectedScheme } from "@/hooks/use-selected-scheme";
 import { Button } from "@/components/ui/button";
@@ -14,96 +15,107 @@ import {
   CreditCard,
   Check,
   Sparkles,
-  Zap,
-  Shield,
-  Crown,
+  AlertTriangle,
   ExternalLink,
+  Building2,
+  Calculator,
+  Clock,
+  CheckCircle2,
+  X,
 } from "lucide-react";
-
-const plans = [
-  {
-    id: "free",
-    name: "Free Trial",
-    price: "$0",
-    period: "14 days",
-    description: "Try StrataGenie with full features",
-    features: [
-      "1 scheme",
-      "Guardian AI Q&A",
-      "Invoice processing",
-      "Basic compliance tracking",
-    ],
-    cta: "Current Plan",
-    disabled: true,
-    highlight: false,
-  },
-  {
-    id: "pro",
-    name: "Pro",
-    price: "$29",
-    period: "/month",
-    description: "Perfect for self-managed schemes",
-    features: [
-      "Up to 3 schemes",
-      "Unlimited Guardian queries",
-      "AI invoice extraction",
-      "Advanced compliance alerts",
-      "Document generation",
-      "Email notifications",
-    ],
-    cta: "Upgrade to Pro",
-    disabled: false,
-    highlight: true,
-  },
-  {
-    id: "enterprise",
-    name: "Enterprise",
-    price: "Custom",
-    period: "",
-    description: "For strata managers & large portfolios",
-    features: [
-      "Unlimited schemes",
-      "Priority support",
-      "Custom integrations",
-      "Dedicated account manager",
-      "SLA guarantee",
-      "White-label options",
-    ],
-    cta: "Contact Sales",
-    disabled: false,
-    highlight: false,
-  },
-];
+import {
+  PRICING_TIERS,
+  calculateMonthlyPrice,
+  getTierInfo,
+} from "@/convex/billing/constants";
 
 export default function BillingPage() {
-  useSelectedScheme(); // Hook required for context
+  const { selectedSchemeId, scheme } = useSelectedScheme();
   const [isProcessing, setIsProcessing] = useState(false);
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  const currentUser = useQuery(api.users.currentUser);
+  // Handle success/canceled states from Stripe checkout
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showCanceled, setShowCanceled] = useState(false);
 
-  const handleUpgrade = async (planId: string) => {
-    if (planId === "enterprise") {
-      window.open("mailto:sales@stratagenie.com.au?subject=Enterprise%20Inquiry", "_blank");
-      return;
+  useEffect(() => {
+    if (searchParams.get("success") === "true") {
+      setShowSuccess(true);
+      // Clear the URL params after showing the message
+      router.replace("/dashboard/billing", { scroll: false });
     }
+    if (searchParams.get("canceled") === "true") {
+      setShowCanceled(true);
+      router.replace("/dashboard/billing", { scroll: false });
+    }
+  }, [searchParams, router]);
+
+  // Get billing status for the selected scheme
+  const billingStatus = useQuery(
+    api.billing.queries.getBillingStatus,
+    selectedSchemeId ? { schemeId: selectedSchemeId } : "skip"
+  );
+
+  // Stripe actions
+  const createCheckoutSession = useAction(api.billing.actions.createCheckoutSession);
+  const createPortalSession = useAction(api.billing.actions.createPortalSession);
+
+  const lotCount = scheme?.lotCount ?? 1;
+  const tierInfo = getTierInfo(lotCount);
+  const monthlyPrice = calculateMonthlyPrice(lotCount);
+
+  const handleSubscribe = async () => {
+    if (!selectedSchemeId) return;
 
     setIsProcessing(true);
-    // TODO: Implement Stripe checkout
-    // const response = await fetch('/api/stripe/create-checkout', {
-    //   method: 'POST',
-    //   body: JSON.stringify({ planId }),
-    // });
-    // const { url } = await response.json();
-    // window.location.href = url;
-    setTimeout(() => {
+    try {
+      const { url } = await createCheckoutSession({
+        schemeId: selectedSchemeId,
+        successUrl: `${window.location.origin}/dashboard/billing?success=true`,
+        cancelUrl: `${window.location.origin}/dashboard/billing?canceled=true`,
+      });
+
+      if (url) {
+        window.location.href = url;
+      }
+    } catch (error) {
+      console.error("Failed to create checkout session:", error);
+      alert("Failed to start checkout. Please try again.");
+    } finally {
       setIsProcessing(false);
-      alert("Stripe integration coming soon!");
-    }, 1000);
+    }
   };
+
+  const handleManageBilling = async () => {
+    if (!selectedSchemeId) return;
+
+    setIsProcessing(true);
+    try {
+      const { url } = await createPortalSession({
+        schemeId: selectedSchemeId,
+        returnUrl: `${window.location.origin}/dashboard/billing`,
+      });
+
+      window.location.href = url;
+    } catch (error) {
+      console.error("Failed to create portal session:", error);
+      alert("Failed to open billing portal. Please try again.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  // Determine what to show based on billing status
+  const hasActiveSubscription =
+    billingStatus?.status === "active" && billingStatus?.subscription;
+  const isInTrial = billingStatus?.status === "trial";
+  const isExpired = billingStatus?.status === "expired";
+  const isPastDue = billingStatus?.status === "past_due";
 
   return (
     <div className="min-h-screen bg-warmth-pulse">
-      {/* Header - Editorial Light Theme */}
+      {/* Header */}
       <header className="bg-white/90 backdrop-blur-xl border-b border-[#E8E4DE] sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
@@ -129,7 +141,7 @@ export default function BillingPage() {
                 <span className="text-muted-foreground/40">/</span>
                 <h1 className="text-lg font-display font-bold tracking-tight text-foreground flex items-center gap-2">
                   <CreditCard className="h-5 w-5 text-[#FF6B35]" />
-                  Billing
+                  Billing & Subscription
                 </h1>
               </div>
             </div>
@@ -139,136 +151,353 @@ export default function BillingPage() {
 
       {/* Main content */}
       <main className="max-w-5xl mx-auto px-6 py-8">
-        {/* Current Plan Status */}
-        <GlassCard glow="coral" className="mb-8 p-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-[#FFF0EB] rounded-xl border border-[#FFCDB8]">
-                <Sparkles className="h-6 w-6 text-[#FF6B35]" />
-              </div>
-              <div>
-                <h2 className="text-lg font-semibold text-foreground">Free Trial</h2>
-                <p className="text-sm text-muted-foreground">
-                  {currentUser?.schemes?.length || 0} scheme(s) active
+        {/* Success Message */}
+        {showSuccess && (
+          <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+            <div className="flex items-center gap-3">
+              <CheckCircle2 className="h-5 w-5 text-emerald-600 flex-shrink-0" />
+              <div className="flex-1">
+                <p className="font-medium text-emerald-900">Subscription activated!</p>
+                <p className="text-sm text-emerald-700">
+                  Thank you for subscribing. Your scheme is now fully activated.
                 </p>
               </div>
+              <button
+                onClick={() => setShowSuccess(false)}
+                className="p-1 hover:bg-emerald-100 rounded-lg transition-colors"
+              >
+                <X className="h-4 w-4 text-emerald-600" />
+              </button>
             </div>
-            <div className="text-right">
-              <p className="text-sm text-muted-foreground">Trial ends in</p>
-              <p className="text-2xl font-bold text-[#FF6B35]">12 days</p>
+          </div>
+        )}
+
+        {/* Canceled Message */}
+        {showCanceled && (
+          <div className="mb-6 p-4 bg-[#FFF0EB] border border-[#FFCDB8] rounded-xl">
+            <div className="flex items-center gap-3">
+              <AlertTriangle className="h-5 w-5 text-[#FF6B35] flex-shrink-0" />
+              <div className="flex-1">
+                <p className="font-medium text-foreground">Checkout canceled</p>
+                <p className="text-sm text-muted-foreground">
+                  No worries! You can subscribe whenever you're ready.
+                </p>
+              </div>
+              <button
+                onClick={() => setShowCanceled(false)}
+                className="p-1 hover:bg-[#FFE4DB] rounded-lg transition-colors"
+              >
+                <X className="h-4 w-4 text-[#FF6B35]" />
+              </button>
             </div>
+          </div>
+        )}
+
+        {/* Past Due Warning */}
+        {isPastDue && (
+          <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+            <div className="flex items-center gap-3">
+              <AlertTriangle className="h-5 w-5 text-amber-600 flex-shrink-0" />
+              <div className="flex-1">
+                <p className="font-medium text-amber-900">Payment Failed</p>
+                <p className="text-sm text-amber-700">
+                  Please update your payment method to avoid service interruption.
+                </p>
+              </div>
+              <Button
+                onClick={handleManageBilling}
+                disabled={isProcessing}
+                className="bg-amber-600 hover:bg-amber-700 text-white"
+              >
+                Update Payment
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Current Plan Status */}
+        <GlassCard glow="coral" className="mb-8 overflow-hidden">
+          <div className="p-6 border-b border-[#E8E4DE]">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-[#FFF0EB] rounded-xl border border-[#FFCDB8]">
+                  {hasActiveSubscription ? (
+                    <CheckCircle2 className="h-6 w-6 text-emerald-600" />
+                  ) : (
+                    <Sparkles className="h-6 w-6 text-[#FF6B35]" />
+                  )}
+                </div>
+                <div>
+                  <h2 className="text-lg font-semibold text-foreground">
+                    {billingStatus?.planName ?? "Loading..."}
+                  </h2>
+                  <p className="text-sm text-muted-foreground">
+                    {scheme?.name ?? "Loading..."} · {lotCount} lot{lotCount !== 1 ? "s" : ""}
+                  </p>
+                </div>
+              </div>
+              {/* Status Badge */}
+              {hasActiveSubscription && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-200">
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                  Active
+                </span>
+              )}
+              {isInTrial && billingStatus?.trialDaysRemaining !== null && (
+                <span
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${
+                    billingStatus.trialDaysRemaining <= 3
+                      ? "bg-red-50 text-red-600 border border-red-200"
+                      : billingStatus.trialDaysRemaining <= 7
+                      ? "bg-amber-50 text-amber-600 border border-amber-200"
+                      : "bg-[#FFF0EB] text-[#FF6B35] border border-[#FFCDB8]"
+                  }`}
+                >
+                  <Clock className="h-3.5 w-3.5" />
+                  {billingStatus.trialDaysRemaining} days left
+                </span>
+              )}
+              {isExpired && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-red-50 text-red-600 border border-red-200">
+                  <AlertTriangle className="h-3.5 w-3.5" />
+                  Expired
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="p-6 bg-[#F8F5F0]">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                {hasActiveSubscription ? (
+                  <>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-semibold text-foreground">
+                        ${billingStatus.monthlyPrice?.toFixed(2)}
+                      </span>
+                      <span className="text-muted-foreground">/month</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {lotCount} lots × ${billingStatus.pricePerLot}/lot ({billingStatus.tierName} tier)
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-semibold text-foreground">
+                        ${monthlyPrice.toFixed(2)}
+                      </span>
+                      <span className="text-muted-foreground">/month</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {lotCount} lots × ${tierInfo.pricePerLot}/lot ({tierInfo.name} tier)
+                    </p>
+                  </>
+                )}
+              </div>
+              <div className="flex items-center gap-3">
+                {hasActiveSubscription ? (
+                  <Button
+                    onClick={handleManageBilling}
+                    disabled={isProcessing}
+                    variant="outline"
+                    className="rounded-lg"
+                  >
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    Manage Billing
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleSubscribe}
+                    disabled={isProcessing}
+                    className="rounded-lg"
+                  >
+                    {isProcessing ? "Processing..." : "Subscribe Now"}
+                  </Button>
+                )}
+              </div>
+            </div>
+            {hasActiveSubscription && billingStatus.subscription?.currentPeriodEnd && (
+              <div className="mt-4 pt-4 border-t border-[#E8E4DE] text-sm text-muted-foreground">
+                {billingStatus.subscription.cancelAtPeriodEnd ? (
+                  <span className="text-amber-600">
+                    Cancels on{" "}
+                    {new Date(billingStatus.subscription.currentPeriodEnd).toLocaleDateString()}
+                  </span>
+                ) : (
+                  <span>
+                    Next billing:{" "}
+                    {new Date(billingStatus.subscription.currentPeriodEnd).toLocaleDateString()}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         </GlassCard>
 
-        {/* Plans */}
+        {/* Pricing Tiers */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold text-foreground mb-4">Choose Your Plan</h2>
+          <h2 className="text-xl font-semibold text-foreground mb-2">Per-Lot Pricing</h2>
+          <p className="text-muted-foreground mb-6">
+            Volume discounts automatically applied as your scheme grows
+          </p>
+
           <div className="grid gap-6 md:grid-cols-3">
-            {plans.map((plan) => (
-              <GlassCard
-                key={plan.id}
-                glow={plan.highlight ? "coral" : "none"}
-                className={`p-6 relative ${
-                  plan.highlight ? "border-[#FF6B35]/50" : ""
-                }`}
-              >
-                {plan.highlight && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="px-3 py-1 text-xs font-medium bg-[#FF6B35] text-white rounded-full">
-                      Most Popular
+            {PRICING_TIERS.map((tier, index) => {
+              const isCurrentTier = tier.name === tierInfo.name;
+              const tierLotRange =
+                index === 0
+                  ? "1-10 lots"
+                  : index === 1
+                  ? "11-50 lots"
+                  : "51+ lots";
+
+              return (
+                <GlassCard
+                  key={tier.name}
+                  glow={isCurrentTier ? "coral" : "none"}
+                  className={`p-6 relative ${
+                    isCurrentTier ? "border-[#FF6B35]/50" : ""
+                  }`}
+                >
+                  {isCurrentTier && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                      <span className="px-3 py-1 text-xs font-medium bg-[#FF6B35] text-white rounded-full">
+                        Your Tier
+                      </span>
+                    </div>
+                  )}
+                  <div className="mb-4">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#F8F5F0] text-muted-foreground border border-[#E8E4DE]">
+                      {tierLotRange}
                     </span>
                   </div>
-                )}
-                <div className="mb-4">
+                  <div className="mb-4">
+                    <span className="text-4xl font-semibold text-foreground">
+                      ${tier.pricePerLot.toFixed(2)}
+                    </span>
+                    <span className="text-muted-foreground">/lot/mo</span>
+                  </div>
                   <div className="flex items-center gap-2 mb-2">
-                    {plan.id === "free" && <Zap className="h-5 w-5 text-amber-500" />}
-                    {plan.id === "pro" && <Shield className="h-5 w-5 text-[#FF6B35]" />}
-                    {plan.id === "enterprise" && <Crown className="h-5 w-5 text-violet-500" />}
-                    <h3 className="text-lg font-semibold text-foreground">{plan.name}</h3>
+                    <h3 className="text-lg font-medium text-foreground">{tier.name}</h3>
+                    {tier.discount > 0 && (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-50 text-emerald-600">
+                        Save {tier.discount}%
+                      </span>
+                    )}
                   </div>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-bold text-foreground">{plan.price}</span>
-                    <span className="text-muted-foreground">{plan.period}</span>
-                  </div>
-                  <p className="text-sm text-muted-foreground mt-2">{plan.description}</p>
-                </div>
-
-                <ul className="space-y-3 mb-6">
-                  {plan.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-center gap-2 text-sm text-foreground">
-                      <Check className="h-4 w-4 text-emerald-500 flex-shrink-0" />
-                      {feature}
+                  <ul className="space-y-2 mt-4">
+                    <li className="flex items-center gap-2 text-sm">
+                      <Check className="h-4 w-4 text-emerald-500" />
+                      <span className="text-muted-foreground">All 4 AI Agents</span>
                     </li>
-                  ))}
-                </ul>
-
-                <Button
-                  onClick={() => handleUpgrade(plan.id)}
-                  disabled={plan.disabled || isProcessing}
-                  className={`w-full rounded-lg ${
-                    plan.highlight
-                      ? ""
-                      : plan.disabled
-                      ? "bg-[#F8F5F0] text-muted-foreground cursor-not-allowed"
-                      : ""
-                  }`}
-                  variant={plan.highlight ? "default" : plan.disabled ? "secondary" : "outline"}
-                >
-                  {plan.id === "enterprise" && <ExternalLink className="h-4 w-4 mr-2" />}
-                  {plan.cta}
-                </Button>
-              </GlassCard>
-            ))}
+                    <li className="flex items-center gap-2 text-sm">
+                      <Check className="h-4 w-4 text-emerald-500" />
+                      <span className="text-muted-foreground">Strata Hub Export</span>
+                    </li>
+                    <li className="flex items-center gap-2 text-sm">
+                      <Check className="h-4 w-4 text-emerald-500" />
+                      <span className="text-muted-foreground">Unlimited Documents</span>
+                    </li>
+                  </ul>
+                </GlassCard>
+              );
+            })}
           </div>
         </div>
 
-        {/* Usage Stats */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold text-foreground mb-4">Current Usage</h2>
-          <div className="grid gap-4 md:grid-cols-3">
-            <GlassCard className="p-4">
-              <p className="text-sm text-muted-foreground mb-1">Guardian Queries</p>
-              <p className="text-2xl font-bold text-foreground">24 / 50</p>
-              <div className="mt-2 h-2 bg-[#F8F5F0] rounded-full overflow-hidden">
-                <div className="h-full bg-emerald-500 rounded-full" style={{ width: "48%" }} />
-              </div>
-            </GlassCard>
-            <GlassCard className="p-4">
-              <p className="text-sm text-muted-foreground mb-1">Invoices Processed</p>
-              <p className="text-2xl font-bold text-foreground">8 / 20</p>
-              <div className="mt-2 h-2 bg-[#F8F5F0] rounded-full overflow-hidden">
-                <div className="h-full bg-amber-500 rounded-full" style={{ width: "40%" }} />
-              </div>
-            </GlassCard>
-            <GlassCard className="p-4">
-              <p className="text-sm text-muted-foreground mb-1">Documents Generated</p>
-              <p className="text-2xl font-bold text-foreground">3 / 10</p>
-              <div className="mt-2 h-2 bg-[#F8F5F0] rounded-full overflow-hidden">
-                <div className="h-full bg-[#FF6B35] rounded-full" style={{ width: "30%" }} />
-              </div>
-            </GlassCard>
+        {/* Pricing Calculator */}
+        <GlassCard className="mb-8 p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <Calculator className="h-5 w-5 text-[#FF6B35]" />
+            <h3 className="text-lg font-medium text-foreground">Price Calculator</h3>
           </div>
-        </div>
+          <div className="grid gap-4 md:grid-cols-4">
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Your lots
+              </label>
+              <div className="flex items-center gap-2 p-3 bg-[#F8F5F0] rounded-lg border border-[#E8E4DE]">
+                <Building2 className="h-4 w-4 text-muted-foreground" />
+                <span className="text-lg font-semibold text-foreground">{lotCount}</span>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Your tier
+              </label>
+              <div className="p-3 bg-[#FFF0EB] rounded-lg border border-[#FFCDB8]">
+                <span className="text-lg font-semibold text-[#FF6B35]">{tierInfo.name}</span>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Monthly
+              </label>
+              <div className="p-3 bg-white rounded-lg border border-[#E8E4DE]">
+                <span className="text-lg font-semibold text-foreground">
+                  ${monthlyPrice.toFixed(2)}
+                </span>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Annual
+              </label>
+              <div className="p-3 bg-white rounded-lg border border-[#E8E4DE]">
+                <span className="text-lg font-semibold text-foreground">
+                  ${(monthlyPrice * 12).toFixed(2)}
+                </span>
+              </div>
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground mt-4">
+            Update your lot count in scheme settings to see updated pricing.
+          </p>
+        </GlassCard>
 
-        {/* Billing History */}
-        <div>
-          <h2 className="text-xl font-semibold text-foreground mb-4">Billing History</h2>
-          <GlassCard className="p-6">
-            <div className="text-center py-8">
-              <CreditCard className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
-              <p className="text-foreground">No billing history yet</p>
-              <p className="text-sm text-muted-foreground mt-1">
-                Your invoices will appear here after you upgrade
+        {/* FAQ */}
+        <GlassCard className="p-6">
+          <h3 className="text-lg font-medium text-foreground mb-4">
+            Frequently Asked Questions
+          </h3>
+          <div className="space-y-4">
+            <div className="border-b border-[#E8E4DE] pb-4">
+              <h4 className="font-medium text-foreground mb-2">
+                How does per-lot pricing work?
+              </h4>
+              <p className="text-sm text-muted-foreground">
+                You pay based on the number of lots in your scheme. As you grow, you
+                automatically move into better pricing tiers. All lots are charged at your
+                tier's rate.
               </p>
             </div>
-          </GlassCard>
-        </div>
+            <div className="border-b border-[#E8E4DE] pb-4">
+              <h4 className="font-medium text-foreground mb-2">
+                What happens if I add more lots?
+              </h4>
+              <p className="text-sm text-muted-foreground">
+                If adding lots moves you to a new tier, you'll get the better rate on ALL
+                lots immediately. We'll prorate the difference on your next invoice.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-medium text-foreground mb-2">Can I cancel anytime?</h4>
+              <p className="text-sm text-muted-foreground">
+                Yes! No contracts, no lock-ins. Cancel anytime and you'll retain access
+                until the end of your billing period.
+              </p>
+            </div>
+          </div>
+        </GlassCard>
 
         {/* Footer */}
         <footer className="mt-12 pt-6 border-t border-[#E8E4DE]">
           <p className="text-xs text-muted-foreground text-center">
             Questions about billing? Contact us at{" "}
-            <a href="mailto:support@stratagenie.com.au" className="text-[#FF6B35] hover:underline">
+            <a
+              href="mailto:support@stratagenie.com.au"
+              className="text-[#FF6B35] hover:underline"
+            >
               support@stratagenie.com.au
             </a>
           </p>
