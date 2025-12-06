@@ -132,12 +132,14 @@ export default function DashboardLayout({
         <CaptureFab onCapture={handleCapture} />
 
         {/* Fixed logout button - bottom left */}
-        <SignOutButton redirectUrl="/">
-          <button className="fixed bottom-6 left-6 z-50 flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-[#E8E4DE] shadow-lg hover:shadow-xl hover:border-[#FF6B35]/30 transition-all text-sm font-medium text-[#1a1a2e] hover:text-[#FF6B35]">
-            <LogOut className="h-4 w-4" />
-            <span className="hidden sm:inline">Sign out</span>
-          </button>
-        </SignOutButton>
+        <div className="fixed bottom-6 left-6 z-[9999]">
+          <SignOutButton redirectUrl="/">
+            <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-[#E8E4DE] shadow-lg hover:shadow-xl hover:border-[#FF6B35]/30 transition-all text-sm font-medium text-[#1a1a2e] hover:text-[#FF6B35]">
+              <LogOut className="h-4 w-4" />
+              Sign out
+            </button>
+          </SignOutButton>
+        </div>
       </CaptureContext.Provider>
     </MobileNavContext.Provider>
   );
