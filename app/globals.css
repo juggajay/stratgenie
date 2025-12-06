@@ -281,9 +281,9 @@
     background: linear-gradient(
       135deg,
       #FDFBF7 0%,
-      #FFF6F2 25%,
-      #FFEFEA 50%,
-      #FFF6F2 75%,
+      #FEFCFA 25%,
+      #FFFAF8 50%,
+      #FEFCFA 75%,
       #FDFBF7 100%
     );
     background-size: 400% 400%;
