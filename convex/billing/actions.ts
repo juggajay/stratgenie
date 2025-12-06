@@ -12,7 +12,7 @@ const getStripe = () => {
     throw new Error("STRIPE_SECRET_KEY environment variable is not set");
   }
   return new Stripe(secretKey, {
-    apiVersion: "2024-11-20.acacia",
+    apiVersion: "2025-11-17.clover",
   });
 };
 
@@ -231,18 +231,18 @@ async function handleCheckoutCompleted(
   if (session.subscription) {
     const subscription = await stripe.subscriptions.retrieve(
       session.subscription as string
-    );
+    ) as any;
 
     await ctx.runMutation(internal.billing.mutations.upsertSubscription, {
       schemeId,
       stripeSubscriptionId: subscription.id,
       stripeCustomerId: subscription.customer as string,
       stripePriceId: subscription.items.data[0]?.price.id ?? "",
-      status: subscription.status as any,
+      status: subscription.status,
       lotCount,
-      currentPeriodStart: subscription.current_period_start * 1000,
-      currentPeriodEnd: subscription.current_period_end * 1000,
-      cancelAtPeriodEnd: subscription.cancel_at_period_end,
+      currentPeriodStart: (subscription.current_period_start ?? 0) * 1000,
+      currentPeriodEnd: (subscription.current_period_end ?? 0) * 1000,
+      cancelAtPeriodEnd: subscription.cancel_at_period_end ?? false,
     });
 
     // Clear trial since user has subscribed
@@ -257,7 +257,7 @@ async function handleCheckoutCompleted(
  */
 async function handleSubscriptionUpdated(
   ctx: any,
-  subscription: Stripe.Subscription
+  subscription: any
 ) {
   const schemeId = subscription.metadata?.schemeId;
 
@@ -268,12 +268,12 @@ async function handleSubscriptionUpdated(
 
   await ctx.runMutation(internal.billing.mutations.updateSubscriptionStatus, {
     stripeSubscriptionId: subscription.id,
-    status: subscription.status as any,
-    cancelAtPeriodEnd: subscription.cancel_at_period_end,
+    status: subscription.status,
+    cancelAtPeriodEnd: subscription.cancel_at_period_end ?? false,
     canceledAt: subscription.canceled_at
       ? subscription.canceled_at * 1000
       : undefined,
-    currentPeriodEnd: subscription.current_period_end * 1000,
+    currentPeriodEnd: (subscription.current_period_end ?? 0) * 1000,
   });
 }
 
@@ -282,7 +282,7 @@ async function handleSubscriptionUpdated(
  */
 async function handleSubscriptionDeleted(
   ctx: any,
-  subscription: Stripe.Subscription
+  subscription: any
 ) {
   await ctx.runMutation(internal.billing.mutations.updateSubscriptionStatus, {
     stripeSubscriptionId: subscription.id,
@@ -294,7 +294,7 @@ async function handleSubscriptionDeleted(
 /**
  * Handle payment failed event
  */
-async function handlePaymentFailed(ctx: any, invoice: Stripe.Invoice) {
+async function handlePaymentFailed(ctx: any, invoice: any) {
   if (invoice.subscription) {
     await ctx.runMutation(internal.billing.mutations.updateSubscriptionStatus, {
       stripeSubscriptionId: invoice.subscription as string,
