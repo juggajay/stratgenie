@@ -15,7 +15,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 
 interface LotFormDialogProps {
   schemeId: Id<"schemes">;
@@ -46,6 +47,7 @@ export function LotFormDialog({
   const [ownerAddress, setOwnerAddress] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isLotLimitError, setIsLotLimitError] = useState(false);
 
   const createLot = useMutation(api.lots.createLot);
   const updateLot = useMutation(api.lots.updateLot);
@@ -73,6 +75,7 @@ export function LotFormDialog({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setIsLotLimitError(false);
     setIsSubmitting(true);
 
     try {
@@ -107,9 +110,17 @@ export function LotFormDialog({
       console.error("Lot form error:", err);
       const message = err instanceof Error ? err.message : String(err);
       // Extract the actual error message from Convex errors
-      setError(message.includes("Uncaught Error:")
+      let displayMessage = message.includes("Uncaught Error:")
         ? message.split("Uncaught Error:")[1]?.trim() || message
-        : message);
+        : message;
+
+      // Check for lot limit error
+      if (displayMessage.includes("LOT_LIMIT_REACHED:")) {
+        displayMessage = displayMessage.replace("LOT_LIMIT_REACHED:", "");
+        setIsLotLimitError(true);
+      }
+
+      setError(displayMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -203,8 +214,14 @@ export function LotFormDialog({
           </div>
 
           {error && (
-            <div className="mb-4 p-3 text-sm text-red-600 bg-red-50 rounded-md">
-              {error}
+            <div className={`mb-4 p-3 text-sm rounded-md ${isLotLimitError ? "bg-amber-50 text-amber-700 border border-amber-200" : "bg-red-50 text-red-600"}`}>
+              <p>{error}</p>
+              {isLotLimitError && (
+                <Link href="/dashboard/billing" className="inline-flex items-center gap-1 mt-2 text-[#FF6B35] hover:text-[#E85A2A] font-medium">
+                  Upgrade your plan
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              )}
             </div>
           )}
 

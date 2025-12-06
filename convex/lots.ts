@@ -102,6 +102,49 @@ export const getTotalUnitEntitlement = query({
 });
 
 /**
+ * Get the lot capacity for a scheme (used vs limit).
+ * Returns how many lots are used, the limit, and remaining capacity.
+ */
+export const getLotCapacity = query({
+  args: {
+    schemeId: v.id("schemes"),
+  },
+  handler: async (ctx, args) => {
+    // Return null if not authenticated
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null;
+    }
+
+    await checkAccess(ctx, args.schemeId);
+
+    const scheme = await ctx.db.get(args.schemeId);
+    if (!scheme) {
+      return null;
+    }
+
+    const lots = await ctx.db
+      .query("lots")
+      .withIndex("by_scheme", (q) => q.eq("schemeId", args.schemeId))
+      .collect();
+
+    const used = lots.length;
+    const limit = scheme.lotCount ?? 0;
+    const remaining = limit > 0 ? Math.max(0, limit - used) : Infinity;
+    const isAtLimit = limit > 0 && used >= limit;
+
+    return {
+      used,
+      limit,
+      remaining,
+      isAtLimit,
+      // For display: "5 of 10 lots used" or "5 lots (no limit)"
+      displayText: limit > 0 ? `${used} of ${limit} lots` : `${used} lots`,
+    };
+  },
+});
+
+/**
  * Check if a lot number already exists in a scheme.
  */
 export const checkLotNumberExists = query({
@@ -141,6 +184,7 @@ export const checkLotNumberExists = query({
 
 /**
  * Create a new lot in a scheme.
+ * Enforces lot limit based on scheme's paid lot count.
  */
 export const createLot = mutation({
   args: {
@@ -158,6 +202,21 @@ export const createLot = mutation({
     const scheme = await ctx.db.get(args.schemeId);
     if (!scheme) {
       throw new Error("Scheme not found");
+    }
+
+    // Check lot limit - enforce paid lot count
+    const paidLotCount = scheme.lotCount ?? 0;
+    if (paidLotCount > 0) {
+      const existingLots = await ctx.db
+        .query("lots")
+        .withIndex("by_scheme", (q) => q.eq("schemeId", args.schemeId))
+        .collect();
+
+      if (existingLots.length >= paidLotCount) {
+        throw new Error(
+          `LOT_LIMIT_REACHED:You've reached your limit of ${paidLotCount} lots. Upgrade your plan to add more lots.`
+        );
+      }
     }
 
     // Validate lot number is not empty
