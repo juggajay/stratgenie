@@ -8,8 +8,20 @@ const TRIAL_DURATION_MS = 14 * 24 * 60 * 60 * 1000;
 export const list = query({
   args: {},
   handler: async (ctx) => {
-    // Get authenticated user
-    const user = await requireAuth(ctx);
+    // Get authenticated user - return empty array if not authenticated
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return [];
+    }
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.tokenIdentifier))
+      .first();
+
+    if (!user) {
+      return [];
+    }
 
     // Get user's scheme memberships
     const userSchemes = await ctx.db
