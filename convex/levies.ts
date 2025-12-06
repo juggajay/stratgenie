@@ -21,6 +21,12 @@ export const listLevyRunsForScheme = query({
     schemeId: v.id("schemes"),
   },
   handler: async (ctx, args) => {
+    // Return empty array if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return [];
+    }
+
     // Verify user has access to this scheme
     await checkAccess(ctx, args.schemeId);
 
@@ -66,6 +72,12 @@ export const getLevyRunWithInvoices = query({
     levyRunId: v.id("levyRuns"),
   },
   handler: async (ctx, args) => {
+    // Return null if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null;
+    }
+
     const levyRun = await ctx.db.get(args.levyRunId);
     if (!levyRun) return null;
 

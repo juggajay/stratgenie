@@ -42,6 +42,12 @@ export const getInvoice = query({
     invoiceId: v.id("invoices"),
   },
   handler: async (ctx, args) => {
+    // Return null if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null;
+    }
+
     const invoice = await ctx.db.get(args.invoiceId);
     if (!invoice) return null;
 
@@ -357,6 +363,12 @@ export const getTransaction = query({
     transactionId: v.id("transactions"),
   },
   handler: async (ctx, args) => {
+    // Return null if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null;
+    }
+
     const transaction = await ctx.db.get(args.transactionId);
     if (!transaction) return null;
 

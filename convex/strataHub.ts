@@ -38,6 +38,12 @@ export const getReport = query({
     sessionId: v.string(),
   },
   handler: async (ctx, args) => {
+    // Return null if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null;
+    }
+
     // Require authentication
     const user = await requireAuth(ctx);
 
@@ -65,6 +71,12 @@ export const getReportById = query({
     reportId: v.id("strataHubReports"),
   },
   handler: async (ctx, args) => {
+    // Return null if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null;
+    }
+
     // Require authentication
     const user = await requireAuth(ctx);
 

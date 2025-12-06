@@ -70,6 +70,12 @@ export const getScheme = query({
 export const getByStrataNumber = query({
   args: { strataNumber: v.string() },
   handler: async (ctx, args) => {
+    // Return null if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null;
+    }
+
     // Require authentication to prevent enumeration attacks
     const user = await requireAuth(ctx);
 
@@ -259,6 +265,12 @@ export const deleteOrphanSchemes = internalMutation({
 export const getTrialStatus = query({
   args: { schemeId: v.id("schemes") },
   handler: async (ctx, args) => {
+    // Return null if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null;
+    }
+
     // Verify user has access to this scheme
     await checkAccess(ctx, args.schemeId);
 

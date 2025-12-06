@@ -145,6 +145,12 @@ export const listDocumentsForScheme = query({
     schemeId: v.id("schemes"),
   },
   handler: async (ctx, args) => {
+    // Return empty array if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return [];
+    }
+
     await checkAccess(ctx, args.schemeId);
 
     const documents = await ctx.db
@@ -170,6 +176,12 @@ export const getDocumentsByType = query({
     ),
   },
   handler: async (ctx, args) => {
+    // Return empty array if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return [];
+    }
+
     await checkAccess(ctx, args.schemeId);
 
     const documents = await ctx.db
@@ -285,6 +297,12 @@ export const getVaultDocuments = query({
     schemeId: v.id("schemes"),
   },
   handler: async (ctx, args) => {
+    // Return empty array if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return [];
+    }
+
     await checkAccess(ctx, args.schemeId);
 
     const documents = await ctx.db

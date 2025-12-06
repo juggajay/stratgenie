@@ -16,6 +16,12 @@ export const listLotsForScheme = query({
     schemeId: v.id("schemes"),
   },
   handler: async (ctx, args) => {
+    // Return empty array if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return [];
+    }
+
     await checkAccess(ctx, args.schemeId);
 
     const lots = await ctx.db
@@ -52,6 +58,12 @@ export const getLot = query({
     lotId: v.id("lots"),
   },
   handler: async (ctx, args) => {
+    // Return null if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null;
+    }
+
     const lot = await ctx.db.get(args.lotId);
     if (!lot) return null;
 
@@ -69,6 +81,12 @@ export const getTotalUnitEntitlement = query({
     schemeId: v.id("schemes"),
   },
   handler: async (ctx, args) => {
+    // Return null if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null;
+    }
+
     await checkAccess(ctx, args.schemeId);
 
     const lots = await ctx.db
@@ -93,6 +111,12 @@ export const checkLotNumberExists = query({
     excludeLotId: v.optional(v.id("lots")),
   },
   handler: async (ctx, args) => {
+    // Return false if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return false;
+    }
+
     await checkAccess(ctx, args.schemeId);
 
     const existing = await ctx.db

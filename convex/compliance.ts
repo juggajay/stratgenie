@@ -70,6 +70,12 @@ export function calculateStrataHubDueDate(agmDate: number): number {
 export const getSchemeComplianceStatus = query({
   args: { schemeId: v.id("schemes") },
   handler: async (ctx, args) => {
+    // Return null if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null;
+    }
+
     await checkAccess(ctx, args.schemeId);
 
     const scheme = await ctx.db.get(args.schemeId);
@@ -107,6 +113,12 @@ export const getSchemeComplianceStatus = query({
 export const listComplianceTasksForScheme = query({
   args: { schemeId: v.id("schemes") },
   handler: async (ctx, args) => {
+    // Return empty array if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return [];
+    }
+
     await checkAccess(ctx, args.schemeId);
 
     const tasks = await ctx.db

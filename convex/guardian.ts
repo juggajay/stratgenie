@@ -20,6 +20,12 @@ export const getBylawsForScheme = query({
     schemeId: v.id("schemes"),
   },
   handler: async (ctx, args) => {
+    // Return empty array if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return [];
+    }
+
     // Verify user has access to this scheme
     await checkAccess(ctx, args.schemeId);
 
@@ -38,6 +44,12 @@ export const getActiveBylaw = query({
     schemeId: v.id("schemes"),
   },
   handler: async (ctx, args) => {
+    // Return null if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null;
+    }
+
     // Verify user has access to this scheme
     await checkAccess(ctx, args.schemeId);
 
@@ -60,6 +72,12 @@ export const getBylaw = query({
     bylawId: v.id("bylaws"),
   },
   handler: async (ctx, args) => {
+    // Return null if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null;
+    }
+
     const bylaw = await ctx.db.get(args.bylawId);
     if (!bylaw) return null;
 

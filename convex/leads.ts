@@ -73,6 +73,12 @@ export const getBySource = query({
     ),
   },
   handler: async (ctx, args) => {
+    // Return empty array if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return [];
+    }
+
     await requireAuth(ctx);
 
     return await ctx.db
@@ -88,6 +94,12 @@ export const getBySource = query({
 export const getAll = query({
   args: {},
   handler: async (ctx) => {
+    // Return empty array if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return [];
+    }
+
     await requireAuth(ctx);
 
     return await ctx.db.query("leads").collect();
