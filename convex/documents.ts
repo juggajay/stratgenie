@@ -11,8 +11,17 @@ export const getScheme = query({
     schemeId: v.id("schemes"),
   },
   handler: async (ctx, args) => {
-    await checkAccess(ctx, args.schemeId);
-    return await ctx.db.get(args.schemeId);
+    // Return null if not authenticated (e.g., during logout)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null;
+    }
+    try {
+      await checkAccess(ctx, args.schemeId);
+      return await ctx.db.get(args.schemeId);
+    } catch {
+      return null;
+    }
   },
 });
 

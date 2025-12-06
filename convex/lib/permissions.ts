@@ -126,3 +126,12 @@ export async function requireAuth(ctx: QueryCtx | MutationCtx) {
   }
   return user;
 }
+
+/**
+ * Check if user is authenticated (non-throwing).
+ * Returns false if not authenticated.
+ */
+export async function isAuthenticated(ctx: QueryCtx | MutationCtx): Promise<boolean> {
+  const identity = await ctx.auth.getUserIdentity();
+  return !!identity;
+}
