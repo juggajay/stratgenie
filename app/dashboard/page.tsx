@@ -56,14 +56,9 @@ export default function DashboardPage() {
               </span>
             </div>
             <div className="h-6 w-px bg-[#E8E4DE]" />
-            <div>
-              <h1 className="text-lg font-display font-bold tracking-tight text-foreground">
-                Dashboard
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Your strata compliance overview
-              </p>
-            </div>
+            <h1 className="text-lg font-display font-bold tracking-tight text-foreground">
+              Dashboard
+            </h1>
           </div>
           <div className="flex items-center gap-3">
             <Link href="/dashboard/guardian">

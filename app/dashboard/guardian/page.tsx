@@ -108,27 +108,22 @@ export default function GuardianPage() {
                 </span>
               </div>
               <div className="h-6 w-px bg-[#E8E4DE]" />
-              <div>
-                <div className="flex items-center gap-2">
-                  <Link href="/dashboard">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="rounded-lg text-muted-foreground hover:text-foreground -ml-2"
-                    >
-                      <ArrowLeft className="h-4 w-4 mr-1" />
-                      Dashboard
-                    </Button>
-                  </Link>
-                  <span className="text-muted-foreground/40">/</span>
-                  <h1 className="text-lg font-display font-bold tracking-tight text-foreground flex items-center gap-2">
-                    <Shield className="h-5 w-5 text-[#FF6B35]" />
-                    Guardian
-                  </h1>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  AI-powered bylaw Q&A - ask questions about your scheme&apos;s rules
-                </p>
+              <div className="flex items-center gap-2">
+                <Link href="/dashboard">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="rounded-lg text-muted-foreground hover:text-foreground -ml-2"
+                  >
+                    <ArrowLeft className="h-4 w-4 mr-1" />
+                    Dashboard
+                  </Button>
+                </Link>
+                <span className="text-muted-foreground/40">/</span>
+                <h1 className="text-lg font-display font-bold tracking-tight text-foreground flex items-center gap-2">
+                  <Shield className="h-5 w-5 text-[#FF6B35]" />
+                  Guardian
+                </h1>
               </div>
             </div>
           </div>

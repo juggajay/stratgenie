@@ -375,27 +375,22 @@ export default function FinancePage() {
                 </span>
               </div>
               <div className="h-6 w-px bg-[#E8E4DE]" />
-              <div>
-                <div className="flex items-center gap-2">
-                  <Link href="/dashboard">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="rounded-lg text-muted-foreground hover:text-foreground -ml-2"
-                    >
-                      <ArrowLeft className="h-4 w-4 mr-1" />
-                      Dashboard
-                    </Button>
-                  </Link>
-                  <span className="text-muted-foreground/40">/</span>
-                  <h1 className="text-lg font-display font-bold tracking-tight text-foreground flex items-center gap-2">
-                    <Receipt className="h-5 w-5 text-[#FF6B35]" />
-                    Finance
-                  </h1>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Manage expenses and generate levy income
-                </p>
+              <div className="flex items-center gap-2">
+                <Link href="/dashboard">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="rounded-lg text-muted-foreground hover:text-foreground -ml-2"
+                  >
+                    <ArrowLeft className="h-4 w-4 mr-1" />
+                    Dashboard
+                  </Button>
+                </Link>
+                <span className="text-muted-foreground/40">/</span>
+                <h1 className="text-lg font-display font-bold tracking-tight text-foreground flex items-center gap-2">
+                  <Receipt className="h-5 w-5 text-[#FF6B35]" />
+                  Finance
+                </h1>
               </div>
             </div>
             {selectedSchemeId && (
