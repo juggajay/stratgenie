@@ -4,6 +4,24 @@ import { useState } from "react";
 import Link from "next/link";
 import "./landing-v2-styles.css";
 
+// Pricing calculation (mirroring convex/billing/constants.ts)
+const PRICING_TIERS = [
+  { maxLots: 10, pricePerLot: 14.99, name: "Standard", discount: 0 },
+  { maxLots: 50, pricePerLot: 11.99, name: "Growth", discount: 20 },
+  { maxLots: Infinity, pricePerLot: 8.99, name: "Scale", discount: 40 },
+];
+
+function calculateMonthlyPrice(lotCount: number): number {
+  const tier = PRICING_TIERS.find((t) => lotCount <= t.maxLots);
+  if (!tier) return lotCount * PRICING_TIERS[2].pricePerLot;
+  return Math.round(lotCount * tier.pricePerLot * 100) / 100;
+}
+
+function getTierInfo(lotCount: number) {
+  const tier = PRICING_TIERS.find((t) => lotCount <= t.maxLots);
+  return tier ?? PRICING_TIERS[2];
+}
+
 // SVG Icons as components
 const CheckIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -75,8 +93,33 @@ const CloseIcon = () => (
   </svg>
 );
 
+const BuildingIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/>
+    <line x1="9" y1="22" x2="9" y2="2"/>
+    <line x1="14" y1="2" x2="14" y2="22"/>
+  </svg>
+);
+
+const ClockIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <polyline points="12 6 12 12 16 14"/>
+  </svg>
+);
+
+const ZapIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+  </svg>
+);
+
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [lotCount, setLotCount] = useState(10);
+
+  const tierInfo = getTierInfo(lotCount);
+  const monthlyPrice = calculateMonthlyPrice(lotCount);
 
   return (
     <main className="landing-v2">
@@ -146,7 +189,7 @@ export default function LandingPage() {
                   Start Free Trial
                   <ArrowRightIcon />
                 </Link>
-                <a href="#offer" className="cta-secondary">
+                <a href="#pricing" className="cta-secondary">
                   See How It Works
                 </a>
               </div>
@@ -410,81 +453,153 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SECTION D: THE CLOSER */}
-      <section className="closer" id="offer">
+      {/* SECTION D: PRICING */}
+      <section className="pricing-section" id="pricing">
         <div className="container">
-          <div className="closer-grid">
+          <div className="pricing-header">
+            <span className="section-label">Simple Pricing</span>
+            <h2 className="section-headline" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+              Pay per lot. <em>Save as you grow.</em>
+            </h2>
+            <p className="pricing-subtitle">
+              No hidden fees. No long-term contracts. Cancel anytime.
+            </p>
+          </div>
 
-            {/* Offer Recap */}
-            <div className="offer-card">
-              <span className="offer-badge">Early Bird Offer</span>
-              <h3 className="offer-title">Start Your Free 14-Day Trial</h3>
-              <p className="offer-subtitle">Full access. No credit card. Cancel anytime.</p>
+          {/* Calculator Card */}
+          <div className="pricing-calculator">
+            <div className="calculator-header">
+              <h3>Calculate Your Price</h3>
+              <p>Slide to see your monthly cost</p>
+            </div>
 
-              <ul className="offer-list">
-                <li>
-                  <SimpleCheckIcon />
-                  Automatic AGM & Strata Hub deadline tracking
-                </li>
-                <li>
-                  <SimpleCheckIcon />
-                  AI-powered invoice processing
-                </li>
-                <li>
-                  <SimpleCheckIcon />
-                  Guardian AI for instant bylaw Q&A
-                </li>
-                <li>
-                  <SimpleCheckIcon />
-                  Levy calculator & strata roll management
-                </li>
-                <li>
-                  <SimpleCheckIcon />
-                  Compliance document vault
-                </li>
-              </ul>
-
-              <div className="price-row">
-                <span className="price-current">$14.99</span>
-                <span className="price-period">/ month per lot</span>
+            <div className="calculator-body">
+              <div className="calculator-input-group">
+                <label>How many lots in your scheme?</label>
+                <div className="slider-row">
+                  <input
+                    type="range"
+                    min="1"
+                    max="100"
+                    value={lotCount}
+                    onChange={(e) => setLotCount(parseInt(e.target.value))}
+                    className="lot-slider"
+                  />
+                  <div className="lot-display">
+                    <BuildingIcon />
+                    <span>{lotCount}</span>
+                  </div>
+                </div>
               </div>
 
-              <Link href="/pricing" className="offer-cta">
-                Start Free Trial
-                <ArrowRightIcon />
-              </Link>
-
-              {/* Guarantee */}
-              <div className="guarantee-box">
-                <div className="guarantee-text">
-                  <strong>30-Day Money-Back Guarantee</strong>
-                  <span>If StrataGenie doesn&apos;t save you time, full refund. No questions.</span>
+              <div className="price-result">
+                <div className="price-amount">
+                  <span className="price-value">${monthlyPrice.toFixed(2)}</span>
+                  <span className="price-period">/month</span>
+                </div>
+                <div className="price-meta">
+                  {tierInfo.name} tier · ${tierInfo.pricePerLot}/lot
+                  {tierInfo.discount > 0 && (
+                    <span className="discount-badge">Save {tierInfo.discount}%</span>
+                  )}
                 </div>
               </div>
             </div>
 
-            {/* FAQ */}
-            <div className="faq-section">
-              <h3 className="faq-title">Common Questions</h3>
+            <Link href="/sign-up" className="calculator-cta">
+              Start Free 14-Day Trial
+              <ArrowRightIcon />
+            </Link>
+          </div>
 
-              <div className="faq-list">
-                <div className="faq-item">
-                  <div className="faq-question">We&apos;ve been self-managing for years. Do we really need this?</div>
-                  <p className="faq-answer">If you&apos;ve never worried about missing a deadline at 2am, no. But most self-managed committees tell us the anxiety never fully goes away—until they have a system watching their back. StrataGenie gives you certainty.</p>
-                </div>
+          {/* Pricing Tiers */}
+          <div className="tiers-grid">
+            {PRICING_TIERS.map((tier, index) => {
+              const isActive = tier.name === tierInfo.name;
+              const tierLotRange = index === 0 ? "1-10 lots" : index === 1 ? "11-50 lots" : "51+ lots";
 
-                <div className="faq-item">
-                  <div className="faq-question">How does Guardian AI actually work?</div>
-                  <p className="faq-answer">Upload your bylaws once. Then ask questions in plain English like &ldquo;Can residents have dogs?&rdquo; Guardian AI reads your actual documents and gives you the answer with the exact clause reference. No more Googling or guessing.</p>
+              return (
+                <div key={tier.name} className={`tier-card ${isActive ? 'active' : ''}`}>
+                  {isActive && <span className="current-tier-badge">Your Tier</span>}
+                  <div className="tier-range">{tierLotRange}</div>
+                  <div className="tier-price">
+                    <span className="tier-amount">${tier.pricePerLot.toFixed(2)}</span>
+                    <span className="tier-period">/lot/mo</span>
+                  </div>
+                  <div className="tier-name-row">
+                    <span className="tier-name">{tier.name}</span>
+                    {tier.discount > 0 && (
+                      <span className="tier-discount">Save {tier.discount}%</span>
+                    )}
+                  </div>
+                  <ul className="tier-features">
+                    <li><SimpleCheckIcon /> All 4 AI Agents</li>
+                    <li><SimpleCheckIcon /> Strata Hub Export</li>
+                    <li><SimpleCheckIcon /> Unlimited Documents</li>
+                  </ul>
                 </div>
+              );
+            })}
+          </div>
 
-                <div className="faq-item">
-                  <div className="faq-question">What if there&apos;s a deadline I don&apos;t even know about?</div>
-                  <p className="faq-answer">That&apos;s the point. StrataGenie knows every compliance requirement in the Act—AGM, Strata Hub Reports, AFSS, insurance, all of it. We track what you don&apos;t know you&apos;re missing.</p>
-                </div>
+          {/* Trust Signals */}
+          <div className="pricing-trust">
+            <div className="trust-signal">
+              <div className="trust-icon">
+                <ClockIcon />
+              </div>
+              <div>
+                <h4>14-Day Free Trial</h4>
+                <p>Full access to all features. No credit card required.</p>
               </div>
             </div>
+            <div className="trust-signal">
+              <div className="trust-icon">
+                <ZapIcon />
+              </div>
+              <div>
+                <h4>Cancel Anytime</h4>
+                <p>No long-term contracts. Cancel with one click.</p>
+              </div>
+            </div>
+            <div className="trust-signal">
+              <div className="trust-icon">
+                <ShieldIcon />
+              </div>
+              <div>
+                <h4>Secure & Private</h4>
+                <p>Bank-level encryption. Your data stays yours.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
+      {/* FAQ Section */}
+      <section className="faq-standalone">
+        <div className="container">
+          <h3 className="faq-title">Common Questions</h3>
+
+          <div className="faq-grid">
+            <div className="faq-item">
+              <div className="faq-question">How does per-lot pricing work?</div>
+              <p className="faq-answer">You pay based on the number of lots in your scheme. As you grow, you automatically move into better pricing tiers with volume discounts. All lots are charged at your tier&apos;s rate.</p>
+            </div>
+
+            <div className="faq-item">
+              <div className="faq-question">What happens after my free trial?</div>
+              <p className="faq-answer">After 14 days, you can choose to subscribe to continue using StrataGenie. If you don&apos;t subscribe, your account will be limited but your data will be preserved.</p>
+            </div>
+
+            <div className="faq-item">
+              <div className="faq-question">Can I change my lot count later?</div>
+              <p className="faq-answer">Yes! If adding lots moves you to a new tier, you&apos;ll get the better rate on ALL lots immediately. We&apos;ll prorate the difference on your next invoice.</p>
+            </div>
+
+            <div className="faq-item">
+              <div className="faq-question">Is there a setup fee?</div>
+              <p className="faq-answer">No setup fees, no hidden costs. The price you see is the price you pay. Start your free trial and only pay when you&apos;re ready.</p>
+            </div>
           </div>
         </div>
       </section>

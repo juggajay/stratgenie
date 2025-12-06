@@ -955,171 +955,373 @@
   color: var(--text-muted);
 }
 
-/* ==================== SECTION D: THE CLOSER ==================== */
-.landing-v2 .closer {
+/* ==================== SECTION D: PRICING ==================== */
+.landing-v2 .pricing-section {
   padding: var(--section-gap) 0;
 }
 
-.landing-v2 .closer-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: start;
+.landing-v2 .pricing-header {
+  text-align: center;
+  margin-bottom: 48px;
 }
 
-/* Offer recap */
-.landing-v2 .offer-card {
-  padding: 48px;
+.landing-v2 .pricing-subtitle {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-top: 16px;
+}
+
+/* Calculator */
+.landing-v2 .pricing-calculator {
+  max-width: 700px;
+  margin: 0 auto 60px;
+  padding: 40px;
   background: var(--bg-card);
   border: 2px solid var(--accent);
   border-radius: 24px;
-  position: relative;
-  overflow: hidden;
+  box-shadow: 0 8px 40px var(--accent-glow);
 }
 
-.landing-v2 .offer-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--accent), #FF8F5A);
+.landing-v2 .calculator-header {
+  text-align: center;
+  margin-bottom: 32px;
 }
 
-.landing-v2 .offer-badge {
-  display: inline-block;
-  padding: 8px 18px;
-  background: var(--accent);
-  color: white;
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-radius: 100px;
-  margin-bottom: 24px;
-}
-
-.landing-v2 .offer-title {
+.landing-v2 .calculator-header h3 {
   font-family: var(--font-display);
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 500;
   color: var(--text-headline);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
-.landing-v2 .offer-subtitle {
-  font-size: 17px;
+.landing-v2 .calculator-header p {
+  font-size: 15px;
   color: var(--text-muted);
+}
+
+.landing-v2 .calculator-body {
+  display: grid;
+  gap: 24px;
   margin-bottom: 32px;
 }
 
-.landing-v2 .offer-list {
-  list-style: none;
-  margin-bottom: 32px;
+.landing-v2 .calculator-input-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-headline);
+  margin-bottom: 16px;
 }
 
-.landing-v2 .offer-list li {
+.landing-v2 .slider-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 16px;
-  color: var(--text-body);
+  gap: 20px;
 }
 
-.landing-v2 .offer-list li:last-child {
-  border-bottom: none;
+.landing-v2 .lot-slider {
+  flex: 1;
+  height: 8px;
+  background: var(--border);
+  border-radius: 8px;
+  appearance: none;
+  cursor: pointer;
 }
 
-.landing-v2 .offer-list svg {
-  width: 22px;
-  height: 22px;
-  color: var(--success);
-  flex-shrink: 0;
+.landing-v2 .lot-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  background: var(--accent);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 8px var(--accent-glow);
+  transition: transform 0.2s ease;
 }
 
-.landing-v2 .price-row {
+.landing-v2 .lot-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.landing-v2 .lot-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  background: var(--accent);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.landing-v2 .lot-display {
   display: flex;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 24px;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: var(--bg-warm);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  min-width: 100px;
 }
 
-.landing-v2 .price-original {
-  font-size: 24px;
-  color: var(--text-light);
-  text-decoration: line-through;
+.landing-v2 .lot-display svg {
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
 }
 
-.landing-v2 .price-current {
-  font-family: var(--font-display);
-  font-size: 52px;
+.landing-v2 .lot-display span {
+  font-size: 20px;
   font-weight: 600;
   color: var(--text-headline);
 }
 
-.landing-v2 .price-period {
+.landing-v2 .price-result {
+  padding: 24px;
+  background: var(--accent-light);
+  border: 1px solid rgba(255, 107, 53, 0.2);
+  border-radius: 16px;
+  text-align: center;
+}
+
+.landing-v2 .price-amount {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.landing-v2 .price-value {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 600;
+  color: var(--text-headline);
+}
+
+.landing-v2 .price-result .price-period {
   font-size: 18px;
   color: var(--text-muted);
 }
 
-.landing-v2 .offer-cta {
+.landing-v2 .price-meta {
+  font-size: 15px;
+  color: var(--text-body);
+}
+
+.landing-v2 .discount-badge {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 4px 10px;
+  background: #ECFDF5;
+  color: #059669;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 100px;
+}
+
+.landing-v2 .calculator-cta {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   padding: 18px 24px;
-  background: transparent;
-  color: var(--accent);
+  background: var(--accent);
+  color: white;
   font-size: 16px;
   font-weight: 600;
   text-decoration: none;
-  border: 2px solid var(--accent);
   border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px var(--accent-glow);
+}
+
+.landing-v2 .calculator-cta:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(255, 107, 53, 0.25);
+}
+
+.landing-v2 .calculator-cta svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s ease;
+}
+
+.landing-v2 .calculator-cta:hover svg {
+  transform: translateX(3px);
+}
+
+/* Tier Cards */
+.landing-v2 .tiers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+.landing-v2 .tier-card {
+  padding: 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  position: relative;
   transition: all 0.3s ease;
 }
 
-.landing-v2 .offer-cta:hover {
+.landing-v2 .tier-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.06);
+}
+
+.landing-v2 .tier-card.active {
+  border-color: var(--accent);
+  box-shadow: 0 8px 30px var(--accent-glow);
+  transform: scale(1.03);
+}
+
+.landing-v2 .current-tier-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 16px;
   background: var(--accent);
   color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px var(--accent-glow);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 100px;
+  white-space: nowrap;
 }
 
-.landing-v2 .offer-cta svg {
-  transition: transform 0.3s ease;
-}
-
-.landing-v2 .offer-cta:hover svg {
-  transform: translateX(4px);
-}
-
-/* Guarantee */
-.landing-v2 .guarantee-box {
-  margin-top: 24px;
-  text-align: center;
-}
-
-.landing-v2 .guarantee-text strong {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 15px;
+.landing-v2 .tier-range {
+  display: inline-block;
+  padding: 6px 12px;
+  background: var(--bg-warm);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 12px;
   font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.landing-v2 .tier-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.landing-v2 .tier-amount {
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 600;
+  color: var(--text-headline);
+}
+
+.landing-v2 .tier-period {
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+.landing-v2 .tier-name-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.landing-v2 .tier-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-headline);
+}
+
+.landing-v2 .tier-discount {
+  padding: 4px 10px;
+  background: #ECFDF5;
+  color: #059669;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 100px;
+}
+
+.landing-v2 .tier-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.landing-v2 .tier-features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-body);
+}
+
+.landing-v2 .tier-features svg {
+  width: 18px;
+  height: 18px;
+  color: var(--success);
+  flex-shrink: 0;
+}
+
+/* Trust Signals */
+.landing-v2 .pricing-trust {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.landing-v2 .trust-signal {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.landing-v2 .trust-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-light);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.landing-v2 .trust-icon svg {
+  width: 24px;
+  height: 24px;
+  color: var(--accent);
+}
+
+.landing-v2 .trust-signal h4 {
+  font-size: 16px;
+  font-weight: 600;
   color: var(--text-headline);
   margin-bottom: 4px;
 }
 
-.landing-v2 .guarantee-text span {
-  font-size: 13px;
+.landing-v2 .trust-signal p {
+  font-size: 14px;
   color: var(--text-muted);
 }
 
-/* FAQ */
-.landing-v2 .faq-section {
-  max-width: 520px;
+/* FAQ Standalone */
+.landing-v2 .faq-standalone {
+  padding: 80px 0;
+  background: var(--bg-warm);
 }
 
 .landing-v2 .faq-title {
@@ -1128,12 +1330,15 @@
   font-weight: 500;
   color: var(--text-headline);
   margin-bottom: 32px;
+  text-align: center;
 }
 
-.landing-v2 .faq-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.landing-v2 .faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .landing-v2 .faq-item {
@@ -1241,16 +1446,28 @@
     gap: 60px;
   }
 
-  .landing-v2 .closer-grid {
-    grid-template-columns: 1fr;
-    gap: 60px;
-  }
-
   .landing-v2 .problem-grid {
     grid-template-columns: 1fr;
   }
 
   .landing-v2 .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-v2 .tiers-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .landing-v2 .tier-card.active {
+    transform: scale(1);
+  }
+
+  .landing-v2 .pricing-trust {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-v2 .faq-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -1305,8 +1522,33 @@
     font-size: 20px;
   }
 
-  .landing-v2 .offer-card {
-    padding: 32px 24px;
+  /* Pricing mobile styles */
+  .landing-v2 .pricing-calculator {
+    padding: 28px 20px;
+  }
+
+  .landing-v2 .calculator-header h3 {
+    font-size: 20px;
+  }
+
+  .landing-v2 .price-value {
+    font-size: 40px;
+  }
+
+  .landing-v2 .tier-card {
+    padding: 24px;
+  }
+
+  .landing-v2 .tier-amount {
+    font-size: 36px;
+  }
+
+  .landing-v2 .trust-signal {
+    padding: 20px;
+  }
+
+  .landing-v2 .faq-standalone {
+    padding: 60px 0;
   }
 }
 
@@ -1661,6 +1903,66 @@
   /* Mobile menu smaller padding */
   .landing-v2 .mobile-menu {
     padding: 12px 16px;
+  }
+
+  /* Pricing small phone */
+  .landing-v2 .pricing-calculator {
+    padding: 24px 16px;
+  }
+
+  .landing-v2 .calculator-header h3 {
+    font-size: 18px;
+  }
+
+  .landing-v2 .slider-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .landing-v2 .lot-display {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .landing-v2 .price-value {
+    font-size: 36px;
+  }
+
+  .landing-v2 .price-result .price-period {
+    font-size: 16px;
+  }
+
+  .landing-v2 .price-meta {
+    font-size: 13px;
+  }
+
+  .landing-v2 .tier-card {
+    padding: 20px;
+  }
+
+  .landing-v2 .tier-amount {
+    font-size: 32px;
+  }
+
+  .landing-v2 .trust-signal {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .landing-v2 .trust-icon {
+    margin: 0 auto;
+  }
+
+  .landing-v2 .faq-item {
+    padding: 18px;
+  }
+
+  .landing-v2 .faq-question {
+    font-size: 14px;
+  }
+
+  .landing-v2 .faq-answer {
+    font-size: 13px;
   }
 }
 

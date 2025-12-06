@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing Section Preview - StrataGenie</title>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-cream: #FDFBF7;
+      --bg-warm: #F8F5F0;
+      --bg-card: #FFFFFF;
+      --text-headline: #1a1a2e;
+      --text-body: #3d3d5c;
+      --text-muted: #6b6b8a;
+      --accent: #FF6B35;
+      --accent-hover: #E85A2A;
+      --accent-light: #FFF0EB;
+      --border: #E8E4DE;
+      --success: #22C55E;
+      --font-display: 'Newsreader', Georgia, serif;
+      --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-cream);
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    /* ==================== PRICING SECTION ==================== */
+    .pricing-section {
+      padding: 100px 24px;
+      background: var(--bg-cream);
+    }
+
+    .pricing-container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .pricing-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .pricing-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--accent-light);
+      border: 1px solid #FFCDB8;
+      border-radius: 100px;
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .pricing-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 48px);
+      font-weight: 600;
+      color: var(--text-headline);
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .pricing-subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* Calculator Card */
+    .pricing-calculator {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 50px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+    }
+
+    .calculator-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .calculator-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--accent-light);
+      border: 1px solid #FFCDB8;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .calculator-icon svg {
+      width: 22px;
+      height: 22px;
+      color: var(--accent);
+    }
+
+    .calculator-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text-headline);
+    }
+
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .calculator-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+    }
+
+    .calculator-input-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-headline);
+      margin-bottom: 12px;
+    }
+
+    .slider-container {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .slider {
+      flex: 1;
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .slider::-webkit-slider-thumb {
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      background: var(--accent);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+    }
+
+    .lot-display {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      min-width: 90px;
+    }
+
+    .lot-display svg {
+      width: 18px;
+      height: 18px;
+      color: var(--text-muted);
+    }
+
+    .lot-display span {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-headline);
+    }
+
+    .price-result {
+      background: var(--accent-light);
+      border: 1px solid #FFCDB8;
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .price-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .price-amount {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .price-amount .value {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text-headline);
+    }
+
+    .price-amount .period {
+      font-size: 16px;
+      color: var(--text-muted);
+    }
+
+    .price-breakdown {
+      font-size: 14px;
+      color: var(--text-body);
+    }
+
+    .price-breakdown .savings {
+      color: var(--success);
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    /* Pricing Tiers */
+    .tiers-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .tiers-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--text-headline);
+      margin-bottom: 8px;
+    }
+
+    .tiers-subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
+    }
+
+    .tiers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 50px;
+    }
+
+    @media (max-width: 768px) {
+      .tiers-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .tier-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .tier-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+
+    .tier-card.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+      transform: scale(1.02);
+    }
+
+    .tier-badge-container {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .tier-badge {
+      background: var(--accent);
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    .tier-range {
+      display: inline-block;
+      padding: 6px 12px;
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .tier-price {
+      margin-bottom: 12px;
+    }
+
+    .tier-price .amount {
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--text-headline);
+    }
+
+    .tier-price .unit {
+      font-size: 15px;
+      color: var(--text-muted);
+    }
+
+    .tier-name-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .tier-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-headline);
+    }
+
+    .discount-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #059669;
+    }
+
+    .tier-features {
+      list-style: none;
+    }
+
+    .tier-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text-body);
+      margin-bottom: 10px;
+    }
+
+    .tier-features li:last-child {
+      margin-bottom: 0;
+    }
+
+    .check-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--success);
+      flex-shrink: 0;
+    }
+
+    /* CTA Button */
+    .pricing-cta {
+      text-align: center;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 18px 40px;
+      background: var(--accent);
+      color: white;
+      font-size: 17px;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 14px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(255, 107, 53, 0.25);
+    }
+
+    .cta-button:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
+    }
+
+    .cta-button svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .cta-note {
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* Trust Row */
+    .trust-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 50px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 768px) {
+      .trust-row {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+      }
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .trust-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--accent-light);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .trust-icon svg {
+      width: 20px;
+      height: 20px;
+      color: var(--accent);
+    }
+
+    .trust-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-body);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PRICING SECTION - To be integrated into landing page -->
+  <section class="pricing-section" id="pricing">
+    <div class="pricing-container">
+
+      <!-- Header -->
+      <div class="pricing-header">
+        <div class="pricing-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+          </svg>
+          14-Day Free Trial · No Credit Card Required
+        </div>
+        <h2 class="pricing-title">Simple, Transparent Pricing</h2>
+        <p class="pricing-subtitle">Pay per lot with volume discounts. No hidden fees. Cancel anytime.</p>
+      </div>
+
+      <!-- Interactive Calculator -->
+      <div class="pricing-calculator">
+        <div class="calculator-header">
+          <div class="calculator-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="4" y="2" width="16" height="20" rx="2"/>
+              <line x1="8" y1="6" x2="16" y2="6"/>
+              <line x1="8" y1="10" x2="16" y2="10"/>
+              <line x1="8" y1="14" x2="12" y2="14"/>
+              <line x1="8" y1="18" x2="12" y2="18"/>
+            </svg>
+          </div>
+          <h3 class="calculator-title">Calculate Your Price</h3>
+        </div>
+
+        <div class="calculator-grid">
+          <div class="calculator-input-group">
+            <label>How many lots in your scheme?</label>
+            <div class="slider-container">
+              <input type="range" class="slider" min="1" max="100" value="10" id="lotSlider">
+              <div class="lot-display">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 21h18M5 21V7l8-4 8 4v14M9 21v-6h6v6"/>
+                </svg>
+                <span id="lotCount">10</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-result">
+            <div class="price-label">Your monthly price</div>
+            <div class="price-amount">
+              <span class="value" id="monthlyPrice">$149.90</span>
+              <span class="period">/month</span>
+            </div>
+            <div class="price-breakdown">
+              <span id="tierName">Standard</span> tier · $<span id="pricePerLot">14.99</span>/lot
+              <span class="savings" id="savings" style="display: none;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pricing Tiers -->
+      <div class="tiers-header">
+        <h3 class="tiers-title">Volume Discounts</h3>
+        <p class="tiers-subtitle">Automatically applied as your scheme grows</p>
+      </div>
+
+      <div class="tiers-grid">
+        <!-- Standard Tier -->
+        <div class="tier-card" id="tier-standard">
+          <span class="tier-range">1-10 lots</span>
+          <div class="tier-price">
+            <span class="amount">$14.99</span>
+            <span class="unit">/lot/mo</span>
+          </div>
+          <div class="tier-name-row">
+            <span class="tier-name">Standard</span>
+          </div>
+          <ul class="tier-features">
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              All 4 AI Agents
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Strata Hub Export
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Unlimited Documents
+            </li>
+          </ul>
+        </div>
+
+        <!-- Growth Tier -->
+        <div class="tier-card" id="tier-growth">
+          <span class="tier-range">11-50 lots</span>
+          <div class="tier-price">
+            <span class="amount">$11.99</span>
+            <span class="unit">/lot/mo</span>
+          </div>
+          <div class="tier-name-row">
+            <span class="tier-name">Growth</span>
+            <span class="discount-badge">Save 20%</span>
+          </div>
+          <ul class="tier-features">
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              All 4 AI Agents
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Strata Hub Export
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Unlimited Documents
+            </li>
+          </ul>
+        </div>
+
+        <!-- Scale Tier -->
+        <div class="tier-card" id="tier-scale">
+          <span class="tier-range">51+ lots</span>
+          <div class="tier-price">
+            <span class="amount">$8.99</span>
+            <span class="unit">/lot/mo</span>
+          </div>
+          <div class="tier-name-row">
+            <span class="tier-name">Scale</span>
+            <span class="discount-badge">Save 40%</span>
+          </div>
+          <ul class="tier-features">
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              All 4 AI Agents
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Strata Hub Export
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Unlimited Documents
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="pricing-cta">
+        <a href="/sign-up" class="cta-button">
+          Start Your Free 14-Day Trial
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+        <p class="cta-note">No credit card required · Cancel anytime</p>
+      </div>
+
+      <!-- Trust Row -->
+      <div class="trust-row">
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <span class="trust-text">14-Day Free Trial</span>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+          </div>
+          <span class="trust-text">Cancel Anytime</span>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <span class="trust-text">Bank-Level Security</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    // Pricing calculator logic
+    const TIERS = [
+      { maxLots: 10, pricePerLot: 14.99, name: 'Standard', discount: 0 },
+      { maxLots: 50, pricePerLot: 11.99, name: 'Growth', discount: 20 },
+      { maxLots: Infinity, pricePerLot: 8.99, name: 'Scale', discount: 40 }
+    ];
+
+    function getTier(lots) {
+      return TIERS.find(t => lots <= t.maxLots) || TIERS[2];
+    }
+
+    function updatePricing(lots) {
+      const tier = getTier(lots);
+      const monthlyPrice = (lots * tier.pricePerLot).toFixed(2);
+
+      document.getElementById('lotCount').textContent = lots;
+      document.getElementById('monthlyPrice').textContent = '$' + monthlyPrice;
+      document.getElementById('tierName').textContent = tier.name;
+      document.getElementById('pricePerLot').textContent = tier.pricePerLot.toFixed(2);
+
+      const savingsEl = document.getElementById('savings');
+      if (tier.discount > 0) {
+        savingsEl.style.display = 'inline';
+        savingsEl.textContent = '(Save ' + tier.discount + '%)';
+      } else {
+        savingsEl.style.display = 'none';
+      }
+
+      // Update active tier card
+      document.querySelectorAll('.tier-card').forEach(card => card.classList.remove('active'));
+      document.querySelectorAll('.tier-badge-container').forEach(el => el.remove());
+
+      let activeCardId;
+      if (lots <= 10) activeCardId = 'tier-standard';
+      else if (lots <= 50) activeCardId = 'tier-growth';
+      else activeCardId = 'tier-scale';
+
+      const activeCard = document.getElementById(activeCardId);
+      activeCard.classList.add('active');
+
+      // Add "Your Tier" badge
+      const badgeContainer = document.createElement('div');
+      badgeContainer.className = 'tier-badge-container';
+      badgeContainer.innerHTML = '<span class="tier-badge">Your Tier</span>';
+      activeCard.appendChild(badgeContainer);
+    }
+
+    document.getElementById('lotSlider').addEventListener('input', function() {
+      updatePricing(parseInt(this.value));
+    });
+
+    // Initialize
+    updatePricing(10);
+  </script>
+
+</body>
+</html>
