@@ -22,8 +22,16 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Receipt, Shield, Building, Archive, Menu } from "lucide-react";
+import { Receipt, Shield, Building, Archive, Menu, LogOut, User } from "lucide-react";
 import { useMobileNav } from "./layout";
+import { SignOutButton, useUser } from "@clerk/nextjs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function DashboardPage() {
   // All existing state and logic preserved exactly
@@ -31,6 +39,7 @@ export default function DashboardPage() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [strataRollOpen, setStrataRollOpen] = useState(false);
   const { setIsOpen: setMobileNavOpen } = useMobileNav();
+  const { user } = useUser();
 
   // Fetch schemes to validate selected scheme exists
   const schemes = useQuery(api.schemes.list);
@@ -130,6 +139,43 @@ export default function DashboardPage() {
                 onOpenChange={setSettingsOpen}
               />
             )}
+
+            {/* User menu with logout */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon" className="rounded-full">
+                  {user?.imageUrl ? (
+                    <img
+                      src={user.imageUrl}
+                      alt={user.fullName || "User"}
+                      className="h-8 w-8 rounded-full"
+                    />
+                  ) : (
+                    <User className="h-4 w-4" />
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <div className="px-2 py-1.5">
+                  <p className="text-sm font-medium">{user?.fullName || "User"}</p>
+                  <p className="text-xs text-muted-foreground">{user?.primaryEmailAddress?.emailAddress}</p>
+                </div>
+                <DropdownMenuSeparator />
+                <Link href="/dashboard/settings">
+                  <DropdownMenuItem>
+                    <User className="h-4 w-4 mr-2" />
+                    Settings
+                  </DropdownMenuItem>
+                </Link>
+                <DropdownMenuSeparator />
+                <SignOutButton redirectUrl="/">
+                  <DropdownMenuItem className="text-red-600 focus:text-red-600 cursor-pointer">
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Sign out
+                  </DropdownMenuItem>
+                </SignOutButton>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 

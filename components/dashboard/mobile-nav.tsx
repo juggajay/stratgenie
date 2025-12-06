@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SignOutButton } from "@clerk/nextjs";
 import {
   LayoutDashboard,
   Receipt,
@@ -10,6 +11,7 @@ import {
   CreditCard,
   Archive,
   X,
+  LogOut,
 } from "lucide-react";
 import {
   Sheet,
@@ -142,6 +144,12 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
 
         {/* Footer */}
         <div className="absolute bottom-0 left-0 right-0 px-4 py-4 border-t border-border bg-secondary/30">
+          <SignOutButton redirectUrl="/">
+            <button className="w-full flex items-center justify-center gap-2 px-4 py-2.5 mb-3 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
+              <LogOut className="h-4 w-4" />
+              Sign out
+            </button>
+          </SignOutButton>
           <p className="text-xs text-muted-foreground text-center">
             Administrative guidance only.
             <br />
