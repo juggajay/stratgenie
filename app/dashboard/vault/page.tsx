@@ -14,7 +14,37 @@ import {
   Sparkles,
   CheckCircle2,
   AlertTriangle,
+  HelpCircle,
 } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
+const productFAQs = [
+  {
+    question: "Where is my data stored?",
+    answer:
+      "Your data is encrypted and hosted securely in Sydney, Australia. We strictly adhere to Australian Privacy Principles.",
+  },
+  {
+    question: "Are you a licensed Strata Managing Agent?",
+    answer:
+      "No. StrataGenie is software. We provide the tools for self-management, but do not make legal decisions on your behalf. This allows us to remain low-cost and commission-free.",
+  },
+  {
+    question: "What if we want to cancel?",
+    answer:
+      "You can cancel anytime. We offer a 'One-Click Export' so you can download all your records (PDFs and Excel) instantly. We never hold your data hostage.",
+  },
+  {
+    question: "Do you take insurance commissions?",
+    answer:
+      "Never. We are 100% independent. Unlike traditional managers, we do not accept kickbacks from insurers or tradespeople.",
+  },
+];
 
 export default function VaultPage() {
   const { selectedSchemeId } = useSelectedScheme();
@@ -195,6 +225,30 @@ export default function VaultPage() {
                 </p>
               </div>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* FAQ Section */}
+        <Card className="bg-white border-[#E8E4DE] rounded-xl shadow-sm">
+          <CardContent className="py-4">
+            <div className="flex items-center gap-2 mb-4">
+              <HelpCircle className="h-5 w-5 text-[#FF6B35]" />
+              <h3 className="font-display font-semibold text-foreground">
+                Frequently Asked Questions
+              </h3>
+            </div>
+            <Accordion type="single" collapsible className="w-full">
+              {productFAQs.map((faq, index) => (
+                <AccordionItem key={index} value={`item-${index}`}>
+                  <AccordionTrigger className="text-left font-medium text-foreground hover:no-underline">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground text-sm">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </CardContent>
         </Card>
       </main>
