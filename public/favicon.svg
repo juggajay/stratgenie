@@ -1,0 +1,15 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <rect width="32" height="32" rx="6" fill="#2563EB"/>
+
+  <!-- Building icon - simplified 3D look -->
+  <path d="M10 22V12L16 9L22 12V22H10Z" fill="#93C5FD"/>
+  <path d="M16 9L22 12V22L16 19V9Z" fill="#60A5FA"/>
+  <path d="M10 12L16 9V19L10 22V12Z" fill="#BFDBFE"/>
+
+  <!-- Genie swoosh -->
+  <path d="M7 24C7 24 12 20 17 22C22 24 26 18 26 18" stroke="white" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.9"/>
+
+  <!-- Sparkle dot -->
+  <circle cx="27" cy="17" r="2" fill="white"/>
+</svg>
