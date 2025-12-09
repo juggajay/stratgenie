@@ -26,6 +26,7 @@ export default function OnboardingPage() {
   const [step, setStep] = useState<Step>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [userSynced, setUserSynced] = useState(false);
 
   // Pre-fill lot count from URL params (from landing page pricing calculator)
   const lotsFromUrl = searchParams.get("lots");
@@ -41,25 +42,36 @@ export default function OnboardingPage() {
   const storeUser = useMutation(api.users.store);
   const createFirstScheme = useMutation(api.schemes.createFirstScheme);
 
-  // Sync user on mount
+  // Sync user on mount - MUST complete before checking currentUser
   useEffect(() => {
     const syncUser = async () => {
       try {
         await storeUser();
+        setUserSynced(true);
       } catch {
         // User might not be authenticated yet
         console.log("User sync pending auth");
+        setUserSynced(true);
       }
     };
     syncUser();
   }, [storeUser]);
 
-  // If user already has schemes, redirect to dashboard
+  // If user already has schemes, redirect to dashboard - ONLY after sync completes
   useEffect(() => {
+    if (!userSynced) return;
+
+    // If not authenticated, redirect to sign-in
+    if (currentUser === null) {
+      router.push("/sign-in");
+      return;
+    }
+
+    // If user has schemes, redirect to dashboard
     if (currentUser && currentUser.schemes && currentUser.schemes.length > 0) {
       router.push("/dashboard");
     }
-  }, [currentUser, router]);
+  }, [currentUser, router, userSynced]);
 
   const handleInputChange = (field: keyof FormData) => (
     e: React.ChangeEvent<HTMLInputElement>
@@ -111,8 +123,8 @@ export default function OnboardingPage() {
     }
   };
 
-  // Loading state while checking user
-  if (currentUser === undefined) {
+  // Loading state while syncing user or checking user
+  if (!userSynced || currentUser === undefined) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">

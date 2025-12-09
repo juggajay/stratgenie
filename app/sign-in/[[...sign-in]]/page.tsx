@@ -20,6 +20,7 @@ export default function SignInPage() {
           },
         }}
         signUpUrl="/sign-up"
+        forceRedirectUrl="/dashboard"
       />
     </div>
   );

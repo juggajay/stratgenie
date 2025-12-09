@@ -34,6 +34,7 @@ export default function DashboardLayout({
 }) {
   const router = useRouter();
   const [isReady, setIsReady] = useState(false);
+  const [userSynced, setUserSynced] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [captureHandler, setCaptureHandler] = useState<CaptureHandler | null>(null);
 
@@ -66,30 +67,36 @@ export default function DashboardLayout({
   const storeUser = useMutation(api.users.store);
   const currentUser = useQuery(api.users.currentUser);
 
-  // Sync user on mount
+  // Sync user on mount - MUST complete before checking currentUser
   useEffect(() => {
     const syncUser = async () => {
       try {
         await storeUser();
+        setUserSynced(true);
       } catch {
-        // User might not be authenticated - redirect to home
+        // User might not be authenticated - still mark as attempted
         console.log("User sync failed - may not be authenticated");
+        setUserSynced(true);
       }
     };
     syncUser();
   }, [storeUser]);
 
-  // Route protection logic
+  // Route protection logic - ONLY run after user sync completes
   useEffect(() => {
-    // Still loading
+    // Wait for user sync to complete first
+    if (!userSynced) {
+      return;
+    }
+
+    // Still loading query results
     if (currentUser === undefined) {
       return;
     }
 
     // User not authenticated (null returned)
     if (currentUser === null) {
-      // For now, redirect to home. When Clerk is set up, this would go to sign-in
-      router.push("/");
+      router.push("/sign-in");
       return;
     }
 
@@ -101,7 +108,7 @@ export default function DashboardLayout({
 
     // User has schemes - allow access
     setIsReady(true);
-  }, [currentUser, router]);
+  }, [currentUser, router, userSynced]);
 
   // Loading state
   if (!isReady) {
