@@ -48,9 +48,9 @@ export function createMetadata(options: MetadataOptions = {}): Metadata {
   } = options;
 
   // Build full title
-  const fullTitle = title
-    ? `${title} | ${SEO_CONFIG.siteName}`
-    : SEO_CONFIG.defaultTitle;
+  // Note: Don't append site name here - Next.js title template in root layout handles it
+  // Only use the full default title when no title is provided
+  const fullTitle = title || SEO_CONFIG.defaultTitle;
 
   // Build canonical URL
   const canonicalUrl = `${SEO_CONFIG.siteUrl}${path}`;
@@ -87,6 +87,7 @@ export function createMetadata(options: MetadataOptions = {}): Metadata {
       title: fullTitle,
       description,
       images: [imageUrl],
+      site: SEO_CONFIG.twitterHandle,
       creator: SEO_CONFIG.twitterHandle,
     },
   };
