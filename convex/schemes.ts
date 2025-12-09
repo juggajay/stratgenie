@@ -1,9 +1,10 @@
 import { v } from "convex/values";
 import { query, mutation, internalMutation } from "./_generated/server";
 import { checkAccess, requireRole, requireAuth } from "./lib/permissions";
+import { TRIAL_DURATION_DAYS } from "./billing/constants";
 
-// 14 days in milliseconds
-const TRIAL_DURATION_MS = 14 * 24 * 60 * 60 * 1000;
+// Calculate trial duration in milliseconds from the single source of truth
+const TRIAL_DURATION_MS = TRIAL_DURATION_DAYS * 24 * 60 * 60 * 1000;
 
 export const list = query({
   args: {},

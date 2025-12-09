@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Loader2, LogOut } from "lucide-react";
@@ -33,10 +33,14 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [isReady, setIsReady] = useState(false);
   const [userSynced, setUserSynced] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [captureHandler, setCaptureHandler] = useState<CaptureHandler | null>(null);
+
+  // Check if user is on the billing page (always accessible)
+  const isOnBillingPage = pathname === "/dashboard/billing";
 
   // Wrapper to update capture handler from children
   const setOnCapture = useCallback((handler: CaptureHandler | null) => {
@@ -66,6 +70,13 @@ export default function DashboardLayout({
   // Sync user and get current user data
   const storeUser = useMutation(api.users.store);
   const currentUser = useQuery(api.users.currentUser);
+
+  // Get billing status for the first scheme (to check trial expiry)
+  const firstSchemeId = currentUser?.schemes?.[0]?._id;
+  const billingStatus = useQuery(
+    api.billing.queries.getBillingStatus,
+    firstSchemeId ? { schemeId: firstSchemeId } : "skip"
+  );
 
   // Sync user on mount - MUST complete before checking currentUser
   useEffect(() => {
@@ -106,9 +117,20 @@ export default function DashboardLayout({
       return;
     }
 
-    // User has schemes - allow access
+    // Wait for billing status to load (only if not on billing page)
+    if (!isOnBillingPage && billingStatus === undefined) {
+      return;
+    }
+
+    // Check trial/subscription access (unless on billing page which is always accessible)
+    if (!isOnBillingPage && billingStatus && !billingStatus.canAccess) {
+      router.push("/dashboard/billing");
+      return;
+    }
+
+    // User has schemes and access - allow dashboard
     setIsReady(true);
-  }, [currentUser, router, userSynced]);
+  }, [currentUser, router, userSynced, billingStatus, isOnBillingPage]);
 
   // Loading state
   if (!isReady) {
