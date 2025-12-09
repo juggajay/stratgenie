@@ -62,22 +62,10 @@ export const metadata: Metadata = {
     telephone: false,
   },
 
-  // Icons
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-    ],
-    shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-    other: [
-      { rel: "icon", url: "/icon-192.png", sizes: "192x192" },
-      { rel: "icon", url: "/icon-512.png", sizes: "512x512" },
-    ],
-  },
+  // Icons - generated dynamically via app/icon.tsx and app/apple-icon.tsx
 
   // OpenGraph (default - can be overridden per page)
+  // Note: OG images are generated dynamically via app/opengraph-image.tsx
   openGraph: {
     type: "website",
     locale: SEO_CONFIG.locale,
@@ -85,23 +73,15 @@ export const metadata: Metadata = {
     siteName: SEO_CONFIG.siteName,
     title: SEO_CONFIG.defaultTitle,
     description: SEO_CONFIG.defaultDescription,
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: `${SEO_CONFIG.siteName} - AI-Powered Strata Compliance`,
-      },
-    ],
   },
 
   // Twitter Card
+  // Note: Twitter images are generated dynamically via app/twitter-image.tsx
   twitter: {
     card: "summary_large_image",
     title: SEO_CONFIG.defaultTitle,
     description: SEO_CONFIG.defaultDescription,
     creator: SEO_CONFIG.twitterHandle,
-    images: ["/og-image.png"],
   },
 
   // Robots (default - pages can override)
