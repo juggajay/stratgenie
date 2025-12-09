@@ -22,7 +22,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Receipt, Shield, Building, Archive, Menu } from "lucide-react";
+import { Receipt, Shield, Building, Archive, Menu, FileCheck, ArrowRight } from "lucide-react";
 import { useMobileNav } from "./layout";
 
 export default function DashboardPage() {
@@ -156,12 +156,38 @@ export default function DashboardPage() {
         )}
 
         <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
-          {/* Left column: Scheme selector */}
-          <div className="animate-slide-in-left">
-            <SchemeSelector
-              selectedSchemeId={selectedSchemeId}
-              onSchemeSelect={setSelectedSchemeId}
-            />
+          {/* Left column: Scheme selector + Strata Hub */}
+          <div className="space-y-4">
+            <div className="animate-slide-in-left">
+              <SchemeSelector
+                selectedSchemeId={selectedSchemeId}
+                onSchemeSelect={setSelectedSchemeId}
+              />
+            </div>
+
+            {/* Strata Hub Card */}
+            {selectedSchemeId && (
+              <div className="animate-slide-in-left animate-delay-1">
+                <Link href="/dashboard/strata-hub">
+                  <div className="bg-white border border-[#E8E4DE] rounded-xl p-4 hover:shadow-md hover:border-[#FF6B35]/30 transition-all cursor-pointer group">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-[#FFF0EB] rounded-lg">
+                        <FileCheck className="h-5 w-5 text-[#FF6B35]" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-foreground text-sm">
+                          Strata Hub
+                        </h3>
+                        <p className="text-xs text-muted-foreground">
+                          Prepare annual report
+                        </p>
+                      </div>
+                      <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-[#FF6B35] transition-colors" />
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Right column: Compliance cards + tasks */}
