@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LucideIcon, ArrowLeft, Menu, Receipt, Shield, LayoutDashboard } from "lucide-react";
+import { LucideIcon, ArrowLeft, Menu, Receipt, Shield, LayoutDashboard, FileCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +20,7 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/finance", label: "Finance", icon: Receipt },
   { href: "/dashboard/guardian", label: "Guardian", icon: Shield },
+  { href: "/dashboard/strata-hub", label: "Strata Hub", icon: FileCheck },
 ];
 
 export function AppHeader({

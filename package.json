@@ -38,6 +38,7 @@
     "pdf-lib": "^1.17.1",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
+    "react-dropzone": "^14.3.8",
     "reading-time": "^1.5.0",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-slug": "^6.0.0",

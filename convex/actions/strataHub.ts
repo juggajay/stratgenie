@@ -251,3 +251,309 @@ export const analyzeDocument = action({
     }
   },
 });
+
+// ============================================================================
+// Insurance Certificate Extraction (CH-0013)
+// ============================================================================
+
+const INSURANCE_EXTRACTION_PROMPT = `You are an expert at extracting data from Australian insurance certificates (Certificate of Currency, Policy Schedules).
+
+Your task is to extract key insurance details for NSW Strata scheme compliance reporting.
+
+## CRITICAL CURRENCY RULES:
+- Convert dollars to cents by multiplying by 100.
+- Return exact values, no rounding.
+- If a value is $15,000,000.00, return 1500000000.
+
+## FIELD EXTRACTION RULES:
+
+1. **insurerName**: The name of the insurance company (e.g., "QBE Insurance", "Allianz Australia").
+
+2. **policyNumber**: The policy or certificate number. Look for "Policy No", "Policy Number", "Certificate No".
+
+3. **replacementValue**: The building replacement/sum insured value. Look for:
+   - "Sum Insured"
+   - "Building Replacement Value"
+   - "Total Sum Insured"
+   - "Building Sum Insured"
+   Return value in CENTS (exact, no rounding).
+
+4. **expiryDate**: When the policy expires. Look for:
+   - "Expiry Date"
+   - "Period of Insurance: ... to [date]"
+   - "Cover until"
+   - "Policy End Date"
+   Return as ISO format: YYYY-MM-DD
+
+5. **inceptionDate**: When the policy started. Look for:
+   - "Inception Date"
+   - "Period of Insurance: [date] to ..."
+   - "Cover from"
+   - "Policy Start Date"
+   Return as ISO format: YYYY-MM-DD
+
+6. **strataPlanNumber**: If mentioned on the certificate.
+
+## GENERAL RULES:
+- Only extract data you can clearly identify.
+- Return null for any field you cannot confidently determine.
+- Do NOT guess - if uncertain, return null.
+
+Respond ONLY with a valid JSON object:
+{
+  "insurerName": "string or null",
+  "policyNumber": "string or null",
+  "replacementValue": number_in_cents_or_null,
+  "expiryDate": "YYYY-MM-DD or null",
+  "inceptionDate": "YYYY-MM-DD or null",
+  "strataPlanNumber": "string or null"
+}`;
+
+interface InsuranceExtractedData {
+  insurerName: string | null;
+  policyNumber: string | null;
+  replacementValue: number | null;
+  expiryDate: string | null;
+  inceptionDate: string | null;
+  strataPlanNumber: string | null;
+}
+
+/**
+ * Analyze an insurance certificate and extract details
+ */
+export const analyzeInsuranceCertificate = action({
+  args: {
+    schemeId: v.id("schemes"),
+    storageId: v.id("_storage"),
+  },
+  handler: async (ctx, args): Promise<{
+    success: boolean;
+    data?: InsuranceExtractedData;
+    error?: string;
+  }> => {
+    try {
+      // 1. Get the file from Convex storage
+      const fileUrl = await ctx.storage.getUrl(args.storageId);
+      if (!fileUrl) {
+        return { success: false, error: "File not found" };
+      }
+
+      // 2. Fetch and parse the PDF
+      console.log("[analyzeInsuranceCertificate] Fetching PDF from storage...");
+      const response = await fetch(fileUrl);
+      const arrayBuffer = await response.arrayBuffer();
+
+      let extractedText: string;
+      try {
+        const result = await extractText(new Uint8Array(arrayBuffer));
+        const pdfResult = result as { text?: string | string[]; pages?: Array<{ text?: string }> };
+
+        if (typeof result === 'string') {
+          extractedText = result;
+        } else if (pdfResult && typeof pdfResult.text === 'string') {
+          extractedText = pdfResult.text;
+        } else if (pdfResult && Array.isArray(pdfResult.text)) {
+          extractedText = pdfResult.text.join('\n');
+        } else if (pdfResult && pdfResult.pages && Array.isArray(pdfResult.pages)) {
+          extractedText = pdfResult.pages.map((p: { text?: string }) => p.text || '').join('\n');
+        } else {
+          extractedText = String(pdfResult?.text || result || '');
+        }
+
+        console.log("[analyzeInsuranceCertificate] Extracted", extractedText.length, "characters");
+      } catch (pdfError) {
+        console.error("[analyzeInsuranceCertificate] PDF parsing failed:", pdfError);
+        return { success: false, error: "Could not parse PDF" };
+      }
+
+      if (extractedText.trim().length < 50) {
+        return { success: false, error: "PDF appears empty or is a scanned image" };
+      }
+
+      // 3. Truncate and send to OpenAI
+      const truncatedText = extractedText.substring(0, 10000);
+
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+          { role: "system", content: INSURANCE_EXTRACTION_PROMPT },
+          {
+            role: "user",
+            content: `Extract insurance details from this certificate:\n\n${truncatedText}`,
+          },
+        ],
+        temperature: 0.1,
+        max_tokens: 500,
+      });
+
+      const aiResponse = completion.choices[0]?.message?.content;
+      if (!aiResponse) {
+        return { success: false, error: "AI returned empty response" };
+      }
+
+      // 4. Parse the JSON response
+      console.log("[analyzeInsuranceCertificate] AI Response:", aiResponse);
+      let parsed: InsuranceExtractedData;
+      try {
+        const cleanJson = aiResponse.replace(/```json\n?|\n?```/g, "").trim();
+        parsed = JSON.parse(cleanJson);
+      } catch {
+        console.error("[analyzeInsuranceCertificate] Failed to parse AI response");
+        return { success: false, error: "Failed to parse AI response" };
+      }
+
+      return { success: true, data: parsed };
+    } catch (error) {
+      console.error("[analyzeInsuranceCertificate] Unexpected error:", error);
+      return { success: false, error: "Unexpected error during analysis" };
+    }
+  },
+});
+
+// ============================================================================
+// AFSS (Annual Fire Safety Statement) Extraction (CH-0013)
+// ============================================================================
+
+const AFSS_EXTRACTION_PROMPT = `You are an expert at extracting data from Australian Annual Fire Safety Statements (AFSS) and Fire Safety Certificates.
+
+Your task is to extract key fire safety details for NSW Strata scheme compliance reporting.
+
+## FIELD EXTRACTION RULES:
+
+1. **afssDate**: The date the AFSS was issued/signed. Look for:
+   - "Date of Statement"
+   - "Statement Date"
+   - "Signed" date
+   - "Issued" date
+   Return as ISO format: YYYY-MM-DD
+
+2. **nextDueDate**: When the next AFSS is due (typically 1 year from issue). Look for:
+   - "Valid until"
+   - "Next statement due"
+   - If not stated, this can be inferred as 1 year from afssDate
+   Return as ISO format: YYYY-MM-DD (or null if cannot determine)
+
+3. **buildingAddress**: The address of the building covered by this AFSS.
+
+4. **strataPlanNumber**: If mentioned on the certificate.
+
+5. **certifierName**: Name of the accredited practitioner or fire safety company.
+
+6. **certifierLicenseNumber**: The license/accreditation number of the certifier.
+
+## GENERAL RULES:
+- Only extract data you can clearly identify.
+- Return null for any field you cannot confidently determine.
+- Do NOT guess - if uncertain, return null.
+- AFSS documents may also be called "Annual Fire Safety Statement" or "Fire Safety Statement".
+
+Respond ONLY with a valid JSON object:
+{
+  "afssDate": "YYYY-MM-DD or null",
+  "nextDueDate": "YYYY-MM-DD or null",
+  "buildingAddress": "string or null",
+  "strataPlanNumber": "string or null",
+  "certifierName": "string or null",
+  "certifierLicenseNumber": "string or null"
+}`;
+
+interface AfssExtractedData {
+  afssDate: string | null;
+  nextDueDate: string | null;
+  buildingAddress: string | null;
+  strataPlanNumber: string | null;
+  certifierName: string | null;
+  certifierLicenseNumber: string | null;
+}
+
+/**
+ * Analyze an AFSS certificate and extract details
+ */
+export const analyzeAfssCertificate = action({
+  args: {
+    schemeId: v.id("schemes"),
+    storageId: v.id("_storage"),
+  },
+  handler: async (ctx, args): Promise<{
+    success: boolean;
+    data?: AfssExtractedData;
+    error?: string;
+  }> => {
+    try {
+      // 1. Get the file from Convex storage
+      const fileUrl = await ctx.storage.getUrl(args.storageId);
+      if (!fileUrl) {
+        return { success: false, error: "File not found" };
+      }
+
+      // 2. Fetch and parse the PDF
+      console.log("[analyzeAfssCertificate] Fetching PDF from storage...");
+      const response = await fetch(fileUrl);
+      const arrayBuffer = await response.arrayBuffer();
+
+      let extractedText: string;
+      try {
+        const result = await extractText(new Uint8Array(arrayBuffer));
+        const pdfResult = result as { text?: string | string[]; pages?: Array<{ text?: string }> };
+
+        if (typeof result === 'string') {
+          extractedText = result;
+        } else if (pdfResult && typeof pdfResult.text === 'string') {
+          extractedText = pdfResult.text;
+        } else if (pdfResult && Array.isArray(pdfResult.text)) {
+          extractedText = pdfResult.text.join('\n');
+        } else if (pdfResult && pdfResult.pages && Array.isArray(pdfResult.pages)) {
+          extractedText = pdfResult.pages.map((p: { text?: string }) => p.text || '').join('\n');
+        } else {
+          extractedText = String(pdfResult?.text || result || '');
+        }
+
+        console.log("[analyzeAfssCertificate] Extracted", extractedText.length, "characters");
+      } catch (pdfError) {
+        console.error("[analyzeAfssCertificate] PDF parsing failed:", pdfError);
+        return { success: false, error: "Could not parse PDF" };
+      }
+
+      if (extractedText.trim().length < 50) {
+        return { success: false, error: "PDF appears empty or is a scanned image" };
+      }
+
+      // 3. Truncate and send to OpenAI
+      const truncatedText = extractedText.substring(0, 8000);
+
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+          { role: "system", content: AFSS_EXTRACTION_PROMPT },
+          {
+            role: "user",
+            content: `Extract fire safety details from this AFSS document:\n\n${truncatedText}`,
+          },
+        ],
+        temperature: 0.1,
+        max_tokens: 400,
+      });
+
+      const aiResponse = completion.choices[0]?.message?.content;
+      if (!aiResponse) {
+        return { success: false, error: "AI returned empty response" };
+      }
+
+      // 4. Parse the JSON response
+      console.log("[analyzeAfssCertificate] AI Response:", aiResponse);
+      let parsed: AfssExtractedData;
+      try {
+        const cleanJson = aiResponse.replace(/```json\n?|\n?```/g, "").trim();
+        parsed = JSON.parse(cleanJson);
+      } catch {
+        console.error("[analyzeAfssCertificate] Failed to parse AI response");
+        return { success: false, error: "Failed to parse AI response" };
+      }
+
+      return { success: true, data: parsed };
+    } catch (error) {
+      console.error("[analyzeAfssCertificate] Unexpected error:", error);
+      return { success: false, error: "Unexpected error during analysis" };
+    }
+  },
+});

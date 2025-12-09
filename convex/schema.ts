@@ -55,6 +55,84 @@ export default defineSchema({
     // Trial/subscription tracking (CH-0008, CH-0010)
     trialEndsAt: v.optional(v.number()), // timestamp, null = paid/grandfathered
     stripeCustomerId: v.optional(v.string()), // Stripe customer ID (CH-0010)
+
+    // Strata Hub Compliance Fields (CH-0013)
+    // Emergency Contacts (4 required by NSW Strata Hub)
+    emergencyContacts: v.optional(
+      v.array(
+        v.object({
+          priority: v.number(), // 1-4 (required order for emergency services)
+          contactType: v.union(
+            v.literal("building_manager"),
+            v.literal("secretary"),
+            v.literal("chairperson"),
+            v.literal("treasurer"),
+            v.literal("caretaker"),
+            v.literal("other")
+          ),
+          name: v.string(),
+          phone: v.string(),
+          email: v.optional(v.string()),
+          lastUpdated: v.number(), // timestamp for 28-day rule tracking
+        })
+      )
+    ),
+
+    // AFSS (Annual Fire Safety Statement) Tracking
+    afssLastDate: v.optional(v.number()), // timestamp of last AFSS submission
+    afssNextDueDate: v.optional(v.number()), // timestamp (typically annual)
+    afssStatus: v.optional(
+      v.union(
+        v.literal("current"),
+        v.literal("due_soon"),
+        v.literal("overdue"),
+        v.literal("exempt") // Some buildings are exempt (e.g., Class 1a)
+      )
+    ),
+
+    // Insurance Details
+    insuranceDetails: v.optional(
+      v.object({
+        insurerName: v.optional(v.string()),
+        policyNumber: v.optional(v.string()),
+        replacementValue: v.optional(v.int64()), // cents (AUD)
+        expiryDate: v.optional(v.number()), // timestamp
+        lastUpdated: v.optional(v.number()), // timestamp
+      })
+    ),
+
+    // Building Classification (BCA/NCC classes)
+    buildingClass: v.optional(
+      v.union(
+        v.literal("class_1a"), // detached house
+        v.literal("class_1b"), // boarding house, etc.
+        v.literal("class_2"), // apartments (most strata)
+        v.literal("class_3"), // residential building (hotel, motel)
+        v.literal("class_4"), // dwelling in non-residential building
+        v.literal("class_5"), // office building
+        v.literal("class_6"), // shop or retail
+        v.literal("class_7a"), // carpark
+        v.literal("class_7b"), // storage/warehouse
+        v.literal("class_8"), // factory/laboratory
+        v.literal("class_9a"), // healthcare
+        v.literal("class_9b"), // assembly (school, etc.)
+        v.literal("class_9c"), // aged care
+        v.literal("class_10") // non-habitable (shed, etc.)
+      )
+    ),
+
+    // Extended Committee Contact Details
+    secretaryPhone: v.optional(v.string()),
+    treasurerName: v.optional(v.string()),
+    treasurerEmail: v.optional(v.string()),
+    treasurerPhone: v.optional(v.string()),
+    chairpersonName: v.optional(v.string()),
+    chairpersonEmail: v.optional(v.string()),
+    chairpersonPhone: v.optional(v.string()),
+
+    // Strata Hub Submission Tracking
+    lastStrataHubSubmittedAt: v.optional(v.number()), // timestamp of last portal submission
+    lastContactChangeAt: v.optional(v.number()), // timestamp for 28-day update rule
   })
     .index("by_strata_number", ["strataNumber"])
     .index("by_stripe_customer", ["stripeCustomerId"]),
