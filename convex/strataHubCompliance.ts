@@ -78,8 +78,8 @@ export const getStrataHubReadiness = query({
     const allTransactions = [...approvedTransactions, ...paidTransactions];
 
     // Calculate fund balances
-    let adminBalance = scheme.openingBalanceAdmin ?? 0n;
-    let capitalBalance = scheme.openingBalanceCapital ?? 0n;
+    let adminBalance = BigInt(scheme.openingBalanceAdmin ?? 0);
+    let capitalBalance = BigInt(scheme.openingBalanceCapital ?? 0);
 
     for (const tx of allTransactions) {
       const amount = tx.amount;
@@ -337,8 +337,8 @@ export const getSubmissionPreview = query({
 
     const allTransactions = [...approvedTransactions, ...paidTransactions];
 
-    let adminBalance = scheme.openingBalanceAdmin ?? 0n;
-    let capitalBalance = scheme.openingBalanceCapital ?? 0n;
+    let adminBalance = BigInt(scheme.openingBalanceAdmin ?? 0);
+    let capitalBalance = BigInt(scheme.openingBalanceCapital ?? 0);
 
     for (const tx of allTransactions) {
       const amount = tx.amount;

@@ -49,7 +49,7 @@ export default function StrataHubPage() {
 
   const scheme = useQuery(
     api.schemes.get,
-    selectedSchemeId ? { schemeId: selectedSchemeId } : "skip"
+    selectedSchemeId ? { id: selectedSchemeId } : "skip"
   );
 
   const markSubmitted = useMutation(
