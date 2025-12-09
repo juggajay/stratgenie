@@ -178,6 +178,11 @@ export default function LandingPageClient() {
                 Self-Manage With <em>Confidence</em>, Not Anxiety
               </h1>
 
+              {/* H2: SEO subtitle with keywords */}
+              <h2 className="hero-subtitle animate-fade-up delay-1">
+                AI-powered compliance software for self-managed strata schemes in NSW
+              </h2>
+
               {/* Sub-headline */}
               <p className="hero-sub animate-fade-up delay-2">
                 You chose to self-manage. Now get the backup you deserve. StrataGenie tracks every deadline, answers every bylaw question, and makes sure you <strong>never miss a compliance requirement</strong>. So you can finally stop worrying.
