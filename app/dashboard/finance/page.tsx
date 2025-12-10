@@ -41,6 +41,7 @@ import {
   Menu,
 } from "lucide-react";
 import { useMobileNav } from "../layout";
+import { FinanceTour } from "@/components/tour";
 
 function FailedInvoicesSection({ schemeId }: { schemeId: Id<"schemes"> }) {
   const invoices = useQuery(api.finance.listInvoicesForScheme, { schemeId });
@@ -94,10 +95,12 @@ function ExpensesTab({
   return (
     <div className="space-y-6">
       {/* Invoice Upload Zone */}
-      <InvoiceUploadZone
-        schemeId={schemeId}
-        onUploadComplete={onUploadComplete}
-      />
+      <div data-tour="invoice-upload">
+        <InvoiceUploadZone
+          schemeId={schemeId}
+          onUploadComplete={onUploadComplete}
+        />
+      </div>
 
       {/* Failed Invoices - Upload Issues */}
       <FailedInvoicesSection schemeId={schemeId} />
@@ -153,7 +156,7 @@ function IncomeTab({ schemeId }: { schemeId: Id<"schemes"> }) {
       {/* Manage Strata Roll Button */}
       <Sheet open={strataRollOpen} onOpenChange={setStrataRollOpen}>
         <SheetTrigger asChild>
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline" className="gap-2" data-tour="strata-roll-button">
             <Building className="h-4 w-4" />
             Manage Strata Roll
           </Button>
@@ -441,17 +444,17 @@ export default function FinancePage() {
             {selectedSchemeId ? (
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full animate-fade-slide-in animate-delay-1">
                 <TabsList className="grid w-full grid-cols-3 mb-4 sm:mb-6 h-auto">
-                  <TabsTrigger value="expenses" className="gap-1 sm:gap-2 text-xs sm:text-sm py-2.5">
+                  <TabsTrigger value="expenses" className="gap-1 sm:gap-2 text-xs sm:text-sm py-2.5" data-tour="expenses-tab">
                     <ArrowUpRight className="h-3 w-3 sm:h-4 sm:w-4" />
                     <span className="hidden sm:inline">Expenses</span>
                     <span className="sm:hidden">Out</span>
                   </TabsTrigger>
-                  <TabsTrigger value="income" className="gap-1 sm:gap-2 text-xs sm:text-sm py-2.5">
+                  <TabsTrigger value="income" className="gap-1 sm:gap-2 text-xs sm:text-sm py-2.5" data-tour="income-tab">
                     <ArrowDownRight className="h-3 w-3 sm:h-4 sm:w-4" />
                     <span className="hidden sm:inline">Income / Levies</span>
                     <span className="sm:hidden">In</span>
                   </TabsTrigger>
-                  <TabsTrigger value="reports" className="gap-1 sm:gap-2 text-xs sm:text-sm py-2.5">
+                  <TabsTrigger value="reports" className="gap-1 sm:gap-2 text-xs sm:text-sm py-2.5" data-tour="reports-tab">
                     <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
                     Reports
                   </TabsTrigger>
@@ -503,6 +506,9 @@ export default function FinancePage() {
           // Dialog will close automatically
         }}
       />
+
+      {/* Guided Tour */}
+      <FinanceTour />
     </div>
   );
 }

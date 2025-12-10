@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/sheet";
 import { Receipt, Shield, Building, Menu, FileCheck, ArrowRight } from "lucide-react";
 import { useMobileNav } from "./layout";
+import { DashboardTour } from "@/components/tour";
 
 export default function DashboardPage() {
   // All existing state and logic preserved exactly
@@ -161,14 +162,14 @@ export default function DashboardPage() {
 
             {/* Quick Upload Zone */}
             {selectedSchemeId && (
-              <div className="animate-slide-in-left animate-delay-1">
+              <div className="animate-slide-in-left animate-delay-1" data-tour="quick-upload">
                 <DashboardUploadZone schemeId={selectedSchemeId} />
               </div>
             )}
 
             {/* Strata Hub Card */}
             {selectedSchemeId && (
-              <div className="animate-slide-in-left animate-delay-2">
+              <div className="animate-slide-in-left animate-delay-2" data-tour="strata-hub-link">
                 <Link href="/dashboard/strata-hub">
                   <div className="bg-white border border-[#E8E4DE] rounded-xl p-4 hover:shadow-md hover:border-[#FF6B35]/30 transition-all cursor-pointer group">
                     <div className="flex items-center gap-3">
@@ -196,7 +197,7 @@ export default function DashboardPage() {
             {selectedSchemeId ? (
               <>
                 {/* Hero: Compliance Score */}
-                <div className="animate-fade-slide-in">
+                <div className="animate-fade-slide-in" data-tour="compliance-score">
                   <ComplianceScoreCard schemeId={selectedSchemeId} />
                 </div>
                 <div className="animate-fade-slide-in animate-delay-1">
@@ -205,7 +206,7 @@ export default function DashboardPage() {
                     onOpenSettings={() => setSettingsOpen(true)}
                   />
                 </div>
-                <div className="animate-fade-slide-in animate-delay-2">
+                <div className="animate-fade-slide-in animate-delay-2" data-tour="task-list">
                   <TaskList schemeId={selectedSchemeId} />
                 </div>
               </>
@@ -227,6 +228,9 @@ export default function DashboardPage() {
           </p>
         </footer>
       </main>
+
+      {/* Guided Tour */}
+      <DashboardTour />
     </div>
   );
 }

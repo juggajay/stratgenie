@@ -10,6 +10,7 @@ import { TrialBanner } from "@/components/dashboard/trial-banner";
 import { MobileNav } from "@/components/dashboard/mobile-nav";
 import { CaptureFab } from "@/components/dashboard/capture-fab";
 import { GuardianFab } from "@/components/guardian/guardian-fab";
+import { TourProvider } from "@/components/tour";
 
 // Mobile nav context for sharing state
 const MobileNavContext = createContext<{
@@ -149,31 +150,33 @@ export default function DashboardLayout({
   const firstScheme = currentUser?.schemes?.[0];
 
   return (
-    <MobileNavContext.Provider value={{ isOpen: mobileNavOpen, setIsOpen: setMobileNavOpen }}>
-      <CaptureContext.Provider value={{ onCapture: captureHandler, setOnCapture }}>
-        {/* Mobile navigation sheet */}
-        <MobileNav open={mobileNavOpen} onOpenChange={setMobileNavOpen} />
+    <TourProvider>
+      <MobileNavContext.Provider value={{ isOpen: mobileNavOpen, setIsOpen: setMobileNavOpen }}>
+        <CaptureContext.Provider value={{ onCapture: captureHandler, setOnCapture }}>
+          {/* Mobile navigation sheet */}
+          <MobileNav open={mobileNavOpen} onOpenChange={setMobileNavOpen} />
 
-        {/* Trial banner - shown if user is on trial */}
-        {firstScheme && <TrialBanner schemeId={firstScheme._id} />}
-        {children}
+          {/* Trial banner - shown if user is on trial */}
+          {firstScheme && <TrialBanner schemeId={firstScheme._id} />}
+          {children}
 
-        {/* Mobile capture FAB - always visible on mobile */}
-        <CaptureFab onCapture={handleCapture} />
+          {/* Mobile capture FAB - always visible on mobile */}
+          <CaptureFab onCapture={handleCapture} />
 
-        {/* Guardian FAB - always visible for quick bylaw Q&A */}
-        <GuardianFab />
+          {/* Guardian FAB - always visible for quick bylaw Q&A */}
+          <GuardianFab />
 
-        {/* Fixed logout button - bottom left */}
-        <div className="fixed bottom-6 left-6 z-[9999]">
-          <SignOutButton redirectUrl="/">
-            <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-[#E8E4DE] shadow-lg hover:shadow-xl hover:border-[#FF6B35]/30 transition-all text-sm font-medium text-[#1a1a2e] hover:text-[#FF6B35]">
-              <LogOut className="h-4 w-4" />
-              Sign out
-            </button>
-          </SignOutButton>
-        </div>
-      </CaptureContext.Provider>
-    </MobileNavContext.Provider>
+          {/* Fixed logout button - bottom left */}
+          <div className="fixed bottom-6 left-6 z-[9999]">
+            <SignOutButton redirectUrl="/">
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-[#E8E4DE] shadow-lg hover:shadow-xl hover:border-[#FF6B35]/30 transition-all text-sm font-medium text-[#1a1a2e] hover:text-[#FF6B35]">
+                <LogOut className="h-4 w-4" />
+                Sign out
+              </button>
+            </SignOutButton>
+          </div>
+        </CaptureContext.Provider>
+      </MobileNavContext.Provider>
+    </TourProvider>
   );
 }

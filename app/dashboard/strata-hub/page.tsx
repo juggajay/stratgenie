@@ -26,6 +26,7 @@ import {
   Download,
   FileText,
 } from "lucide-react";
+import { StrataHubTour } from "@/components/tour";
 
 const STRATA_HUB_URL =
   "https://www.service.nsw.gov.au/transaction/submit-strata-scheme-annual-report";
@@ -303,7 +304,7 @@ Chairperson: ${preview.chairpersonName || "Not set"} ${preview.chairpersonPhone 
 
         {/* Readiness Score */}
         {readiness && (
-          <div className="animate-fade-slide-in animate-delay-1">
+          <div className="animate-fade-slide-in animate-delay-1" data-tour="readiness-score">
             <ReadinessScore
               score={readiness.score}
               completedFields={readiness.completedFields}
@@ -313,7 +314,7 @@ Chairperson: ${preview.chairpersonName || "Not set"} ${preview.chairpersonPhone 
         )}
 
         {/* Basic Information */}
-        <Card className="bg-card border-border animate-fade-slide-in animate-delay-2">
+        <Card className="bg-card border-border animate-fade-slide-in animate-delay-2" data-tour="scheme-info">
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
               <Building2 className="h-5 w-5 text-[#FF6B35]" />
@@ -344,7 +345,7 @@ Chairperson: ${preview.chairpersonName || "Not set"} ${preview.chairpersonPhone 
         </Card>
 
         {/* Emergency Contacts */}
-        <div className="animate-fade-slide-in animate-delay-3">
+        <div className="animate-fade-slide-in animate-delay-3" data-tour="emergency-contacts">
           <EmergencyContactsForm
             schemeId={selectedSchemeId}
             existingContacts={scheme?.emergencyContacts}
@@ -352,7 +353,7 @@ Chairperson: ${preview.chairpersonName || "Not set"} ${preview.chairpersonPhone 
         </div>
 
         {/* Smart Document Upload */}
-        <div className="animate-fade-slide-in animate-delay-4">
+        <div className="animate-fade-slide-in animate-delay-4" data-tour="document-upload">
           <SmartDocumentUpload
             schemeId={selectedSchemeId}
             onSuccess={() => {
@@ -556,7 +557,7 @@ Chairperson: ${preview.chairpersonName || "Not set"} ${preview.chairpersonPhone 
         )}
 
         {/* Strata Hub Submission Actions */}
-        <Card className="bg-card border-border animate-fade-slide-in animate-delay-7">
+        <Card className="bg-card border-border animate-fade-slide-in animate-delay-7" data-tour="copy-submit">
           <CardContent className="py-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
@@ -625,6 +626,9 @@ Chairperson: ${preview.chairpersonName || "Not set"} ${preview.chairpersonPhone 
           </CardContent>
         </Card>
       </main>
+
+      {/* Guided Tour */}
+      <StrataHubTour />
     </div>
   );
 }

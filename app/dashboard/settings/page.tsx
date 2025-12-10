@@ -33,6 +33,7 @@ import {
   calculateMonthlyPrice,
   getTierInfo,
 } from "@/convex/billing/constants";
+import { SettingsTour } from "@/components/tour";
 
 export default function SettingsPage() {
   const { selectedSchemeId, scheme } = useSelectedScheme();
@@ -292,7 +293,7 @@ export default function SettingsPage() {
                       </p>
                     </div>
 
-                    <div className="space-y-1.5">
+                    <div className="space-y-1.5" data-tour="lot-count">
                       <Label htmlFor="lotCount" className="text-sm font-medium text-foreground">
                         Number of Lots
                       </Label>
@@ -383,7 +384,7 @@ export default function SettingsPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="space-y-1.5">
+                  <div className="space-y-1.5" data-tour="agm-date">
                     <Label htmlFor="lastAgmDate" className="text-sm font-medium text-foreground">
                       Last AGM Date
                     </Label>
@@ -444,7 +445,7 @@ export default function SettingsPage() {
               </Card>
 
               {/* Financial Settings */}
-              <Card className="bg-white border border-[#E8E4DE] rounded-xl">
+              <Card className="bg-white border border-[#E8E4DE] rounded-xl" data-tour="financial-settings">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg font-medium">
                     <DollarSign className="h-5 w-5 text-[#FF6B35]" />
@@ -525,7 +526,7 @@ export default function SettingsPage() {
             </form>
 
             {/* Billing Section */}
-            <Card className="bg-white border border-[#E8E4DE] rounded-xl">
+            <Card className="bg-white border border-[#E8E4DE] rounded-xl" data-tour="billing-section">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg font-medium">
                   <CreditCard className="h-5 w-5 text-[#FF6B35]" />
@@ -592,6 +593,9 @@ export default function SettingsPage() {
           </p>
         </footer>
       </main>
+
+      {/* Guided Tour */}
+      <SettingsTour />
     </div>
   );
 }
