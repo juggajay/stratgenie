@@ -14,7 +14,7 @@ interface ComplianceScoreCardProps {
 
 export function ComplianceScoreCard({ schemeId }: ComplianceScoreCardProps) {
   const readiness = useQuery(api.strataHubCompliance.getStrataHubReadiness, { schemeId });
-  const scheme = useQuery(api.schemes.get, { schemeId });
+  const scheme = useQuery(api.schemes.get, { id: schemeId });
 
   if (!readiness || !scheme) {
     return (

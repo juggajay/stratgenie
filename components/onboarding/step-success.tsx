@@ -15,7 +15,7 @@ interface StepSuccessProps {
 export function StepSuccess({ schemeId, onComplete }: StepSuccessProps) {
   // Fetch readiness score
   const readiness = useQuery(api.strataHubCompliance.getStrataHubReadiness, { schemeId });
-  const scheme = useQuery(api.schemes.get, { schemeId });
+  const scheme = useQuery(api.schemes.get, { id: schemeId });
 
   const score = readiness?.score ?? 0;
 
