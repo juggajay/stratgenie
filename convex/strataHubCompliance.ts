@@ -43,6 +43,7 @@ export type ReadinessResult = {
 /**
  * Get Strata Hub readiness score and field status.
  * Calculates completeness based on all mandatory Strata Hub fields.
+ * CH-0013: Now also checks for document uploads, not just extracted data.
  */
 export const getStrataHubReadiness = query({
   args: { schemeId: v.id("schemes") },
@@ -58,6 +59,20 @@ export const getStrataHubReadiness = query({
     if (!scheme) {
       return null;
     }
+
+    // CH-0013: Check for uploaded documents
+    const documents = await ctx.db
+      .query("documents")
+      .withIndex("by_scheme", (q) => q.eq("schemeId", args.schemeId))
+      .collect();
+
+    // Check if we have insurance and fire_safety documents uploaded
+    const hasInsuranceDocument = documents.some(
+      (doc) => doc.vaultCategory === "insurance" && doc.storageId
+    );
+    const hasFireSafetyDocument = documents.some(
+      (doc) => doc.vaultCategory === "fire_safety" && doc.storageId
+    );
 
     // Get financial data for fund balances
     // Use approved/paid transactions to calculate current balances
@@ -190,9 +205,11 @@ export const getStrataHubReadiness = query({
         value: scheme.insuranceDetails?.replacementValue
           ? Number(scheme.insuranceDetails.replacementValue)
           : null,
+        // CH-0013: Require both extracted data AND uploaded document
         isComplete: !!(
           scheme.insuranceDetails?.replacementValue &&
-          scheme.insuranceDetails.replacementValue > 0n
+          scheme.insuranceDetails.replacementValue > 0n &&
+          hasInsuranceDocument
         ),
         category: "financial",
       },
@@ -209,8 +226,10 @@ export const getStrataHubReadiness = query({
         id: "afssDate",
         label: "AFSS Date",
         value: scheme.afssLastDate || null,
+        // CH-0013: Require both date AND document (unless exempt)
         isComplete:
-          !!scheme.afssLastDate || scheme.afssStatus === "exempt",
+          scheme.afssStatus === "exempt" ||
+          (!!scheme.afssLastDate && hasFireSafetyDocument),
         category: "compliance",
       },
     ];

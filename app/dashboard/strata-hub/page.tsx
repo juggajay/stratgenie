@@ -20,14 +20,18 @@ import {
   Building2,
   Wallet,
   Shield,
-  Users,
   Calendar,
   Flame,
   AlertTriangle,
+  Download,
+  FileText,
 } from "lucide-react";
 
 const STRATA_HUB_URL =
   "https://www.service.nsw.gov.au/transaction/submit-strata-scheme-annual-report";
+
+const FIRE_SAFETY_URL =
+  "https://www.fire.nsw.gov.au/page.php?id=477";
 
 export default function StrataHubPage() {
   const { selectedSchemeId } = useSelectedScheme();
@@ -52,8 +56,18 @@ export default function StrataHubPage() {
     selectedSchemeId ? { id: selectedSchemeId } : "skip"
   );
 
+  // CH-0013: Fetch uploaded documents for display
+  const documents = useQuery(
+    api.documents.getVaultDocuments,
+    selectedSchemeId ? { schemeId: selectedSchemeId } : "skip"
+  );
+
   const markSubmitted = useMutation(
     api.strataHubCompliance.markStrataHubSubmitted
+  );
+
+  const markDocumentSubmitted = useMutation(
+    api.documents.markDocumentSubmitted
   );
 
   const handleMarkSubmitted = async () => {
@@ -111,6 +125,48 @@ Chairperson: ${preview.chairpersonName || "Not set"} ${preview.chairpersonPhone 
 
   const openStrataHub = () => {
     window.open(STRATA_HUB_URL, "_blank");
+  };
+
+  const openFireSafety = () => {
+    window.open(FIRE_SAFETY_URL, "_blank");
+  };
+
+  // CH-0013: Mark Fire Safety submission
+  const handleMarkFireSafetySubmitted = async () => {
+    if (!selectedSchemeId || !documents) return;
+
+    // Find fire_safety documents and mark them as submitted
+    const fireSafetyDocs = documents.filter(
+      (d) => d.vaultCategory === "fire_safety" && d.submissionStatus !== "submitted"
+    );
+
+    try {
+      for (const doc of fireSafetyDocs) {
+        await markDocumentSubmitted({ documentId: doc._id });
+      }
+      toast.success("Fire Safety submission recorded");
+    } catch (error) {
+      toast.error("Failed to record submission");
+      console.error(error);
+    }
+  };
+
+  // CH-0013: Handle document download
+  const handleDownload = async (doc: NonNullable<typeof documents>[0]) => {
+    if (!doc.storageId) {
+      toast.error("Document file not available");
+      return;
+    }
+
+    try {
+      // Use content field which contains the storage URL
+      if (doc.content) {
+        window.open(doc.content, "_blank");
+      }
+    } catch (error) {
+      toast.error("Failed to download document");
+      console.error(error);
+    }
   };
 
   // Format currency for display
@@ -306,6 +362,105 @@ Chairperson: ${preview.chairpersonName || "Not set"} ${preview.chairpersonPhone 
           />
         </div>
 
+        {/* Uploaded Documents Section (CH-0013) */}
+        {documents && documents.length > 0 && (
+          <Card className="bg-card border-border animate-fade-slide-in animate-delay-4">
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-[#FF6B35]" />
+                <CardTitle className="text-base font-medium">
+                  Uploaded Documents
+                </CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="space-y-3">
+                {/* Insurance Documents */}
+                {documents.filter((d) => d.vaultCategory === "insurance").length > 0 && (
+                  <div>
+                    <h4 className="text-sm font-medium text-muted-foreground mb-2 flex items-center gap-2">
+                      <Shield className="h-4 w-4" />
+                      Insurance
+                    </h4>
+                    <div className="space-y-2">
+                      {documents
+                        .filter((d) => d.vaultCategory === "insurance")
+                        .map((doc) => (
+                          <div
+                            key={doc._id}
+                            className="flex items-center justify-between p-3 bg-[#F8F5F0] rounded-lg"
+                          >
+                            <div className="flex items-center gap-3">
+                              <FileText className="h-4 w-4 text-muted-foreground" />
+                              <div>
+                                <p className="text-sm font-medium">{doc.title}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  Uploaded {formatDate(doc.createdAt)}
+                                  {doc.submissionStatus === "submitted" && (
+                                    <span className="ml-2 text-emerald-600">• Submitted</span>
+                                  )}
+                                </p>
+                              </div>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDownload(doc)}
+                              disabled={!doc.storageId}
+                            >
+                              <Download className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Fire Safety Documents */}
+                {documents.filter((d) => d.vaultCategory === "fire_safety").length > 0 && (
+                  <div>
+                    <h4 className="text-sm font-medium text-muted-foreground mb-2 flex items-center gap-2">
+                      <Flame className="h-4 w-4" />
+                      Fire Safety (AFSS)
+                    </h4>
+                    <div className="space-y-2">
+                      {documents
+                        .filter((d) => d.vaultCategory === "fire_safety")
+                        .map((doc) => (
+                          <div
+                            key={doc._id}
+                            className="flex items-center justify-between p-3 bg-[#F8F5F0] rounded-lg"
+                          >
+                            <div className="flex items-center gap-3">
+                              <FileText className="h-4 w-4 text-muted-foreground" />
+                              <div>
+                                <p className="text-sm font-medium">{doc.title}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  Uploaded {formatDate(doc.createdAt)}
+                                  {doc.submissionStatus === "submitted" && (
+                                    <span className="ml-2 text-emerald-600">• Submitted</span>
+                                  )}
+                                </p>
+                              </div>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDownload(doc)}
+                              disabled={!doc.storageId}
+                            >
+                              <Download className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Financial Information */}
         <Card className="bg-card border-border animate-fade-slide-in animate-delay-5">
           <CardHeader className="pb-3">
@@ -360,13 +515,54 @@ Chairperson: ${preview.chairpersonName || "Not set"} ${preview.chairpersonPhone 
           </CardContent>
         </Card>
 
-        {/* Submission Actions */}
+        {/* Fire Safety Portal Submission (CH-0013) */}
+        {documents && documents.filter((d) => d.vaultCategory === "fire_safety").length > 0 && (
+          <Card className="bg-card border-border animate-fade-slide-in animate-delay-7">
+            <CardContent className="py-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <h3 className="font-display font-semibold text-foreground flex items-center gap-2">
+                    <Flame className="h-5 w-5 text-[#FF6B35]" />
+                    Fire Safety Portal
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    AFSS documents must be submitted to Fire & Rescue NSW annually.
+                  </p>
+                  {scheme?.lastFireSafetySubmittedAt && (
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Last submitted: {formatDate(scheme.lastFireSafetySubmittedAt)}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Button variant="outline" onClick={openFireSafety}>
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    Open Fire Safety Portal
+                  </Button>
+                  <Button
+                    onClick={handleMarkFireSafetySubmitted}
+                    disabled={!documents.some(
+                      (d) => d.vaultCategory === "fire_safety" && d.submissionStatus !== "submitted"
+                    )}
+                  >
+                    <CheckCircle2 className="h-4 w-4 mr-2" />
+                    Mark as Submitted
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Strata Hub Submission Actions */}
         <Card className="bg-card border-border animate-fade-slide-in animate-delay-7">
           <CardContent className="py-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <h3 className="font-display font-semibold text-foreground">
-                  Ready to Submit?
+                <h3 className="font-display font-semibold text-foreground flex items-center gap-2">
+                  <FileCheck className="h-5 w-5 text-[#FF6B35]" />
+                  Strata Hub Portal
                 </h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   {readiness && readiness.score >= 100

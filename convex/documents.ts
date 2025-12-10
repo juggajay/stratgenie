@@ -240,6 +240,7 @@ export const generateVaultUploadUrl = mutation({
 
 /**
  * Create a vault document from uploaded file (CH-0011).
+ * Updated in CH-0013: Now stores storageId for proper file handling.
  */
 export const createVaultDocument = mutation({
   args: {
@@ -269,7 +270,7 @@ export const createVaultDocument = mutation({
     const docType = typeMap[args.vaultCategory] || "fire_safety";
     const title = args.title || args.fileName.replace(/\.[^/.]+$/, "");
 
-    // Get the file URL for content reference
+    // Get the file URL for content reference (kept for backward compatibility)
     const fileUrl = await ctx.storage.getUrl(args.fileId);
 
     const documentId = await ctx.db.insert("documents", {
@@ -282,6 +283,8 @@ export const createVaultDocument = mutation({
       finalizedAt: Date.now(),
       vaultCategory: args.vaultCategory,
       submissionStatus: "ready",
+      // CH-0013: Store actual file reference for proper downloads
+      storageId: args.fileId,
     });
 
     return documentId;
@@ -372,6 +375,7 @@ export const createDocument = mutation({
 
 /**
  * Mark a document as submitted to government portal (CH-0011).
+ * Updated in CH-0013: Syncs document timestamp with scheme-level submission timestamps.
  */
 export const markDocumentSubmitted = mutation({
   args: {
@@ -385,10 +389,29 @@ export const markDocumentSubmitted = mutation({
 
     await requireRole(ctx, document.schemeId, "member");
 
+    const now = Date.now();
+
+    // Update document submission status
     await ctx.db.patch(args.documentId, {
       submissionStatus: "submitted",
-      submittedAt: Date.now(),
+      submittedAt: now,
     });
+
+    // CH-0013: Sync with scheme-level timestamps based on vault category
+    if (document.vaultCategory === "fire_safety") {
+      // Fire Safety documents go to Fire Safety Portal
+      await ctx.db.patch(document.schemeId, {
+        lastFireSafetySubmittedAt: now,
+      });
+    } else if (
+      document.vaultCategory === "insurance" ||
+      document.vaultCategory === "financials"
+    ) {
+      // Insurance and financials go to Strata Hub Portal
+      await ctx.db.patch(document.schemeId, {
+        lastStrataHubSubmittedAt: now,
+      });
+    }
 
     return { success: true };
   },
@@ -443,5 +466,110 @@ export const updateSchemeMeetingDetails = mutation({
     }
 
     return { success: true };
+  },
+});
+
+/**
+ * Create a document from AI extraction (CH-0013).
+ * Creates document record with storageId and extractedData, links to scheme.
+ * Called after SmartDocumentUpload confirms extracted data.
+ */
+export const createExtractedDocument = mutation({
+  args: {
+    schemeId: v.id("schemes"),
+    storageId: v.id("_storage"),
+    fileName: v.string(),
+    vaultCategory: v.union(
+      v.literal("fire_safety"),
+      v.literal("insurance"),
+      v.literal("financials"),
+      v.literal("governance"),
+      v.literal("revenue")
+    ),
+    extractedData: v.optional(v.any()),
+    title: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    await requireRole(ctx, args.schemeId, "member");
+
+    // Determine document type from vault category
+    const typeMap: Record<string, "fire_safety" | "insurance" | "financial_report" | "agm_notice"> = {
+      fire_safety: "fire_safety",
+      insurance: "insurance",
+      financials: "financial_report",
+      governance: "agm_notice",
+    };
+
+    const docType = typeMap[args.vaultCategory] || "fire_safety";
+    const title = args.title || args.fileName.replace(/\.[^/.]+$/, "");
+
+    // Get the file URL for content reference
+    const fileUrl = await ctx.storage.getUrl(args.storageId);
+
+    // Create the document record
+    const documentId = await ctx.db.insert("documents", {
+      schemeId: args.schemeId,
+      type: docType,
+      status: "final",
+      content: fileUrl || `file://${args.storageId}`,
+      title,
+      createdAt: Date.now(),
+      finalizedAt: Date.now(),
+      vaultCategory: args.vaultCategory,
+      submissionStatus: "ready",
+      storageId: args.storageId,
+      extractedData: args.extractedData,
+    });
+
+    // Link document to scheme based on category
+    if (args.vaultCategory === "insurance") {
+      const scheme = await ctx.db.get(args.schemeId);
+      if (scheme) {
+        await ctx.db.patch(args.schemeId, {
+          insuranceDetails: {
+            ...scheme.insuranceDetails,
+            documentId,
+          },
+        });
+      }
+    } else if (args.vaultCategory === "fire_safety") {
+      await ctx.db.patch(args.schemeId, {
+        afssDocumentId: documentId,
+      });
+    }
+
+    return documentId;
+  },
+});
+
+/**
+ * Get document download URL (CH-0013).
+ * Returns the storage URL for downloading a document's PDF.
+ */
+export const getDocumentDownloadUrl = query({
+  args: {
+    documentId: v.id("documents"),
+  },
+  handler: async (ctx, args) => {
+    const document = await ctx.db.get(args.documentId);
+    if (!document) {
+      return null;
+    }
+
+    // Check access
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null;
+    }
+
+    await checkAccess(ctx, document.schemeId);
+
+    // If document has storageId, get URL from storage
+    if (document.storageId) {
+      return await ctx.storage.getUrl(document.storageId);
+    }
+
+    // Fallback to content field (legacy behavior)
+    return document.content;
   },
 });

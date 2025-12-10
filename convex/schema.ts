@@ -98,6 +98,7 @@ export default defineSchema({
         replacementValue: v.optional(v.int64()), // cents (AUD)
         expiryDate: v.optional(v.number()), // timestamp
         lastUpdated: v.optional(v.number()), // timestamp
+        documentId: v.optional(v.id("documents")), // Link to uploaded insurance document
       })
     ),
 
@@ -133,6 +134,12 @@ export default defineSchema({
     // Strata Hub Submission Tracking
     lastStrataHubSubmittedAt: v.optional(v.number()), // timestamp of last portal submission
     lastContactChangeAt: v.optional(v.number()), // timestamp for 28-day update rule
+
+    // Fire Safety Portal Submission Tracking (separate from Strata Hub)
+    lastFireSafetySubmittedAt: v.optional(v.number()), // timestamp of last Fire Safety portal submission
+
+    // Document links (for uploaded PDFs)
+    afssDocumentId: v.optional(v.id("documents")), // Link to uploaded AFSS document
   })
     .index("by_strata_number", ["strataNumber"])
     .index("by_stripe_customer", ["stripeCustomerId"]),
@@ -169,7 +176,7 @@ export default defineSchema({
       v.literal("financial_report")
     ),
     status: v.union(v.literal("draft"), v.literal("final")),
-    content: v.string(), // HTML content
+    content: v.string(), // HTML content (or URL for vault docs)
     title: v.string(), // e.g., "AGM Notice - March 2026"
     createdAt: v.number(), // timestamp
     finalizedAt: v.optional(v.number()), // timestamp when marked final
@@ -191,6 +198,10 @@ export default defineSchema({
       )
     ),
     submittedAt: v.optional(v.number()), // timestamp when submitted to portal
+
+    // CH-0013: Strata Hub Consolidation - File storage and extraction
+    storageId: v.optional(v.id("_storage")), // Convex file storage reference for PDFs
+    extractedData: v.optional(v.any()), // JSON blob of AI-extracted fields (insurance, AFSS, etc.)
   })
     .index("by_scheme", ["schemeId"])
     .index("by_scheme_and_type", ["schemeId", "type"])

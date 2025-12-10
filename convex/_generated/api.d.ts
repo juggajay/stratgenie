@@ -36,6 +36,7 @@ import type * as lib_permissions from "../lib/permissions.js";
 import type * as lots from "../lots.js";
 import type * as schemes from "../schemes.js";
 import type * as strataHub from "../strataHub.js";
+import type * as strataHubCompliance from "../strataHubCompliance.js";
 import type * as templates_agm_notice from "../templates/agm_notice.js";
 import type * as users from "../users.js";
 
@@ -74,6 +75,7 @@ declare const fullApi: ApiFromModules<{
   lots: typeof lots;
   schemes: typeof schemes;
   strataHub: typeof strataHub;
+  strataHubCompliance: typeof strataHubCompliance;
   "templates/agm_notice": typeof templates_agm_notice;
   users: typeof users;
 }>;

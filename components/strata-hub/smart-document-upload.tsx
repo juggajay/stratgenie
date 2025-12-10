@@ -71,12 +71,17 @@ export function SmartDocumentUpload({
   const [showAfssReview, setShowAfssReview] = useState(false);
   const [afssData, setAfssData] = useState<ExtractedAfssData | null>(null);
 
+  // Track uploaded file name for document record
+  const [uploadedFileName, setUploadedFileName] = useState<string>("");
+
   // Convex hooks
   const generateUploadUrl = useMutation(api.documents.generateUploadUrl);
   const analyzeInsurance = useAction(api.actions.strataHub.analyzeInsuranceCertificate);
   const analyzeAfss = useAction(api.actions.strataHub.analyzeAfssCertificate);
   const updateInsurance = useMutation(api.strataHubCompliance.updateInsuranceDetails);
   const updateAfss = useMutation(api.strataHubCompliance.updateAfssDetails);
+  // CH-0013: Create document record after extraction
+  const createExtractedDocument = useMutation(api.documents.createExtractedDocument);
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
@@ -114,6 +119,7 @@ export function SmartDocumentUpload({
 
         const { storageId } = await response.json();
         setUploadedStorageId(storageId);
+        setUploadedFileName(file.name);
 
         // 3. Auto-detect document type from filename
         const fileName = file.name.toLowerCase();
@@ -191,7 +197,7 @@ export function SmartDocumentUpload({
   };
 
   const handleSaveInsurance = async () => {
-    if (!insuranceData) return;
+    if (!insuranceData || !uploadedStorageId) return;
 
     try {
       // Convert date strings to timestamps
@@ -209,9 +215,21 @@ export function SmartDocumentUpload({
         expiryDate: expiryTimestamp,
       });
 
+      // CH-0013: Create document record with storageId and extractedData
+      await createExtractedDocument({
+        schemeId,
+        storageId: uploadedStorageId,
+        fileName: uploadedFileName,
+        vaultCategory: "insurance",
+        extractedData: insuranceData,
+        title: `Insurance Certificate - ${insuranceData.insurerName || "Unknown Insurer"}`,
+      });
+
       toast.success("Insurance details saved");
       setShowInsuranceReview(false);
       setInsuranceData(null);
+      setUploadedStorageId(null);
+      setUploadedFileName("");
       onSuccess?.();
     } catch (error) {
       console.error("Save error:", error);
@@ -220,7 +238,7 @@ export function SmartDocumentUpload({
   };
 
   const handleSaveAfss = async () => {
-    if (!afssData) return;
+    if (!afssData || !uploadedStorageId) return;
 
     try {
       // Convert date strings to timestamps
@@ -238,9 +256,21 @@ export function SmartDocumentUpload({
         status: "current",
       });
 
+      // CH-0013: Create document record with storageId and extractedData
+      await createExtractedDocument({
+        schemeId,
+        storageId: uploadedStorageId,
+        fileName: uploadedFileName,
+        vaultCategory: "fire_safety",
+        extractedData: afssData,
+        title: `AFSS - ${afssData.afssDate || "Unknown Date"}`,
+      });
+
       toast.success("Fire safety details saved");
       setShowAfssReview(false);
       setAfssData(null);
+      setUploadedStorageId(null);
+      setUploadedFileName("");
       onSuccess?.();
     } catch (error) {
       console.error("Save error:", error);

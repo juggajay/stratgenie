@@ -9,7 +9,7 @@ import {
   Shield,
   Settings,
   CreditCard,
-  Archive,
+  FileCheck,
   X,
   LogOut,
 } from "lucide-react";
@@ -46,10 +46,10 @@ const navItems = [
     description: "Bylaw Q&A",
   },
   {
-    href: "/dashboard/vault",
-    label: "Vault",
-    icon: Archive,
-    description: "Compliance documents",
+    href: "/dashboard/strata-hub",
+    label: "Strata Hub",
+    icon: FileCheck,
+    description: "Compliance & documents",
   },
   {
     href: "/dashboard/billing",
