@@ -9,6 +9,8 @@ import { api } from "@/convex/_generated/api";
 import { useSelectedScheme } from "@/hooks/use-selected-scheme";
 import { SchemeSelector } from "@/components/dashboard/scheme-selector";
 import { ComplianceCard } from "@/components/dashboard/compliance-card";
+import { ComplianceScoreCard } from "@/components/dashboard/compliance-score-card";
+import { DashboardUploadZone } from "@/components/dashboard/dashboard-upload-zone";
 import { TaskList } from "@/components/dashboard/task-list";
 import { SchemeSettingsForm } from "@/components/scheme/scheme-settings-form";
 import { SetupBanner } from "@/components/dashboard/setup-banner";
@@ -148,7 +150,7 @@ export default function DashboardPage() {
         )}
 
         <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
-          {/* Left column: Scheme selector + Strata Hub */}
+          {/* Left column: Scheme selector + Quick Upload + Strata Hub */}
           <div className="space-y-4">
             <div className="animate-slide-in-left">
               <SchemeSelector
@@ -157,9 +159,16 @@ export default function DashboardPage() {
               />
             </div>
 
-            {/* Strata Hub Card */}
+            {/* Quick Upload Zone */}
             {selectedSchemeId && (
               <div className="animate-slide-in-left animate-delay-1">
+                <DashboardUploadZone schemeId={selectedSchemeId} />
+              </div>
+            )}
+
+            {/* Strata Hub Card */}
+            {selectedSchemeId && (
+              <div className="animate-slide-in-left animate-delay-2">
                 <Link href="/dashboard/strata-hub">
                   <div className="bg-white border border-[#E8E4DE] rounded-xl p-4 hover:shadow-md hover:border-[#FF6B35]/30 transition-all cursor-pointer group">
                     <div className="flex items-center gap-3">
@@ -182,10 +191,14 @@ export default function DashboardPage() {
             )}
           </div>
 
-          {/* Right column: Compliance cards + tasks */}
+          {/* Right column: Compliance score + Compliance card + tasks */}
           <div className="space-y-6">
             {selectedSchemeId ? (
               <>
+                {/* Hero: Compliance Score */}
+                <div className="animate-fade-slide-in">
+                  <ComplianceScoreCard schemeId={selectedSchemeId} />
+                </div>
                 <div className="animate-fade-slide-in animate-delay-1">
                   <ComplianceCard
                     schemeId={selectedSchemeId}

@@ -9,6 +9,7 @@ import { SignOutButton } from "@clerk/nextjs";
 import { TrialBanner } from "@/components/dashboard/trial-banner";
 import { MobileNav } from "@/components/dashboard/mobile-nav";
 import { CaptureFab } from "@/components/dashboard/capture-fab";
+import { GuardianFab } from "@/components/guardian/guardian-fab";
 
 // Mobile nav context for sharing state
 const MobileNavContext = createContext<{
@@ -159,6 +160,9 @@ export default function DashboardLayout({
 
         {/* Mobile capture FAB - always visible on mobile */}
         <CaptureFab onCapture={handleCapture} />
+
+        {/* Guardian FAB - always visible for quick bylaw Q&A */}
+        <GuardianFab />
 
         {/* Fixed logout button - bottom left */}
         <div className="fixed bottom-6 left-6 z-[9999]">

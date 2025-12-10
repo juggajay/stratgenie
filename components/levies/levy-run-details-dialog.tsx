@@ -64,7 +64,7 @@ function getStatusBadge(status: string) {
       );
     case "sent":
       return (
-        <Badge variant="default" className="gap-1 bg-blue-600">
+        <Badge variant="default" className="gap-1 bg-[#FF6B35]">
           <Send className="h-3 w-3" />
           Sent
         </Badge>

@@ -6,9 +6,7 @@ import { SignOutButton } from "@clerk/nextjs";
 import {
   LayoutDashboard,
   Receipt,
-  Shield,
   Settings,
-  CreditCard,
   FileCheck,
   X,
   LogOut,
@@ -40,28 +38,16 @@ const navItems = [
     description: "Invoices & expenses",
   },
   {
-    href: "/dashboard/guardian",
-    label: "Guardian",
-    icon: Shield,
-    description: "Bylaw Q&A",
-  },
-  {
     href: "/dashboard/strata-hub",
-    label: "Strata Hub",
+    label: "Compliance",
     icon: FileCheck,
-    description: "Compliance & documents",
-  },
-  {
-    href: "/dashboard/billing",
-    label: "Billing",
-    icon: CreditCard,
-    description: "Subscription & usage",
+    description: "Strata Hub & documents",
   },
   {
     href: "/dashboard/settings",
     label: "Settings",
     icon: Settings,
-    description: "Account preferences",
+    description: "Scheme & billing",
   },
 ];
 

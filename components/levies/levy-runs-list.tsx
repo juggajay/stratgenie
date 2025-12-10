@@ -127,7 +127,7 @@ export function LevyRunsList({ schemeId }: LevyRunsListProps) {
       );
     }
     return (
-      <Badge variant="default" className="gap-1 bg-blue-600">
+      <Badge variant="default" className="gap-1 bg-[#FF6B35]">
         <Send className="h-3 w-3" />
         Issued
       </Badge>
